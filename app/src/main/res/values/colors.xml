@@ -5,5 +5,5 @@
     <color name="colorAccent">#8BC34A</color>
     <color name="colorPrimaryText">#000000</color>
     <color name="colorSecondaryText">#757575</color>
-    <color name="colorTextBG">#ffffff</color>
+    <color name="colorWhite">#ffffff</color>
 </resources>
