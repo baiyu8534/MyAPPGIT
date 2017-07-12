@@ -18,7 +18,33 @@
             android:layout_height="?attr/actionBarSize"
             android:background="@color/colorPrimary">
 
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/icon_image"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:src="@drawable/hander"/>
+
+
+            <TextView
+                android:id="@+id/tv_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="16sp"
+                android:textColor="@color/colorPrimaryText"
+                android:layout_marginLeft="30dp"
+                android:text="这是一个App"/>
+
         </android.support.v7.widget.Toolbar>
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rv_main"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scrollbars="none"
+            android:layout_marginTop="?attr/actionBarSize"
+            >
+
+        </android.support.v7.widget.RecyclerView>
 
         <android.support.design.widget.FloatingActionButton
             android:id="@+id/float_button"
@@ -33,7 +59,7 @@
     <android.support.design.widget.NavigationView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_gravity="start"
+        android:layout_gravity="end"
         android:text="hhh"
         app:headerLayout="@layout/nv_header_layout"
         app:menu="@menu/menu_navigation"/>

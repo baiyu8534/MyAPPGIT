@@ -3,8 +3,8 @@
       xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/toolbar_item_1"
-        android:icon="@drawable/toolbar_item_black_48dp"
+        android:id="@+id/toolbar_nv"
+        android:icon="@drawable/nv_icon_48dp"
         android:title="item_1"
         app:showAsAction="always"/>
 

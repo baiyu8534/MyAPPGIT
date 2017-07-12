@@ -4,16 +4,26 @@
     <item
         android:id="@+id/nv_item_1"
         android:icon="@drawable/toolbar_item_black_48dp"
-        android:title="Item1"/>
+        android:title="@string/nv_menu_item_1"/>
 
     <item
         android:id="@+id/nv_item_2"
         android:icon="@drawable/toolbar_item_black_48dp"
-        android:title="Item2"/>
+        android:title="@string/nv_menu_item_2"/>
 
     <item
         android:id="@+id/nv_item_3"
         android:icon="@drawable/toolbar_item_black_48dp"
-        android:title="Item3"/>
+        android:title="@string/nv_menu_item_3"/>
+
+    <item
+        android:id="@+id/nv_item_4"
+        android:icon="@drawable/toolbar_item_black_48dp"
+        android:title="@string/nv_menu_item_4"/>
+
+    <item
+        android:id="@+id/nv_item_5"
+        android:icon="@drawable/toolbar_item_black_48dp"
+        android:title="@string/nv_menu_item_5"/>
 
 </menu>

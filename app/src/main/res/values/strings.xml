@@ -1,3 +1,17 @@
 <resources>
     <string name="app_name">知了日报</string>
+    
+    <string name="nv_menu_item_1">设置</string>
+    <string name="nv_menu_item_2">关于</string>
+    <string name="nv_menu_item_3">主题</string>
+    <string name="nv_menu_item_4">反馈意见</string>
+    <string name="nv_menu_item_5">版本信息</string>
+
+    <string name="nv_header_text">We can to be anyone,we can to do anything</string>
+
+    <string name="rv_main_item_1">知乎日报</string>
+    <string name="rv_main_item_2">豆瓣</string>
+    <string name="rv_main_item_3">天气</string>
+    <string name="rv_main_item_4">美图</string>
+    <string name="rv_main_item_5">视频</string>
 </resources>
