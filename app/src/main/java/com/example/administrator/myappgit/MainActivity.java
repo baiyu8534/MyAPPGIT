@@ -13,6 +13,8 @@ import android.view.MenuItem;
 import android.widget.TextView;
 
 import com.example.administrator.myappgit.activity.BaseActivity;
+import com.example.administrator.myappgit.adapter.RvMainAdapter;
+import com.example.administrator.myappgit.view.MainRvItemDecoration;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -33,14 +35,8 @@ public class MainActivity extends BaseActivity {
     @BindView(R.id.rv_main)
     RecyclerView mRvMain;
 
-    private int[] itemTitles = {
-            R.string.rv_main_item_1,
-            R.string.rv_main_item_2,
-            R.string.rv_main_item_3,
-            R.string.rv_main_item_4,
-            R.string.rv_main_item_5,
-    };
     private LinearLayoutManager mLinearLayoutManager;
+    private RvMainAdapter mRvMainAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,8 +60,10 @@ public class MainActivity extends BaseActivity {
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
         mLinearLayoutManager = new LinearLayoutManager(this);
-
         mRvMain.setLayoutManager(mLinearLayoutManager);
+        mRvMain.addItemDecoration(new MainRvItemDecoration(this));
+        mRvMainAdapter = new RvMainAdapter(this);
+        mRvMain.setAdapter(mRvMainAdapter);
 
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {

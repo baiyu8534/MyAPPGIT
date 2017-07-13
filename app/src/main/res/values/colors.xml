@@ -6,4 +6,9 @@
     <color name="colorPrimaryText">#000000</color>
     <color name="colorSecondaryText">#757575</color>
     <color name="colorWhite">#ffffff</color>
+
+    <color name="mainRvItemBg1">#495ADF</color>
+    <color name="mainRvItemBg2">#DF436A </color>
+    <color name="mainRvItemBg3">#4CAF50 </color>
+
 </resources>
