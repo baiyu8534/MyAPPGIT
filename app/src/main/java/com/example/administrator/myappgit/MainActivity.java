@@ -10,6 +10,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.util.Pair;
 import android.view.Gravity;
 import android.view.Menu;
@@ -114,9 +115,10 @@ public class MainActivity extends BaseActivity implements RvMainAdapter.RvItemCl
             int firstVisibleItemPosition = mLinearLayoutManager.findFirstVisibleItemPosition();
             int lastVisibleItemPosition = mLinearLayoutManager.findLastVisibleItemPosition();
 
-            for (int i = firstVisibleItemPosition; i < lastVisibleItemPosition; i++) {
+            for (int i = firstVisibleItemPosition; i <= lastVisibleItemPosition; i++) {
                 RvMainAdapter.MyViewHolder holder = (RvMainAdapter.MyViewHolder) mRvMain.findViewHolderForAdapterPosition(i);
                 pairs.add(Pair.create(holder.tv_title, "tab_" + i));
+                if (BuildConfig.DEBUG) Log.d("MainActivity", "tab_"+i);
             }
             Bundle bundle = ActivityOptions.makeSceneTransitionAnimation(this, pairs.toArray(new Pair[]{})).toBundle();
             startActivity(intent, bundle);
