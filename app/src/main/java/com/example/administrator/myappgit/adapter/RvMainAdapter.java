@@ -5,6 +5,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.administrator.myappgit.R;
@@ -13,9 +14,19 @@ import com.example.administrator.myappgit.R;
  * Created by Administrator on 2017/7/12 0012.
  */
 
-public class RvMainAdapter extends RecyclerView.Adapter<RvMainAdapter.MyViewHolder> implements View.OnClickListener {
+public class RvMainAdapter extends RecyclerView.Adapter<RvMainAdapter.MyViewHolder>{
 
     private Context mContext;
+
+    private RvItemClickListener mListener;
+
+    public void setRvItemClickListener(RvItemClickListener listener) {
+        mListener = listener;
+    }
+
+    public interface RvItemClickListener{
+        void onRvItemClickListener(int position);
+    }
 
     public RvMainAdapter(Context context) {
         mContext = context;
@@ -26,7 +37,7 @@ public class RvMainAdapter extends RecyclerView.Adapter<RvMainAdapter.MyViewHold
             R.string.rv_main_item_2,
             R.string.rv_main_item_3,
             R.string.rv_main_item_4,
-            R.string.rv_main_item_5,
+//            R.string.rv_main_item_5,
     };
 
     private int[] itemBG = {
@@ -37,19 +48,23 @@ public class RvMainAdapter extends RecyclerView.Adapter<RvMainAdapter.MyViewHold
 
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-
         View view = LayoutInflater.from(mContext).inflate(R.layout.main_rv_item_layout, parent, false);
 
         return new MyViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(MyViewHolder holder, int position) {
+    public void onBindViewHolder(MyViewHolder holder, final int position) {
         holder.tv_title.setText(itemTitles[position]);
         int color = mContext.getResources().getColor(itemBG[position % 3]);
-        holder.tv_title.setBackgroundColor(color);
+        holder.rl_item.setBackgroundColor(color);
+        holder.rl_item.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mListener.onRvItemClickListener(position);
+            }
+        });
 
-        holder.itemView.setOnClickListener(this);
     }
 
     @Override
@@ -57,18 +72,15 @@ public class RvMainAdapter extends RecyclerView.Adapter<RvMainAdapter.MyViewHold
         return itemTitles.length;
     }
 
-    @Override
-    public void onClick(View v) {
+    public static class MyViewHolder extends RecyclerView.ViewHolder {
 
-    }
-
-    public static class MyViewHolder extends RecyclerView.ViewHolder{
-
-        TextView tv_title;
+        public TextView tv_title;
+        public RelativeLayout rl_item;
 
         public MyViewHolder(View itemView) {
             super(itemView);
             tv_title = (TextView) itemView.findViewById(R.id.tv_item_title);
+            rl_item = (RelativeLayout) itemView.findViewById(R.id.rl_item);
         }
     }
 }

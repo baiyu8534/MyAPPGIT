@@ -1,5 +1,8 @@
 package com.example.administrator.myappgit;
 
+import android.app.ActivityOptions;
+import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.widget.DrawerLayout;
@@ -7,20 +10,25 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Pair;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
 
 import com.example.administrator.myappgit.activity.BaseActivity;
+import com.example.administrator.myappgit.activity.ShowListActivity;
 import com.example.administrator.myappgit.adapter.RvMainAdapter;
 import com.example.administrator.myappgit.view.MainRvItemDecoration;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class MainActivity extends BaseActivity {
+public class MainActivity extends BaseActivity implements RvMainAdapter.RvItemClickListener {
 
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
@@ -50,6 +58,7 @@ public class MainActivity extends BaseActivity {
     }
 
     private void initListener() {
+        mRvMainAdapter.setRvItemClickListener(this);
 
     }
 
@@ -74,7 +83,6 @@ public class MainActivity extends BaseActivity {
 //            toggle.syncState();
 //            mDrawerLayout.setDrawerListener(toggle);
         }
-
     }
 
     @Override
@@ -91,5 +99,27 @@ public class MainActivity extends BaseActivity {
                 break;
         }
         return true;
+    }
+
+
+    /**
+     * rv的点击事件
+     */
+    @Override
+    public void onRvItemClickListener(int position) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            Intent intent = new Intent(this, ShowListActivity.class);
+            intent.putExtra("position",position);
+            List<Pair<TextView, String>> pairs = new ArrayList<>();
+            int firstVisibleItemPosition = mLinearLayoutManager.findFirstVisibleItemPosition();
+            int lastVisibleItemPosition = mLinearLayoutManager.findLastVisibleItemPosition();
+
+            for (int i = firstVisibleItemPosition; i < lastVisibleItemPosition; i++) {
+                RvMainAdapter.MyViewHolder holder = (RvMainAdapter.MyViewHolder) mRvMain.findViewHolderForAdapterPosition(i);
+                pairs.add(Pair.create(holder.tv_title, "tab_" + i));
+            }
+            Bundle bundle = ActivityOptions.makeSceneTransitionAnimation(this, pairs.toArray(new Pair[]{})).toBundle();
+            startActivity(intent, bundle);
+        }
     }
 }
