@@ -1,5 +1,6 @@
 package com.example.administrator.myappgit.activity;
 
+import android.animation.ArgbEvaluator;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -8,17 +9,15 @@ import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.example.administrator.myappgit.BuildConfig;
 import com.example.administrator.myappgit.R;
 import com.example.administrator.myappgit.adapter.ShowListFragmentPagerAdapter;
-import com.example.administrator.myappgit.fragment.ZhiHuFragment;
-import com.example.administrator.myappgit.utils.UnitUtil;
+import com.example.administrator.myappgit.contract.view.ZhiHuFragment;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -27,6 +26,8 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import de.hdodenhof.circleimageview.CircleImageView;
+
+import static com.example.administrator.myappgit.R.id.toolbar;
 
 /**
  * Created by Administrator on 2017/7/13 0013.
@@ -38,7 +39,7 @@ public class ShowListActivity extends BaseActivity {
     CircleImageView mIconImage;
     @BindView(R.id.tv_title)
     TextView mTvTitle;
-    @BindView(R.id.toolbar)
+    @BindView(toolbar)
     Toolbar mToolbar;
     @BindView(R.id.tab_show_list)
     TabLayout mTabShowList;
@@ -54,11 +55,28 @@ public class ShowListActivity extends BaseActivity {
     //首页的点击position
     private int mPosition;
 
+    //记录viewpager的位置
+    private float prePosition = 0;
+
     private int[] itemBG = {
             R.color.mainRvItemBg1,
             R.color.mainRvItemBg2,
             R.color.mainRvItemBg3
     };
+
+    private TextView mTabTextView1;
+    private TextView mTabTextView2;
+    private TextView mTabTextView3;
+    private TextView mTabTextView4;
+
+    private boolean mTabTextViewFlag1 = false;
+    private boolean mTabTextViewFlag2 = false;
+    private boolean mTabTextViewFlag3 = false;
+    private boolean mTabTextViewFlag4 = false;
+
+    //记录之前选中的tabview
+    private int proSelectTabView;
+    private ArgbEvaluator mArgbEvaluator;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -67,6 +85,114 @@ public class ShowListActivity extends BaseActivity {
         ButterKnife.bind(this);
         mPosition = getIntent().getIntExtra("position", 0);
         initView();
+        initListener();
+    }
+
+    private void initListener() {
+        //tabLayout设置了不能滑动，监听这个没用
+        /*if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            mTabShowList.setOnScrollChangeListener(new View.OnScrollChangeListener() {
+                @Override
+                public void onScrollChange(View v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
+                    if (BuildConfig.DEBUG) Log.d("ShowListActivity", "scrollX:" + scrollX);
+                    if (BuildConfig.DEBUG) Log.d("ShowListActivity", "scrollY:" + scrollY);
+                    if (BuildConfig.DEBUG) Log.d("ShowListActivity", "oldScrollX:" + oldScrollX);
+                    if (BuildConfig.DEBUG) Log.d("ShowListActivity", "oldScrollY:" + oldScrollY);
+                }
+            });
+        }*/
+
+        mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+                //动态改变tabLayout和toolBar的颜色，和每个tabView中的Text的大小
+
+
+                if (position + positionOffset > 0 && position + positionOffset < 1 && position + positionOffset - prePosition > 0) {
+                    mTabTextView1.setScaleX(1.2f - 0.2f * positionOffset);
+                    mTabTextView1.setScaleY(1.2f - 0.2f * positionOffset);
+
+                    mTabTextView2.setScaleX(1f + 0.2f * positionOffset);
+                    mTabTextView2.setScaleY(1f + 0.2f * positionOffset);
+                    proSelectTabView = 1;
+                } else if (position + positionOffset > 1 && position + positionOffset < 2 && position + positionOffset - prePosition > 0) {
+                    mTabTextView2.setScaleX(1.2f - 0.2f * positionOffset);
+                    mTabTextView2.setScaleY(1.2f - 0.2f * positionOffset);
+
+                    mTabTextView3.setScaleX(1f + 0.2f * positionOffset);
+                    mTabTextView3.setScaleY(1f + 0.2f * positionOffset);
+                    proSelectTabView = 2;
+                } else if (position + positionOffset > 2 && position + positionOffset < 3 && position + positionOffset - prePosition > 0) {
+                    mTabTextView3.setScaleX(1.2f - 0.2f * positionOffset);
+                    mTabTextView3.setScaleY(1.2f - 0.2f * positionOffset);
+
+                    mTabTextView4.setScaleX(1f + 0.2f * positionOffset);
+                    mTabTextView4.setScaleY(1f + 0.2f * positionOffset);
+                    proSelectTabView = 3;
+                } else if (position + positionOffset > 2 && position + positionOffset < 3 && position + positionOffset - prePosition < 0) {
+                    mTabTextView4.setScaleX(1.2f - 0.2f * positionOffset);
+                    mTabTextView4.setScaleY(1.2f - 0.2f * positionOffset);
+
+                    mTabTextView3.setScaleX(1f + 0.2f * positionOffset);
+                    mTabTextView3.setScaleY(1f + 0.2f * positionOffset);
+                    proSelectTabView = 2;
+                } else if (position + positionOffset > 1 && position + positionOffset < 2 && position + positionOffset - prePosition < 0) {
+                    mTabTextView3.setScaleX(1.2f - 0.2f * positionOffset);
+                    mTabTextView3.setScaleY(1.2f - 0.2f * positionOffset);
+
+                    mTabTextView2.setScaleX(1f + 0.2f * positionOffset);
+                    mTabTextView2.setScaleY(1f + 0.2f * positionOffset);
+                    proSelectTabView = 1;
+                } else if (position + positionOffset > 0 && position + positionOffset < 1 && position + positionOffset - prePosition < 0) {
+                    mTabTextView2.setScaleX(1.2f - 0.2f * positionOffset);
+                    mTabTextView2.setScaleY(1.2f - 0.2f * positionOffset);
+
+                    mTabTextView1.setScaleX(1f + 0.2f * positionOffset);
+                    mTabTextView1.setScaleY(1f + 0.2f * positionOffset);
+                    proSelectTabView = 0;
+                }
+
+
+               /* if (position == 0) {
+                    mTabShowList.setBackgroundColor(getResources().getColor(itemBG[0%3])); //先设置第0页时还没有滑动时tablayout的颜色
+                    mToolbar.setBackgroundColor(getResources().getColor(itemBG[0%3]));   //先设置第0页时还没有滑动时toolbar的颜色
+                    int evaluate = (Integer) mArgbEvaluator.evaluate(positionOffset, getResources().getColor(itemBG[(0+1)%3]), getResources().getColor(itemBG[0%3]));
+                    mTabShowList.setBackgroundColor(evaluate);//设置背景颜色为算出的两种颜色之间的过渡色
+                    mToolbar.setBackgroundColor(evaluate);
+
+                }  else if (position == 1) {
+                    mTabShowList.setBackgroundColor(getResources().getColor(itemBG[1%3])); //先设置第0页时还没有滑动时tablayout的颜色
+                    mToolbar.setBackgroundColor(getResources().getColor(itemBG[1%3]));   //先设置第0页时还没有滑动时toolbar的颜色
+                    int evaluate = (Integer) mArgbEvaluator.evaluate(positionOffset, getResources().getColor(itemBG[(1+1)%3]), getResources().getColor(itemBG[1%3]));
+                    mTabShowList.setBackgroundColor(evaluate);//设置背景颜色为算出的两种颜色之间的过渡色
+                    mToolbar.setBackgroundColor(evaluate);
+                } else if (position == 2) {
+                    mTabShowList.setBackgroundColor(getResources().getColor(itemBG[2%3])); //先设置第0页时还没有滑动时tablayout的颜色
+                    mToolbar.setBackgroundColor(getResources().getColor(itemBG[2%3]));   //先设置第0页时还没有滑动时toolbar的颜色
+                    int evaluate = (Integer) mArgbEvaluator.evaluate(positionOffset, getResources().getColor(itemBG[(2+1)%3]), getResources().getColor(itemBG[2%3]));
+                    mTabShowList.setBackgroundColor(evaluate);//设置背景颜色为算出的两种颜色之间的过渡色
+                    mToolbar.setBackgroundColor(evaluate);
+                } else if (position == 3) {
+                    mTabShowList.setBackgroundColor(getResources().getColor(itemBG[3%3])); //先设置第0页时还没有滑动时tablayout的颜色
+                    mToolbar.setBackgroundColor(getResources().getColor(itemBG[3%3]));   //先设置第0页时还没有滑动时toolbar的颜色
+                    int evaluate = (Integer) mArgbEvaluator.evaluate(positionOffset, getResources().getColor(itemBG[(3+1)%3]), getResources().getColor(itemBG[3%3]));
+                    mTabShowList.setBackgroundColor(evaluate);//设置背景颜色为算出的两种颜色之间的过渡色
+                    mToolbar.setBackgroundColor(evaluate);
+                }*/
+
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
     }
 
     private void initView() {
@@ -102,12 +228,36 @@ public class ShowListActivity extends BaseActivity {
 
         setTabTransitionName();
 
+        //初始化tabview的textview动画
+        getTextVIewInTabView(mPosition)
+                .animate()
+                .scaleX(1.2f)
+                .scaleY(1.2f)
+                .setDuration(500).start();
+
+//        ObjectAnimator animator1 = ObjectAnimator.ofFloat(getTextVIewInTabView(mPosition), "scaleY", 1f, 1.2f);
+//        ObjectAnimator animator2 = ObjectAnimator.ofFloat(getTextVIewInTabView(mPosition), "scaleX", 1f, 1.2f);
+//        AnimatorSet animatorSet = new AnimatorSet();
+//        animatorSet.play(animator1).with(animator2);
+//        animatorSet.setDuration(500);
+//        animatorSet.start();
+
+        //mTabTextViewFlag1 = true;
+        proSelectTabView = mPosition;
+
+        mTabTextView1 = getTextVIewInTabView(0);
+        mTabTextView2 = getTextVIewInTabView(1);
+        mTabTextView3 = getTextVIewInTabView(2);
+        mTabTextView4 = getTextVIewInTabView(3);
+
+        mArgbEvaluator = new ArgbEvaluator();
 
     }
 
     /**
      * 关联tabLayout中的textview
      * 用反射获取tabView
+     * 给每个textView设置TransitionName
      */
     private void setTabTransitionName() {
         LinearLayout tabView = null;
@@ -132,14 +282,117 @@ public class ShowListActivity extends BaseActivity {
                 if (view1 instanceof TextView) {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                         view1.setTransitionName("tab_" + i);
-                        float PXsize = ((TextView) view1).getTextSize();
-                        int spSize = UnitUtil.px2sp(ShowListActivity.this, PXsize);
-                        if (BuildConfig.DEBUG) Log.d("ShowListActivity", "PXsize:" + PXsize);
-                        if (BuildConfig.DEBUG) Log.d("ShowListActivity", "spSize:" + spSize);
-                        if (BuildConfig.DEBUG) Log.d("ShowListActivity", "tab_" + i);
+//                        float PXsize = ((TextView) view1).getTextSize();
+//                        int spSize = UnitUtil.px2sp(ShowListActivity.this, PXsize);
+//                        if (BuildConfig.DEBUG) Log.d("ShowListActivity", "PXsize:" + PXsize);
+//                        if (BuildConfig.DEBUG) Log.d("ShowListActivity", "spSize:" + spSize);
+//                        if (BuildConfig.DEBUG) Log.d("ShowListActivity", "tab_" + i);
                     }
                 }
             }
         }
+    }
+
+    /**
+     * 获取对应tabVIew中的textview
+     *
+     * @param position
+     * @return
+     */
+    private TextView getTextVIewInTabView(int position) {
+        LinearLayout tabView = null;
+        TabLayout.Tab tab = mTabShowList.getTabAt(position);
+        Field view = null;
+        try {
+            view = TabLayout.Tab.class.getDeclaredField("mView");
+        } catch (NoSuchFieldException e) {
+            e.printStackTrace();
+        }
+        view.setAccessible(true);
+        try {
+            tabView = (LinearLayout) view.get(tab);
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        }
+
+        for (int i = 0; i < tabView.getChildCount(); i++) {
+            View view1 = tabView.getChildAt(i);
+            if (view1 instanceof TextView) {
+                return (TextView) view1;
+            }
+        }
+
+        return null;
+
+    }
+
+//    @Override
+//    protected void onPause() {
+//        super.onPause();
+//        switch (proSelectTabView){
+//            case 0:
+//                mTabTextView1.setScaleX(1f);
+//                mTabTextView1.setScaleY(1f);
+//                break;
+//            case 1:
+//                mTabTextView2.setScaleX(1f);
+//                mTabTextView2.setScaleY(1f);
+//                break;
+//            case 2:
+//                mTabTextView3.setScaleX(1f);
+//                mTabTextView3.setScaleY(1f);
+//                break;
+//            case 3:
+//                mTabTextView4.setScaleX(1f);
+//                mTabTextView4.setScaleY(1f);
+//                break;
+//        }
+//    }
+
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+
+        if (event.getKeyCode() == KeyEvent.KEYCODE_BACK) {
+            switch (proSelectTabView) {
+                case 0:
+                    mTabTextView1.setScaleX(1f);
+                    mTabTextView1.setScaleY(1f);
+                    mTabTextView1
+                        .animate()
+                        .scaleX(1f)
+                        .scaleY(1f)
+                        .setDuration(500).start();
+                    break;
+                case 1:
+                    mTabTextView2.setScaleX(1f);
+                    mTabTextView2.setScaleY(1f);
+                    mTabTextView2
+                            .animate()
+                            .scaleX(1f)
+                            .scaleY(1f)
+                            .setDuration(500).start();
+                    break;
+                case 2:
+                    mTabTextView3.setScaleX(1f);
+                    mTabTextView3.setScaleY(1f);
+                    mTabTextView3
+                            .animate()
+                            .scaleX(1f)
+                            .scaleY(1f)
+                            .setDuration(500).start();
+                    break;
+                case 3:
+                    mTabTextView4.setScaleX(1f);
+                    mTabTextView4.setScaleY(1f);
+                    mTabTextView4
+                            .animate()
+                            .scaleX(1f)
+                            .scaleY(1f)
+                            .setDuration(500).start();
+                    break;
+            }
+        }
+        return super.onKeyDown(keyCode, event);
     }
 }

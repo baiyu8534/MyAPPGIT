@@ -21,7 +21,7 @@ public class ShowListFragmentPagerAdapter extends FragmentPagerAdapter {
     private int[] titleRes = {
             R.string.rv_main_item_1,
             R.string.rv_main_item_2,
-            R.string.rv_main_item_3,
+//            R.string.rv_main_item_3,
             R.string.rv_main_item_4,
             R.string.rv_main_item_5
     };

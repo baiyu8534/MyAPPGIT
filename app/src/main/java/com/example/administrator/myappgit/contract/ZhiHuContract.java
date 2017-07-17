@@ -2,6 +2,9 @@ package com.example.administrator.myappgit.contract;
 
 import com.example.administrator.myappgit.BasePresenter;
 import com.example.administrator.myappgit.BaseView;
+import com.example.administrator.myappgit.bean.ZhiHuBean.NewsListBean;
+
+import java.util.ArrayList;
 
 /**
  * Created by Administrator on 2017/7/12 0012.
@@ -21,7 +24,7 @@ public interface ZhiHuContract {
         void stopLoading();
 
         //显示获取结果
-        void showResult();
+        void showResult(ArrayList<NewsListBean.StoriesBean> reslutList);
     }
 
 

@@ -1,4 +1,4 @@
-package com.example.administrator.myappgit.fragment;
+package com.example.administrator.myappgit.contract.view;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -10,6 +10,10 @@ import android.view.ViewGroup;
 import android.view.ViewStub;
 
 import com.example.administrator.myappgit.R;
+import com.example.administrator.myappgit.bean.ZhiHuBean.NewsListBean;
+import com.example.administrator.myappgit.contract.ZhiHuContract;
+
+import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -19,7 +23,7 @@ import butterknife.Unbinder;
  * Created by Administrator on 2017/7/14 0014.
  */
 
-public class ZhiHuFragment extends Fragment {
+public class ZhiHuFragment extends Fragment implements ZhiHuContract.view{
 
     @BindView(R.id.rv_show_list)
     RecyclerView mRvShowList;
@@ -44,5 +48,35 @@ public class ZhiHuFragment extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();
+    }
+
+    @Override
+    public void shouError() {
+
+    }
+
+    @Override
+    public void showLoading() {
+
+    }
+
+    @Override
+    public void stopLoading() {
+
+    }
+
+    @Override
+    public void showResult(ArrayList<NewsListBean.StoriesBean> reslutList) {
+
+    }
+
+    @Override
+    public void setPresenter(ZhiHuContract.Presenter presenter) {
+
+    }
+
+    @Override
+    public void initView() {
+
     }
 }

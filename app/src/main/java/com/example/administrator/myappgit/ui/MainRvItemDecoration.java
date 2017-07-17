@@ -1,4 +1,4 @@
-package com.example.administrator.myappgit.view;
+package com.example.administrator.myappgit.ui;
 
 import android.content.Context;
 import android.graphics.Rect;

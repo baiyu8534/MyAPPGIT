@@ -20,7 +20,7 @@ import android.widget.TextView;
 import com.example.administrator.myappgit.activity.BaseActivity;
 import com.example.administrator.myappgit.activity.ShowListActivity;
 import com.example.administrator.myappgit.adapter.RvMainAdapter;
-import com.example.administrator.myappgit.view.MainRvItemDecoration;
+import com.example.administrator.myappgit.ui.MainRvItemDecoration;
 
 import java.util.ArrayList;
 import java.util.List;

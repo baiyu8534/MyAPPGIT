@@ -35,9 +35,9 @@ public class RvMainAdapter extends RecyclerView.Adapter<RvMainAdapter.MyViewHold
     private int[] itemTitles = {
             R.string.rv_main_item_1,
             R.string.rv_main_item_2,
-            R.string.rv_main_item_3,
+//            R.string.rv_main_item_3,
             R.string.rv_main_item_4,
-//            R.string.rv_main_item_5,
+            R.string.rv_main_item_5,
     };
 
     private int[] itemBG = {
