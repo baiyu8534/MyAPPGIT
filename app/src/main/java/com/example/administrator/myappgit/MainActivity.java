@@ -19,6 +19,7 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.administrator.myappgit.IView.IMainActivity;
 import com.example.administrator.myappgit.activity.BaseActivity;
 import com.example.administrator.myappgit.activity.ShowListActivity;
 import com.example.administrator.myappgit.adapter.RvMainAdapter;
@@ -31,7 +32,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class MainActivity extends BaseActivity implements RvMainAdapter.RvItemClickListener, View.OnClickListener {
+public class MainActivity extends BaseActivity implements RvMainAdapter.RvItemClickListener, View.OnClickListener ,IMainActivity{
 
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
@@ -135,5 +136,10 @@ public class MainActivity extends BaseActivity implements RvMainAdapter.RvItemCl
                 Toast.makeText(this,"float_button", Toast.LENGTH_SHORT).show();
                 break;
         }
+    }
+
+    @Override
+    public void getPic() {
+
     }
 }
