@@ -81,6 +81,7 @@ public class ApiManager {
 
     private ZhiHuApi zhihuApi;
     private DouBanApi doubanApi;
+    private PixabayApi pixabayApi;
 
     public static ApiManager getInstance() {
         if (apiManager == null) {
@@ -127,6 +128,24 @@ public class ApiManager {
             }
         }
         return doubanApi;
+    }
+
+    public PixabayApi getPixabayApiService(){
+        synchronized (lock){
+            if(pixabayApi == null){
+                synchronized (lock){
+                    if(pixabayApi == null){
+                        pixabayApi = new Retrofit.Builder()
+                                .baseUrl("https://pixabay.com/api/?key=5927878-93b96f8853619c00eff382b7f")
+                                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+                                .client(client)
+                                .addConverterFactory(GsonConverterFactory.create())
+                                .build().create(PixabayApi.class);
+                    }
+                }
+            }
+        }
+        return pixabayApi;
     }
 
 }

@@ -15,7 +15,9 @@ import android.util.Pair;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.administrator.myappgit.activity.BaseActivity;
 import com.example.administrator.myappgit.activity.ShowListActivity;
@@ -29,7 +31,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class MainActivity extends BaseActivity implements RvMainAdapter.RvItemClickListener {
+public class MainActivity extends BaseActivity implements RvMainAdapter.RvItemClickListener, View.OnClickListener {
 
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
@@ -60,6 +62,7 @@ public class MainActivity extends BaseActivity implements RvMainAdapter.RvItemCl
 
     private void initListener() {
         mRvMainAdapter.setRvItemClickListener(this);
+        mFloatButton.setOnClickListener(this);
 
     }
 
@@ -122,6 +125,15 @@ public class MainActivity extends BaseActivity implements RvMainAdapter.RvItemCl
             }
             Bundle bundle = ActivityOptions.makeSceneTransitionAnimation(this, pairs.toArray(new Pair[]{})).toBundle();
             startActivity(intent, bundle);
+        }
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()){
+            case R.id.float_button:
+                Toast.makeText(this,"float_button", Toast.LENGTH_SHORT).show();
+                break;
         }
     }
 }

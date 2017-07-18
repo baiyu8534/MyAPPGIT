@@ -14,6 +14,11 @@ public interface BaseView<T> {
     void setPresenter(T presenter);
 
     /**
+     * 初始化页面上的控件的Listener
+     */
+    void initViewListener();
+
+    /**
      * 初始化页面上的控件
      */
     void initView();
