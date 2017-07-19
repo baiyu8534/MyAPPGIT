@@ -4,13 +4,20 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewStub;
 
+import com.example.administrator.myappgit.IView.IZhiHuFragment;
 import com.example.administrator.myappgit.R;
+import com.example.administrator.myappgit.adapter.RvZhiHuFragmentAdapter;
+import com.example.administrator.myappgit.bean.ZhiHuBean.NewsListBean;
+import com.example.administrator.myappgit.presenter.implPresenter.ZhiHuFragmentPresenterImpl;
+
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -20,19 +27,21 @@ import butterknife.Unbinder;
  * Created by Administrator on 2017/7/14 0014.
  */
 
-public class ZhiHuFragment extends Fragment{
+public class ZhiHuFragment extends Fragment implements IZhiHuFragment {
+
 
     @BindView(R.id.rv_show_list)
     RecyclerView mRvShowList;
     @BindView(R.id.vs_no_connection)
     ViewStub mVsNoConnection;
     Unbinder unbinder;
-
     private Context mContext;
+    private RvZhiHuFragmentAdapter mRvZhiHuFragmentAdapter;
 
-    public ZhiHuFragment() {}
+    public ZhiHuFragment() {
+    }
 
-    public static ZhiHuFragment getInstance(){
+    public static ZhiHuFragment getInstance() {
         return new ZhiHuFragment();
     }
 
@@ -45,12 +54,36 @@ public class ZhiHuFragment extends Fragment{
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_zhuhu_layout, container, false);
-        unbinder = ButterKnife.bind(this, view);
         mContext = getContext();
-//        initView();
-//        initViewListener();
+        unbinder = ButterKnife.bind(this, view);
+        initView();
+        initViewListener();
+
+        ZhiHuFragmentPresenterImpl zhiHuFragmentPresenter = new ZhiHuFragmentPresenterImpl(getContext(), this);
+        zhiHuFragmentPresenter.getNewsList();
+
         return view;
     }
 
+    private void initViewListener() {
 
+    }
+
+    private void initView() {
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
+        mRvShowList.setLayoutManager(linearLayoutManager);
+    }
+
+
+    @Override
+    public void showDataList(List<NewsListBean.StoriesBean> newsStoriesList) {
+        mRvZhiHuFragmentAdapter = new RvZhiHuFragmentAdapter(getContext(), newsStoriesList);
+        mRvShowList.setAdapter(mRvZhiHuFragmentAdapter);
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        unbinder.unbind();
+    }
 }

@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.LinearLayoutManager;
@@ -16,13 +17,17 @@ import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.example.administrator.myappgit.IView.IMainActivity;
 import com.example.administrator.myappgit.activity.BaseActivity;
 import com.example.administrator.myappgit.activity.ShowListActivity;
 import com.example.administrator.myappgit.adapter.RvMainAdapter;
+import com.example.administrator.myappgit.bean.PixadayBean.PixabayListBean;
+import com.example.administrator.myappgit.presenter.implPresenter.MainActivityPresenterImpl;
 import com.example.administrator.myappgit.ui.MainRvItemDecoration;
 
 import java.util.ArrayList;
@@ -32,7 +37,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class MainActivity extends BaseActivity implements RvMainAdapter.RvItemClickListener, View.OnClickListener ,IMainActivity{
+public class MainActivity extends BaseActivity implements RvMainAdapter.RvItemClickListener, View.OnClickListener, IMainActivity {
 
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
@@ -46,9 +51,12 @@ public class MainActivity extends BaseActivity implements RvMainAdapter.RvItemCl
     FloatingActionButton mFloatButton;
     @BindView(R.id.rv_main)
     RecyclerView mRvMain;
+    @BindView(R.id.nv_main)
+    NavigationView mNvMain;
 
     private LinearLayoutManager mLinearLayoutManager;
     private RvMainAdapter mRvMainAdapter;
+    private ImageView mImagerNvHeader;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,6 +67,8 @@ public class MainActivity extends BaseActivity implements RvMainAdapter.RvItemCl
         initView();
         initListener();
 
+        MainActivityPresenterImpl mainActivityPresenter = new MainActivityPresenterImpl(this, this);
+        mainActivityPresenter.getImgaes();
     }
 
     private void initListener() {
@@ -68,6 +78,11 @@ public class MainActivity extends BaseActivity implements RvMainAdapter.RvItemCl
     }
 
     private void initView() {
+
+        View headerLayout =
+                mNvMain.inflateHeaderView(R.layout.nv_header_layout);
+        mImagerNvHeader = (ImageView) headerLayout.findViewById(R.id.iv_nv_header);
+
         setSupportActionBar(mToolbar);
 
         //不显示默认标题
@@ -114,7 +129,7 @@ public class MainActivity extends BaseActivity implements RvMainAdapter.RvItemCl
     public void onRvItemClickListener(int position) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             Intent intent = new Intent(this, ShowListActivity.class);
-            intent.putExtra("position",position);
+            intent.putExtra("position", position);
             List<Pair<TextView, String>> pairs = new ArrayList<>();
             int firstVisibleItemPosition = mLinearLayoutManager.findFirstVisibleItemPosition();
             int lastVisibleItemPosition = mLinearLayoutManager.findLastVisibleItemPosition();
@@ -122,7 +137,7 @@ public class MainActivity extends BaseActivity implements RvMainAdapter.RvItemCl
             for (int i = firstVisibleItemPosition; i <= lastVisibleItemPosition; i++) {
                 RvMainAdapter.MyViewHolder holder = (RvMainAdapter.MyViewHolder) mRvMain.findViewHolderForAdapterPosition(i);
                 pairs.add(Pair.create(holder.tv_title, "tab_" + i));
-                if (BuildConfig.DEBUG) Log.d("MainActivity", "tab_"+i);
+                if (BuildConfig.DEBUG) Log.d("MainActivity", "tab_" + i);
             }
             Bundle bundle = ActivityOptions.makeSceneTransitionAnimation(this, pairs.toArray(new Pair[]{})).toBundle();
             startActivity(intent, bundle);
@@ -131,15 +146,20 @@ public class MainActivity extends BaseActivity implements RvMainAdapter.RvItemCl
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.float_button:
-                Toast.makeText(this,"float_button", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "float_button", Toast.LENGTH_SHORT).show();
                 break;
         }
     }
 
     @Override
-    public void getPic() {
+    public void setPic(List<PixabayListBean.HitsBean> hitsBeen) {
+
+        Glide.with(this).load(hitsBeen.get(0).getWebformatURL()).into(mImagerNvHeader);
+
+        mRvMainAdapter.setHitsBeen(hitsBeen);
+        mRvMainAdapter.notifyDataSetChanged();
 
     }
 }

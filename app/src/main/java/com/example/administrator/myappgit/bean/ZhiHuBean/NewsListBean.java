@@ -108,6 +108,18 @@ public class NewsListBean {
         public void setImages(List<String> images) {
             this.images = images;
         }
+
+        @Override
+        public String toString() {
+            return "StoriesBean{" +
+                    "title='" + title + '\'' +
+                    ", ga_prefix='" + ga_prefix + '\'' +
+                    ", multipic=" + multipic +
+                    ", type=" + type +
+                    ", id=" + id +
+                    ", images=" + images +
+                    '}';
+        }
     }
 
     public static class TopStoriesBean {

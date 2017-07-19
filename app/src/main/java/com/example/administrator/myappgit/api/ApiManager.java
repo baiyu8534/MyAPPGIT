@@ -1,5 +1,8 @@
 package com.example.administrator.myappgit.api;
 
+import android.util.Log;
+
+import com.example.administrator.myappgit.BuildConfig;
 import com.example.administrator.myappgit.MyApplication;
 import com.example.administrator.myappgit.utils.NetWorkUtil;
 
@@ -27,6 +30,7 @@ public class ApiManager {
         public Response intercept(Chain chain) throws IOException {
 
             Response response = chain.proceed(chain.request());
+            if (BuildConfig.DEBUG) Log.d("ApiManager", response.toString());
             if (NetWorkUtil.isNetWorkAvailable(MyApplication.getContext())) {
                 //在线缓存2分钟内可读取
                 int maxAge = 120;
@@ -136,7 +140,7 @@ public class ApiManager {
                 synchronized (lock){
                     if(pixabayApi == null){
                         pixabayApi = new Retrofit.Builder()
-                                .baseUrl("https://pixabay.com/api/?key=5927878-93b96f8853619c00eff382b7f")
+                                .baseUrl("https://pixabay.com/api/")
                                 .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
                                 .client(client)
                                 .addConverterFactory(GsonConverterFactory.create())

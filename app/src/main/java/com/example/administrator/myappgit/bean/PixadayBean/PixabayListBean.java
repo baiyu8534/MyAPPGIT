@@ -240,5 +240,40 @@ public class PixabayListBean {
         public void setImageHeight(int imageHeight) {
             this.imageHeight = imageHeight;
         }
+
+        @Override
+        public String toString() {
+            return "HitsBean{" +
+                    "previewHeight=" + previewHeight +
+                    ", likes=" + likes +
+                    ", favorites=" + favorites +
+                    ", tags='" + tags + '\'' +
+                    ", webformatHeight=" + webformatHeight +
+                    ", views=" + views +
+                    ", webformatWidth=" + webformatWidth +
+                    ", previewWidth=" + previewWidth +
+                    ", comments=" + comments +
+                    ", downloads=" + downloads +
+                    ", pageURL='" + pageURL + '\'' +
+                    ", previewURL='" + previewURL + '\'' +
+                    ", webformatURL='" + webformatURL + '\'' +
+                    ", imageWidth=" + imageWidth +
+                    ", user_id=" + user_id +
+                    ", user='" + user + '\'' +
+                    ", type='" + type + '\'' +
+                    ", id=" + id +
+                    ", userImageURL='" + userImageURL + '\'' +
+                    ", imageHeight=" + imageHeight +
+                    '}';
+        }
+    }
+
+    @Override
+    public String toString() {
+        return "PixabayListBean{" +
+                "totalHits=" + totalHits +
+                ", total=" + total +
+                ", hits=" + hits +
+                '}';
     }
 }

@@ -20,11 +20,11 @@ import rx.Observable;
 public interface PixabayApi {
 
     /**
-     * 获取4张最新的横向风景图片
+     * 获取5张最新的横向风景图片
      * @return
      */
-    @GET("&q=scenery&image_type=photo&orientation=horizontal" +
-            "&order=latest&per_page=4")
+    @GET("?key=5927878-93b96f8853619c00eff382b7f&q=scenery&image_type=photo&orientation=horizontal" +
+            "&order=latest&per_page=5")
     Observable<PixabayListBean> getImageList();
 
 }

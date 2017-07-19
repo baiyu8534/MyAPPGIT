@@ -12,14 +12,19 @@
     <RelativeLayout
         android:id="@+id/rl_item"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center">
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/iv_main_rv_item"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop"/>
 
         <TextView
             android:id="@+id/tv_item_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
+            android:layout_centerInParent="true"
             android:gravity="center"
             android:textColor="@color/colorWhite"
             android:textSize="14sp"
