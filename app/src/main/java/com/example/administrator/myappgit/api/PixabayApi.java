@@ -15,6 +15,10 @@ import rx.Observable;
  * &orientation=horizontal  图片方向
  * &order=latest  获取最新的
  * &per_page=4  获取数量
+ *
+ *
+ * 很不幸，这个网站证书有问题？手机跑获取不到数据会蹦，但是模拟器就没问题
+ * 华为的手机证书是坑爹的啊，在其他手机上就行华为就不信操
  */
 
 public interface PixabayApi {
