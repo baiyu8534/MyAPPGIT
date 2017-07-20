@@ -272,6 +272,7 @@ public class ShowListActivity extends BaseActivity {
         mAbl.setBackgroundColor(colorResId2ColorInt(ShowListActivity.this, itemBG[mPosition % 3]));
 
         setTabTransitionName();
+        setOtherTransitionName();
 
         //设置toolbar和状态栏的颜色
         mTb.setBackgroundColor(colorResId2ColorInt(ShowListActivity.this, itemBG[mPosition % 3]));
@@ -310,6 +311,14 @@ public class ShowListActivity extends BaseActivity {
 
         mArgbEvaluator = new ArgbEvaluator();
 
+    }
+
+    private void setOtherTransitionName() {
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP){
+            mIconImage.setTransitionName("mIconImage");
+            mTvTitle.setTransitionName("mTvTitle");
+            mIvNvMenuIcon.setTransitionName("mIvNvMenuIcon");
+        }
     }
 
     /**

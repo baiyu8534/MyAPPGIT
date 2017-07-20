@@ -5,4 +5,6 @@
 
     <dimen name="main_activity_rv_item_divider">16dp</dimen>
     <dimen name="actionBarSize">?attr/actionBarSize</dimen>
+
+    <dimen name="show_rv_decoration">1dp</dimen>
 </resources>

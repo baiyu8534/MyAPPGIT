@@ -132,15 +132,18 @@ public class MainActivity extends BaseActivity implements RvMainAdapter.RvItemCl
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             Intent intent = new Intent(this, ShowListActivity.class);
             intent.putExtra("position", position);
-            List<Pair<TextView, String>> pairs = new ArrayList<>();
+            List<Pair<View, String>> pairs = new ArrayList<>();
             int firstVisibleItemPosition = mLinearLayoutManager.findFirstVisibleItemPosition();
             int lastVisibleItemPosition = mLinearLayoutManager.findLastVisibleItemPosition();
 
             for (int i = firstVisibleItemPosition; i <= lastVisibleItemPosition; i++) {
                 RvMainAdapter.MyViewHolder holder = (RvMainAdapter.MyViewHolder) mRvMain.findViewHolderForAdapterPosition(i);
-                pairs.add(Pair.create(holder.tv_title, "tab_" + i));
+                pairs.add(Pair.create((View) holder.tv_title, "tab_" + i));
                 if (BuildConfig.DEBUG) Log.d("MainActivity", "tab_" + i);
             }
+            pairs.add(Pair.create((View) mIconImage, "mIconImage"));
+            pairs.add(Pair.create((View) mTvTitle, "mTvTitle"));
+            pairs.add(Pair.create((View) mIvNvMenuIcon, "mIvNvMenuIcon"));
             Bundle bundle = ActivityOptions.makeSceneTransitionAnimation(this, pairs.toArray(new Pair[]{})).toBundle();
             startActivity(intent, bundle);
         }
