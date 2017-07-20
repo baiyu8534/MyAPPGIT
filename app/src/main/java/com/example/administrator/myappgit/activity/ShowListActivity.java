@@ -1,14 +1,17 @@
 package com.example.administrator.myappgit.activity;
 
 import android.animation.ArgbEvaluator;
+import android.animation.ObjectAnimator;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.Toolbar;
+import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.ImageView;
@@ -27,7 +30,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import de.hdodenhof.circleimageview.CircleImageView;
 
-import static com.example.administrator.myappgit.R.id.toolbar;
 import static com.example.administrator.myappgit.utils.UIUtil.colorResId2ColorInt;
 import static com.example.administrator.myappgit.utils.UIUtil.getTextWidth;
 import static com.example.administrator.myappgit.utils.UIUtil.setWindowStatusBarColor;
@@ -42,8 +44,7 @@ public class ShowListActivity extends BaseActivity {
     CircleImageView mIconImage;
     @BindView(R.id.tv_title)
     TextView mTvTitle;
-    @BindView(toolbar)
-    Toolbar mToolbar;
+
     @BindView(R.id.tab_show_list)
     TabLayout mTabShowList;
     @BindView(R.id.viewPager)
@@ -52,6 +53,10 @@ public class ShowListActivity extends BaseActivity {
     DrawerLayout mDrawerLayout;
     @BindView(R.id.iv_nv_menu_icon)
     ImageView mIvNvMenuIcon;
+    @BindView(R.id.tb)
+    Toolbar mTb;
+    @BindView(R.id.abl)
+    AppBarLayout mAbl;
 
     private List<Fragment> mFragments = new ArrayList<>();
     private ShowListFragmentPagerAdapter mPagerAdapter;
@@ -112,15 +117,17 @@ public class ShowListActivity extends BaseActivity {
                     mTabTextView2.setScaleX(1f + 0.2f * positionOffset);
                     mTabTextView2.setScaleY(1f + 0.2f * positionOffset);
 
-                    mTabShowList.setBackgroundColor(colorResId2ColorInt(ShowListActivity.this, itemBG[position % 3]))
+                    //mTabShowList.setBackgroundColor(colorResId2ColorInt(ShowListActivity.this, itemBG[position % 3]))
+                    mAbl.setBackgroundColor(colorResId2ColorInt(ShowListActivity.this, itemBG[position % 3]))
                     ; //先设置第0页时还没有滑动时tablayout的颜色
-                    mToolbar.setBackgroundColor(colorResId2ColorInt(ShowListActivity.this, itemBG[position % 3]));
+                    mTb.setBackgroundColor(colorResId2ColorInt(ShowListActivity.this, itemBG[position % 3]));
                     //先设置第0页时还没有滑动时toolbar的颜色
                     int evaluate = (Integer) mArgbEvaluator.evaluate(positionOffset, colorResId2ColorInt
                             (ShowListActivity.this, itemBG[position % 3]), colorResId2ColorInt(ShowListActivity.this,
                             itemBG[(position + 1) % 3]));
-                    mTabShowList.setBackgroundColor(evaluate);//设置背景颜色为算出的两种颜色之间的过渡色
-                    mToolbar.setBackgroundColor(evaluate);
+                    //mTabShowList.setBackgroundColor(evaluate);//设置背景颜色为算出的两种颜色之间的过渡色
+                    mAbl.setBackgroundColor(evaluate);//设置背景颜色为算出的两种颜色之间的过渡色
+                    mTb.setBackgroundColor(evaluate);
 
                     setWindowStatusBarColor(ShowListActivity.this, evaluate);
 
@@ -132,14 +139,16 @@ public class ShowListActivity extends BaseActivity {
                     mTabTextView3.setScaleX(1f + 0.2f * positionOffset);
                     mTabTextView3.setScaleY(1f + 0.2f * positionOffset);
 
-                    mTabShowList.setBackgroundColor(colorResId2ColorInt(ShowListActivity.this, itemBG[position % 3]));
-                    mToolbar.setBackgroundColor(colorResId2ColorInt(ShowListActivity.this, itemBG[position % 3]));
+                    //mTabShowList.setBackgroundColor(colorResId2ColorInt(ShowListActivity.this, itemBG[position % 3]));
+                    mAbl.setBackgroundColor(colorResId2ColorInt(ShowListActivity.this, itemBG[position % 3]));
+                    mTb.setBackgroundColor(colorResId2ColorInt(ShowListActivity.this, itemBG[position % 3]));
                     int evaluate = (Integer) mArgbEvaluator.evaluate(positionOffset, colorResId2ColorInt
                             (ShowListActivity.this, itemBG[position % 3]), colorResId2ColorInt(ShowListActivity.this,
                             itemBG[(position + 1) % 3]));
 
-                    mTabShowList.setBackgroundColor(evaluate);//设置背景颜色为算出的两种颜色之间的过渡色
-                    mToolbar.setBackgroundColor(evaluate);
+                    //mTabShowList.setBackgroundColor(evaluate);//设置背景颜色为算出的两种颜色之间的过渡色
+                    mAbl.setBackgroundColor(evaluate);//设置背景颜色为算出的两种颜色之间的过渡色
+                    mTb.setBackgroundColor(evaluate);
 
                     setWindowStatusBarColor(ShowListActivity.this, evaluate);
 
@@ -151,13 +160,15 @@ public class ShowListActivity extends BaseActivity {
                     mTabTextView4.setScaleX(1f + 0.2f * positionOffset);
                     mTabTextView4.setScaleY(1f + 0.2f * positionOffset);
 
-                    mTabShowList.setBackgroundColor(colorResId2ColorInt(ShowListActivity.this, itemBG[position % 3]));
-                    mToolbar.setBackgroundColor(colorResId2ColorInt(ShowListActivity.this, itemBG[position % 3]));
+                    //mTabShowList.setBackgroundColor(colorResId2ColorInt(ShowListActivity.this, itemBG[position % 3]));
+                    mAbl.setBackgroundColor(colorResId2ColorInt(ShowListActivity.this, itemBG[position % 3]));
+                    mTb.setBackgroundColor(colorResId2ColorInt(ShowListActivity.this, itemBG[position % 3]));
                     int evaluate = (Integer) mArgbEvaluator.evaluate(positionOffset, colorResId2ColorInt
                             (ShowListActivity.this, itemBG[position % 3]), colorResId2ColorInt(ShowListActivity.this,
                             itemBG[(position + 1) % 3]));
-                    mTabShowList.setBackgroundColor(evaluate);//设置背景颜色为算出的两种颜色之间的过渡色
-                    mToolbar.setBackgroundColor(evaluate);
+                    //mTabShowList.setBackgroundColor(evaluate);//设置背景颜色为算出的两种颜色之间的过渡色
+                    mAbl.setBackgroundColor(evaluate);//设置背景颜色为算出的两种颜色之间的过渡色
+                    mTb.setBackgroundColor(evaluate);
 
                     setWindowStatusBarColor(ShowListActivity.this, evaluate);
 
@@ -194,6 +205,36 @@ public class ShowListActivity extends BaseActivity {
             public void onPageScrollStateChanged(int state) {
             }
         });
+
+        /**
+         * 监听toolBar的竖直方向的移动
+         */
+        mAbl.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
+            @Override
+            public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
+                //控制toolbar上的控件动画
+                /**
+                 * ObjectAnimator animator1 = ObjectAnimator.ofFloat(mIconImage, "translationX", verticalOffset * 5);
+                 * 效果不好。。。
+                 */
+                //
+                ObjectAnimator animator1 = ObjectAnimator.ofFloat(mIconImage, "translationX", verticalOffset * 5);
+                animator1.start();
+                ObjectAnimator animator2 = ObjectAnimator.ofFloat(mTvTitle, "translationX", verticalOffset * 5);
+                animator2.start();
+                ObjectAnimator animator3 = ObjectAnimator.ofFloat(mIvNvMenuIcon, "translationX", -verticalOffset * 5);
+                animator3.start();
+
+            }
+        });
+
+        mIvNvMenuIcon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mDrawerLayout.openDrawer(Gravity.RIGHT);
+            }
+        });
+
     }
 
     private void initView() {
@@ -225,13 +266,15 @@ public class ShowListActivity extends BaseActivity {
         mTabShowList.setTabTextColors(colorResId2ColorInt(ShowListActivity.this, R.color.colorWhite),
                 colorResId2ColorInt(ShowListActivity.this, R.color.colorWhite));
         mTabShowList.setSelectedTabIndicatorColor(colorResId2ColorInt(ShowListActivity.this, R.color.colorPrimaryDark));
-        mTabShowList.setBackgroundColor(colorResId2ColorInt(ShowListActivity.this, itemBG[mPosition % 3]));
+//        mTabShowList.setBackgroundColor(colorResId2ColorInt(ShowListActivity.this, itemBG[mPosition % 3]));
         mTabShowList.setupWithViewPager(mViewPager);
+
+        mAbl.setBackgroundColor(colorResId2ColorInt(ShowListActivity.this, itemBG[mPosition % 3]));
 
         setTabTransitionName();
 
         //设置toolbar和状态栏的颜色
-        mToolbar.setBackgroundColor(colorResId2ColorInt(ShowListActivity.this, itemBG[mPosition % 3]));
+        mTb.setBackgroundColor(colorResId2ColorInt(ShowListActivity.this, itemBG[mPosition % 3]));
         setWindowStatusBarColor(this, colorResId2ColorInt(this, itemBG[mPosition % 3]));
 
 
@@ -364,8 +407,8 @@ public class ShowListActivity extends BaseActivity {
                     mTabTextView4.setScaleY(1f);
                     break;
             }
-            return super.onKeyDown(keyCode,event);
+            return super.onKeyDown(keyCode, event);
         }
-        return super.onKeyDown(keyCode,event);
+        return super.onKeyDown(keyCode, event);
     }
 }

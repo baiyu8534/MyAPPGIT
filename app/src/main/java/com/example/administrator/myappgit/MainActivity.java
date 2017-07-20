@@ -14,8 +14,6 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.util.Pair;
 import android.view.Gravity;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -53,6 +51,8 @@ public class MainActivity extends BaseActivity implements RvMainAdapter.RvItemCl
     RecyclerView mRvMain;
     @BindView(R.id.nv_main)
     NavigationView mNvMain;
+    @BindView(R.id.iv_nv_menu_icon)
+    ImageView mIvNvMenuIcon;
 
     private LinearLayoutManager mLinearLayoutManager;
     private RvMainAdapter mRvMainAdapter;
@@ -94,6 +94,8 @@ public class MainActivity extends BaseActivity implements RvMainAdapter.RvItemCl
         mRvMainAdapter = new RvMainAdapter(this);
         mRvMain.setAdapter(mRvMainAdapter);
 
+        mIvNvMenuIcon.setOnClickListener(this);
+
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             //显示小汉堡图标，关联drawerLayout
@@ -105,21 +107,21 @@ public class MainActivity extends BaseActivity implements RvMainAdapter.RvItemCl
         }
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_main_toolbar, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.toolbar_nv:
-                mDrawerLayout.openDrawer(Gravity.RIGHT);
-                break;
-        }
-        return true;
-    }
+//    @Override
+//    public boolean onCreateOptionsMenu(Menu menu) {
+//        getMenuInflater().inflate(R.menu.menu_main_toolbar, menu);
+//        return true;
+//    }
+//
+//    @Override
+//    public boolean onOptionsItemSelected(MenuItem item) {
+//        switch (item.getItemId()) {
+//            case R.id.toolbar_nv:
+//                mDrawerLayout.openDrawer(Gravity.RIGHT);
+//                break;
+//        }
+//        return true;
+//    }
 
 
     /**
@@ -149,6 +151,9 @@ public class MainActivity extends BaseActivity implements RvMainAdapter.RvItemCl
         switch (v.getId()) {
             case R.id.float_button:
                 Toast.makeText(this, "float_button", Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.iv_nv_menu_icon:
+                mDrawerLayout.openDrawer(Gravity.RIGHT);
                 break;
         }
     }

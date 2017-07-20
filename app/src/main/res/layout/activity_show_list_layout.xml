@@ -10,71 +10,48 @@
 
     <android.support.design.widget.CoordinatorLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        app:elevation="0dp">
+
 
         <android.support.design.widget.AppBarLayout
+            android:id="@+id/abl"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            app:elevation="0dp">
 
             <android.support.v7.widget.Toolbar
-                android:id="@+id/toolbar"
+                android:id="@+id/tb"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
                 android:background="@color/colorPrimary"
                 android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+                app:elevation="0dp"
                 app:layout_scrollFlags="scroll|enterAlways|snap"
                 app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
                 >
 
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:gravity="center_vertical">
-
-                    <de.hdodenhof.circleimageview.CircleImageView
-                        android:id="@+id/icon_image"
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
-                        android:src="@drawable/hander"/>
-
-
-                    <TextView
-                        android:id="@+id/tv_title"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="40dp"
-                        android:text="这是一个App"
-                        android:textColor="@color/colorPrimaryText"
-                        android:textSize="16sp"/>
-
-                    <ImageView
-                        android:id="@+id/iv_nv_menu_icon"
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
-                        android:layout_alignParentRight="true"
-                        android:src="@drawable/nv_icon_48dp"
-                        android:layout_marginRight="16dp"
-                        />
-
-                </RelativeLayout>
-
 
             </android.support.v7.widget.Toolbar>
+
+            <android.support.design.widget.TabLayout
+                android:id="@+id/tab_show_list"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
+                app:tabGravity="fill"
+                app:tabMode="fixed">
+            </android.support.design.widget.TabLayout>
         </android.support.design.widget.AppBarLayout>
+
+        <include layout="@layout/toolbar_layout"/>
+
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
             app:layout_behavior="@string/appbar_scrolling_view_behavior">
-
-            <android.support.design.widget.TabLayout
-                android:id="@+id/tab_show_list"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:tabGravity="fill"
-                app:tabMode="fixed">
-            </android.support.design.widget.TabLayout>
 
 
             <android.support.v4.view.ViewPager
