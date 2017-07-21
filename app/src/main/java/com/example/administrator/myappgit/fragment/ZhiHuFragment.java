@@ -75,6 +75,7 @@ public class ZhiHuFragment extends Fragment implements IZhiHuFragment {
     private void initView() {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         mRvShowList.setLayoutManager(linearLayoutManager);
+        mRvShowList.setHasFixedSize(true);
     }
 
 
