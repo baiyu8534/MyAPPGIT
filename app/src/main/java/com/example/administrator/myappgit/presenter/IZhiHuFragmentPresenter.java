@@ -6,4 +6,8 @@ package com.example.administrator.myappgit.presenter;
 
 public interface IZhiHuFragmentPresenter extends BasePresenter {
     void getNewsList();
+
+    void getMoreNews(String date);
+
+    void getNewsFormCache();
 }

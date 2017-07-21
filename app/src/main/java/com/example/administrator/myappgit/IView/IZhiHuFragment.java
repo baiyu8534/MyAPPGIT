@@ -9,5 +9,13 @@ import java.util.List;
  */
 
 public interface IZhiHuFragment {
-    void showDataList(List<NewsListBean.StoriesBean> newsStoriesList);
+    void upDataNewsList(List<NewsListBean.StoriesBean> newsStoriesList);
+
+    void hidProgressDialog();
+
+    void showProgressDialog();
+
+    void showErrorMessage();
+
+
 }

@@ -16,6 +16,7 @@ import com.example.administrator.myappgit.R;
 import com.example.administrator.myappgit.adapter.RvZhiHuFragmentAdapter;
 import com.example.administrator.myappgit.bean.ZhiHuBean.NewsListBean;
 import com.example.administrator.myappgit.presenter.implPresenter.ZhiHuFragmentPresenterImpl;
+import com.example.administrator.myappgit.ui.WhorlView;
 
 import java.util.List;
 
@@ -35,6 +36,8 @@ public class ZhiHuFragment extends Fragment implements IZhiHuFragment {
     @BindView(R.id.vs_no_connection)
     ViewStub mVsNoConnection;
     Unbinder unbinder;
+    @BindView(R.id.wv_dialog)
+    WhorlView mWvDialog;
     private Context mContext;
     private RvZhiHuFragmentAdapter mRvZhiHuFragmentAdapter;
 
@@ -76,9 +79,26 @@ public class ZhiHuFragment extends Fragment implements IZhiHuFragment {
 
 
     @Override
-    public void showDataList(List<NewsListBean.StoriesBean> newsStoriesList) {
+    public void upDataNewsList(List<NewsListBean.StoriesBean> newsStoriesList) {
         mRvZhiHuFragmentAdapter = new RvZhiHuFragmentAdapter(getContext(), newsStoriesList);
         mRvShowList.setAdapter(mRvZhiHuFragmentAdapter);
+    }
+
+    @Override
+    public void hidProgressDialog() {
+        mWvDialog.setVisibility(View.GONE);
+        mWvDialog.stop();
+    }
+
+    @Override
+    public void showProgressDialog() {
+        mWvDialog.setVisibility(View.VISIBLE);
+        mWvDialog.start();
+    }
+
+    @Override
+    public void showErrorMessage() {
+
     }
 
     @Override

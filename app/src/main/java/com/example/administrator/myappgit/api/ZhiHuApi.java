@@ -14,7 +14,10 @@ import rx.Observable;
 public interface ZhiHuApi {
 
     @GET("api/4/news/latest")
-    Observable<NewsListBean> getNewsList();
+    Observable<NewsListBean> getNews();
+
+    @GET("/api/4/news/before/{date}")
+    Observable<NewsListBean> getMoreNews(@Path("date") String date);
 
     @GET("api/4/news/{id}")
     Observable<NewsContent> getNewContent(@Path("id") String id);

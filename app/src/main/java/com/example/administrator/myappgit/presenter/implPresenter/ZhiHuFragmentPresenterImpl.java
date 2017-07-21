@@ -28,9 +28,13 @@ public class ZhiHuFragmentPresenterImpl extends BasePresenterImpl implements IZh
         mIZhiHuFragment = IZhiHuFragment;
     }
 
+    /**
+     * 获取news列表
+     */
     @Override
     public void getNewsList() {
-        ApiManager.getInstance().getZhuHuApiService().getNewsList()
+        mIZhiHuFragment.showProgressDialog();
+        ApiManager.getInstance().getZhuHuApiService().getNews()
                 .subscribeOn(Schedulers.io())
                 .map(new Func1<NewsListBean, List<NewsListBean.StoriesBean>>() {
                     @Override
@@ -50,13 +54,55 @@ public class ZhiHuFragmentPresenterImpl extends BasePresenterImpl implements IZh
 
                     @Override
                     public void onError(Throwable e) {
-
+                        mIZhiHuFragment.hidProgressDialog();
+                        mIZhiHuFragment.showErrorMessage();
                     }
 
                     @Override
                     public void onNext(List<NewsListBean.StoriesBean> storiesBeen) {
-                        mIZhiHuFragment.showDataList(storiesBeen);
+                        mIZhiHuFragment.hidProgressDialog();
+                        mIZhiHuFragment.upDataNewsList(storiesBeen);
                     }
                 });
+    }
+
+    //获取更多news，上拉加载
+    @Override
+    public void getMoreNews(String date) {
+        ApiManager.getInstance().getZhuHuApiService().getMoreNews(date)
+                .subscribeOn(Schedulers.io())
+                .map(new Func1<NewsListBean, List<NewsListBean.StoriesBean>>() {
+                    @Override
+                    public List<NewsListBean.StoriesBean> call(NewsListBean newsListBean) {
+                        if(newsListBean.getStories()!=null){
+                            return newsListBean.getStories();
+                        }
+                        return null;
+                    }
+                })
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<List<NewsListBean.StoriesBean>>() {
+                    @Override
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        mIZhiHuFragment.hidProgressDialog();
+                        mIZhiHuFragment.showErrorMessage();
+                    }
+
+                    @Override
+                    public void onNext(List<NewsListBean.StoriesBean> storiesBeen) {
+                        mIZhiHuFragment.hidProgressDialog();
+                        mIZhiHuFragment.upDataNewsList(storiesBeen);
+                    }
+                });
+    }
+
+    @Override
+    public void getNewsFormCache() {
+
     }
 }

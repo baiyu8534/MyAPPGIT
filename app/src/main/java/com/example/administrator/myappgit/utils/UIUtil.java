@@ -6,6 +6,7 @@ import android.content.Context;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.os.Build;
+import android.util.TypedValue;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.TextView;
@@ -81,5 +82,19 @@ public class UIUtil {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    /**
+     * 获取actionBarSize 像素值
+     * @param context
+     * @return
+     */
+    public static int getActionSize(Context context) {
+
+        TypedValue typedValue = new TypedValue();
+        if (context.getTheme().resolveAttribute(android.R.attr.actionBarSize, typedValue, true))
+            return TypedValue.complexToDimensionPixelSize(typedValue.data, context.getResources().getDisplayMetrics());
+        return 0;
+
     }
 }

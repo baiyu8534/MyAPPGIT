@@ -1,5 +1,6 @@
 package com.example.administrator.myappgit.activity;
 
+import android.animation.AnimatorSet;
 import android.animation.ArgbEvaluator;
 import android.animation.ObjectAnimator;
 import android.os.Build;
@@ -11,6 +12,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.View;
@@ -18,9 +20,11 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.example.administrator.myappgit.BuildConfig;
 import com.example.administrator.myappgit.R;
 import com.example.administrator.myappgit.adapter.ShowListFragmentPagerAdapter;
 import com.example.administrator.myappgit.fragment.ZhiHuFragment;
+import com.example.administrator.myappgit.utils.UIUtil;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -65,6 +69,9 @@ public class ShowListActivity extends BaseActivity {
 
     //记录viewpager的位置
     private float prePosition = 0;
+
+    private int proVerticalOffset = 0;
+
 
     private int[] itemBG = {
             R.color.mainRvItemBg1,
@@ -215,16 +222,35 @@ public class ShowListActivity extends BaseActivity {
                 //控制toolbar上的控件动画
                 /**
                  * ObjectAnimator animator1 = ObjectAnimator.ofFloat(mIconImage, "translationX", verticalOffset * 5);
-                 * 效果不好。。。
+                 * 改了一下，但是还不是很完美。。
                  */
-                //
-                ObjectAnimator animator1 = ObjectAnimator.ofFloat(mIconImage, "translationX", verticalOffset * 5);
-                animator1.start();
-                ObjectAnimator animator2 = ObjectAnimator.ofFloat(mTvTitle, "translationX", verticalOffset * 5);
-                animator2.start();
-                ObjectAnimator animator3 = ObjectAnimator.ofFloat(mIvNvMenuIcon, "translationX", -verticalOffset * 5);
-                animator3.start();
+                if (proVerticalOffset - verticalOffset > 0) {
+                    //向上隐藏
+                    if (verticalOffset < -30) {
+                        if (BuildConfig.DEBUG) Log.d("ShowListActivity", "向上隐藏");
+                        ObjectAnimator animator1 = ObjectAnimator.ofFloat(mIconImage, "translationX", -UIUtil.getActionSize
+                                (ShowListActivity.this) * 10);
+                        ObjectAnimator animator2 = ObjectAnimator.ofFloat(mTvTitle, "translationX", -UIUtil.getActionSize
+                                (ShowListActivity.this) * 10);
+                        ObjectAnimator animator3 = ObjectAnimator.ofFloat(mIvNvMenuIcon, "translationX", UIUtil.getActionSize
+                                (ShowListActivity.this) * 10);
+                        AnimatorSet animatorSet = new AnimatorSet();
+                        animatorSet.play(animator1).with(animator2).with(animator3);
+                        animatorSet.setDuration(200);
+                        animatorSet.start();
+                    }
+                } else if (proVerticalOffset - verticalOffset < 0) {
+                    //向下显示
+                    if (BuildConfig.DEBUG) Log.d("ShowListActivity", "向下显示");
+                    ObjectAnimator animator1 = ObjectAnimator.ofFloat(mIconImage, "translationX", verticalOffset * 10);
+                    animator1.start();
+                    ObjectAnimator animator2 = ObjectAnimator.ofFloat(mTvTitle, "translationX", verticalOffset * 10);
+                    animator2.start();
+                    ObjectAnimator animator3 = ObjectAnimator.ofFloat(mIvNvMenuIcon, "translationX", -verticalOffset * 10);
+                    animator3.start();
+                }
 
+                proVerticalOffset = verticalOffset;
             }
         });
 
@@ -314,7 +340,7 @@ public class ShowListActivity extends BaseActivity {
     }
 
     private void setOtherTransitionName() {
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP){
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             mIconImage.setTransitionName("mIconImage");
             mTvTitle.setTransitionName("mTvTitle");
             mIvNvMenuIcon.setTransitionName("mIvNvMenuIcon");
