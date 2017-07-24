@@ -11,6 +11,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.example.administrator.myappgit.R;
 import com.example.administrator.myappgit.bean.ZhiHuBean.NewsListBean;
+import com.example.administrator.myappgit.interfaze.LoadMore;
 
 import java.util.List;
 
@@ -18,7 +19,7 @@ import java.util.List;
  * Created by Administrator on 2017/7/18 0018.
  */
 
-public class RvZhiHuFragmentAdapter extends RecyclerView.Adapter<RvZhiHuFragmentAdapter.MyViewHolder> {
+public class RvZhiHuFragmentAdapter extends RecyclerView.Adapter<RvZhiHuFragmentAdapter.MyViewHolder> implements LoadMore {
 
     private Context mContext;
 
@@ -48,6 +49,16 @@ public class RvZhiHuFragmentAdapter extends RecyclerView.Adapter<RvZhiHuFragment
     @Override
     public int getItemCount() {
         return mStoriesBeanList.size();
+    }
+
+    @Override
+    public void loadingStart() {
+
+    }
+
+    @Override
+    public void loadingFinish() {
+
     }
 
     public static class MyViewHolder extends RecyclerView.ViewHolder {

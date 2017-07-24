@@ -16,6 +16,7 @@ import com.example.administrator.myappgit.R;
 import com.example.administrator.myappgit.adapter.RvZhiHuFragmentAdapter;
 import com.example.administrator.myappgit.bean.ZhiHuBean.NewsListBean;
 import com.example.administrator.myappgit.presenter.implPresenter.ZhiHuFragmentPresenterImpl;
+import com.example.administrator.myappgit.ui.ShowRvItemDecoration;
 import com.example.administrator.myappgit.ui.WhorlView;
 
 import java.util.List;
@@ -41,6 +42,8 @@ public class ZhiHuFragment extends Fragment implements IZhiHuFragment {
     private Context mContext;
     private RvZhiHuFragmentAdapter mRvZhiHuFragmentAdapter;
 
+    private String currentLoadDate;
+
     public ZhiHuFragment() {
     }
 
@@ -63,7 +66,7 @@ public class ZhiHuFragment extends Fragment implements IZhiHuFragment {
         initViewListener();
 
         ZhiHuFragmentPresenterImpl zhiHuFragmentPresenter = new ZhiHuFragmentPresenterImpl(getContext(), this);
-        zhiHuFragmentPresenter.getNewsList();
+        //zhiHuFragmentPresenter.getNewsList();
 
         return view;
     }
@@ -76,6 +79,7 @@ public class ZhiHuFragment extends Fragment implements IZhiHuFragment {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         mRvShowList.setLayoutManager(linearLayoutManager);
         mRvShowList.setHasFixedSize(true);
+        mRvShowList.addItemDecoration(new ShowRvItemDecoration(mContext));
     }
 
 
@@ -106,5 +110,13 @@ public class ZhiHuFragment extends Fragment implements IZhiHuFragment {
     public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();
+    }
+
+    public void loadData(){
+
+    }
+
+    public void loadMoreData(){
+
     }
 }

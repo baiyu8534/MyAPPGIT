@@ -66,7 +66,10 @@ public class ZhiHuFragmentPresenterImpl extends BasePresenterImpl implements IZh
                 });
     }
 
-    //获取更多news，上拉加载
+    /**
+     * 获取更多news，上拉加载
+     * @param date 日期 如20170505
+     */
     @Override
     public void getMoreNews(String date) {
         ApiManager.getInstance().getZhuHuApiService().getMoreNews(date)
