@@ -66,7 +66,7 @@ public class ZhiHuFragment extends Fragment implements IZhiHuFragment {
         initViewListener();
 
         ZhiHuFragmentPresenterImpl zhiHuFragmentPresenter = new ZhiHuFragmentPresenterImpl(getContext(), this);
-        //zhiHuFragmentPresenter.getNewsList();
+        zhiHuFragmentPresenter.getNewsList();
 
         return view;
     }
