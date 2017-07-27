@@ -42,6 +42,9 @@ public class ZhiHuFragment extends Fragment implements IZhiHuFragment {
     private Context mContext;
     private RvZhiHuFragmentAdapter mRvZhiHuFragmentAdapter;
 
+    /**
+     * 当前加载的新闻的日期
+     */
     private String currentLoadDate;
 
     public ZhiHuFragment() {

@@ -230,7 +230,7 @@ public class ShowListActivity extends BaseActivity {
                         if (BuildConfig.DEBUG) Log.d("ShowListActivity", "向上隐藏");
                         ObjectAnimator animator1 = ObjectAnimator.ofFloat(mIconImage, "translationX", -UIUtil.getActionSize
                                 (ShowListActivity.this) * 10);
-                        ObjectAnimator animator2 = ObjectAnimator.ofFloat(mTvTitle, "translationX", -UIUtil.getActionSize
+                        ObjectAnimator animator2 = ObjectAnimator.ofFloat(mTvTitle, "translationY", -UIUtil.getActionSize
                                 (ShowListActivity.this) * 10);
                         ObjectAnimator animator3 = ObjectAnimator.ofFloat(mIvNvMenuIcon, "translationX", UIUtil.getActionSize
                                 (ShowListActivity.this) * 10);
@@ -244,7 +244,7 @@ public class ShowListActivity extends BaseActivity {
                     if (BuildConfig.DEBUG) Log.d("ShowListActivity", "向下显示");
                     ObjectAnimator animator1 = ObjectAnimator.ofFloat(mIconImage, "translationX", verticalOffset * 10);
                     animator1.start();
-                    ObjectAnimator animator2 = ObjectAnimator.ofFloat(mTvTitle, "translationX", verticalOffset * 10);
+                    ObjectAnimator animator2 = ObjectAnimator.ofFloat(mTvTitle, "translationY", verticalOffset * 10);
                     animator2.start();
                     ObjectAnimator animator3 = ObjectAnimator.ofFloat(mIvNvMenuIcon, "translationX", -verticalOffset * 10);
                     animator3.start();
