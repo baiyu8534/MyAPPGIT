@@ -60,6 +60,7 @@ public class NewsListBean {
         private int type;
         private int id;
         private List<String> images;
+        private String date;
 
         public String getTitle() {
             return title;
@@ -109,6 +110,14 @@ public class NewsListBean {
             this.images = images;
         }
 
+        public String getDate() {
+            return date;
+        }
+
+        public void setDate(String date) {
+            this.date = date;
+        }
+
         @Override
         public String toString() {
             return "StoriesBean{" +
@@ -118,6 +127,7 @@ public class NewsListBean {
                     ", type=" + type +
                     ", id=" + id +
                     ", images=" + images +
+                    ", date='" + date + '\'' +
                     '}';
         }
     }

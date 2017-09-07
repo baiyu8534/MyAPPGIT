@@ -164,10 +164,12 @@ public class MainActivity extends BaseActivity implements RvMainAdapter.RvItemCl
     @Override
     public void setPic(List<PixabayListBean.HitsBean> hitsBeen) {
 
-        Glide.with(this).load(hitsBeen.get(0).getWebformatURL()).into(mImagerNvHeader);
+        if (hitsBeen != null) {
+            Glide.with(this).load(hitsBeen.get(0).getWebformatURL()).into(mImagerNvHeader);
 
-        mRvMainAdapter.setHitsBeen(hitsBeen);
-        mRvMainAdapter.notifyDataSetChanged();
+            mRvMainAdapter.setHitsBeen(hitsBeen);
+            mRvMainAdapter.notifyDataSetChanged();
+        }
 
     }
 }

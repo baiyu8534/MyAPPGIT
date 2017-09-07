@@ -23,6 +23,7 @@ import android.widget.TextView;
 import com.example.administrator.myappgit.BuildConfig;
 import com.example.administrator.myappgit.R;
 import com.example.administrator.myappgit.adapter.ShowListFragmentPagerAdapter;
+import com.example.administrator.myappgit.fragment.WeatherFragment;
 import com.example.administrator.myappgit.fragment.ZhiHuFragment;
 import com.example.administrator.myappgit.utils.UIUtil;
 
@@ -206,6 +207,7 @@ public class ShowListActivity extends BaseActivity {
 
             @Override
             public void onPageSelected(int position) {
+
             }
 
             @Override
@@ -266,14 +268,15 @@ public class ShowListActivity extends BaseActivity {
     private void initView() {
 
         mFragments.add(new ZhiHuFragment());
-        mFragments.add(new ZhiHuFragment());
-        mFragments.add(new ZhiHuFragment());
-        mFragments.add(new ZhiHuFragment());
+        mFragments.add(new WeatherFragment());
+        mFragments.add(new WeatherFragment());
+        mFragments.add(new WeatherFragment());
 //        mFragments.add(new ZhiHuFragment());
 
         mPagerAdapter = new ShowListFragmentPagerAdapter(getSupportFragmentManager(), this, mFragments);
         mViewPager.setAdapter(mPagerAdapter);
         mViewPager.setCurrentItem(mPosition);
+        mViewPager.setOffscreenPageLimit(3);
 
         //        下面就来解释一下TabGravity和TabMode，
 //        TabGravity:放置Tab的Gravity,有GRAVITY_CENTER 和 GRAVITY_FILL两种效果。

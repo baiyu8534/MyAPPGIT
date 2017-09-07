@@ -3,7 +3,6 @@ package com.example.administrator.myappgit.fragment;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -19,8 +18,6 @@ import com.example.administrator.myappgit.presenter.implPresenter.ZhiHuFragmentP
 import com.example.administrator.myappgit.ui.ShowRvItemDecoration;
 import com.example.administrator.myappgit.ui.WhorlView;
 
-import java.util.List;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
@@ -29,7 +26,7 @@ import butterknife.Unbinder;
  * Created by Administrator on 2017/7/14 0014.
  */
 
-public class ZhiHuFragment extends Fragment implements IZhiHuFragment {
+public class ZhiHuFragment extends BaseFragment implements IZhiHuFragment {
 
 
     @BindView(R.id.rv_show_list)
@@ -46,6 +43,14 @@ public class ZhiHuFragment extends Fragment implements IZhiHuFragment {
      * 当前加载的新闻的日期
      */
     private String currentLoadDate;
+
+    private boolean loading;
+
+    // FIXME: 2017/9/6 要加网络是否通畅的判断和相应的操作
+    private boolean networkIsOk = true;
+    private ZhiHuFragmentPresenterImpl mZhiHuFragmentPresenter;
+    private RecyclerView.OnScrollListener mOnScrollListener;
+    private LinearLayoutManager mLinearLayoutManager;
 
     public ZhiHuFragment() {
     }
@@ -66,30 +71,70 @@ public class ZhiHuFragment extends Fragment implements IZhiHuFragment {
         mContext = getContext();
         unbinder = ButterKnife.bind(this, view);
         initView();
-        initViewListener();
 
-        ZhiHuFragmentPresenterImpl zhiHuFragmentPresenter = new ZhiHuFragmentPresenterImpl(getContext(), this);
-        zhiHuFragmentPresenter.getNewsList();
+        mZhiHuFragmentPresenter = new ZhiHuFragmentPresenterImpl(getContext(), this);
+        if (networkIsOk) {
+            loadData();
+        }
 
         return view;
     }
 
+    private void loadData() {
+        currentLoadDate = "0";
+        mZhiHuFragmentPresenter.getNewsList();
+    }
+
     private void initViewListener() {
+
+        mOnScrollListener = new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+            }
+
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                if (dy > 0) {
+                    //向下滚动
+                    int totalItemCount = mLinearLayoutManager.getItemCount();
+                    int visibleItemCount = mLinearLayoutManager.getChildCount();
+                    int unvisibleItemCount = mLinearLayoutManager.findFirstVisibleItemPosition();
+                    if (!loading && (visibleItemCount + unvisibleItemCount + 1 >= totalItemCount)) {
+                        loading = true;
+                        loadMoreData();
+                    }
+                }
+            }
+        };
 
     }
 
     private void initView() {
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
-        mRvShowList.setLayoutManager(linearLayoutManager);
+
+        initViewListener();
+
+        mLinearLayoutManager = new LinearLayoutManager(getContext());
+        mRvShowList.setLayoutManager(mLinearLayoutManager);
         mRvShowList.setHasFixedSize(true);
         mRvShowList.addItemDecoration(new ShowRvItemDecoration(mContext));
+        mRvShowList.addOnScrollListener(mOnScrollListener);
     }
 
 
     @Override
-    public void upDataNewsList(List<NewsListBean.StoriesBean> newsStoriesList) {
-        mRvZhiHuFragmentAdapter = new RvZhiHuFragmentAdapter(getContext(), newsStoriesList);
-        mRvShowList.setAdapter(mRvZhiHuFragmentAdapter);
+    public void upDataNewsList(NewsListBean newsList) {
+        if (loading) {
+            loading = false;
+        }
+        currentLoadDate = newsList.getDate();
+        if (mRvZhiHuFragmentAdapter == null) {
+            mRvZhiHuFragmentAdapter = new RvZhiHuFragmentAdapter(getContext(), newsList.getStories());
+            mRvShowList.setAdapter(mRvZhiHuFragmentAdapter);
+        } else {
+            mRvZhiHuFragmentAdapter.addItems(newsList.getStories());
+        }
     }
 
     @Override
@@ -112,14 +157,12 @@ public class ZhiHuFragment extends Fragment implements IZhiHuFragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+        mZhiHuFragmentPresenter.unsubscribe();
         unbinder.unbind();
     }
 
-    public void loadData(){
 
-    }
-
-    public void loadMoreData(){
-
+    public void loadMoreData() {
+        mZhiHuFragmentPresenter.getMoreNews(currentLoadDate);
     }
 }

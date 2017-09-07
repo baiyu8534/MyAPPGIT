@@ -9,7 +9,7 @@
         android:id="@+id/rv_show_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:scrollbars="none"
+        android:scrollbars="vertical"
         app:elevation="1dp"/>
 
     <com.example.administrator.myappgit.ui.WhorlView

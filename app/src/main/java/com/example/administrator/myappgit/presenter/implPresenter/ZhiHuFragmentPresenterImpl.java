@@ -7,9 +7,8 @@ import com.example.administrator.myappgit.api.ApiManager;
 import com.example.administrator.myappgit.bean.ZhiHuBean.NewsListBean;
 import com.example.administrator.myappgit.presenter.IZhiHuFragmentPresenter;
 
-import java.util.List;
-
 import rx.Observer;
+import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Func1;
 import rx.schedulers.Schedulers;
@@ -18,7 +17,7 @@ import rx.schedulers.Schedulers;
  * Created by Administrator on 2017/7/19 0019.
  */
 
-public class ZhiHuFragmentPresenterImpl extends BasePresenterImpl implements IZhiHuFragmentPresenter{
+public class ZhiHuFragmentPresenterImpl extends BasePresenterImpl implements IZhiHuFragmentPresenter {
 
     private Context mContext;
     private IZhiHuFragment mIZhiHuFragment;
@@ -34,19 +33,20 @@ public class ZhiHuFragmentPresenterImpl extends BasePresenterImpl implements IZh
     @Override
     public void getNewsList() {
         mIZhiHuFragment.showProgressDialog();
-        ApiManager.getInstance().getZhuHuApiService().getNews()
+        Subscription s = ApiManager.getInstance().getZhuHuApiService().getNews()
                 .subscribeOn(Schedulers.io())
-                .map(new Func1<NewsListBean, List<NewsListBean.StoriesBean>>() {
+                .map(new Func1<NewsListBean, NewsListBean>() {
                     @Override
-                    public List<NewsListBean.StoriesBean> call(NewsListBean newsListBean) {
-                        if(newsListBean.getStories() != null){
-                            return newsListBean.getStories();
+                    public NewsListBean call(NewsListBean newsListBean) {
+                        String newsDate = newsListBean.getDate();
+                        for (NewsListBean.StoriesBean storiesBean : newsListBean.getStories()) {
+                            storiesBean.setDate(newsDate);
                         }
-                        return null;
+                        return newsListBean;
                     }
                 })
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<List<NewsListBean.StoriesBean>>() {
+                .subscribe(new Observer<NewsListBean>() {
                     @Override
                     public void onCompleted() {
 
@@ -59,32 +59,35 @@ public class ZhiHuFragmentPresenterImpl extends BasePresenterImpl implements IZh
                     }
 
                     @Override
-                    public void onNext(List<NewsListBean.StoriesBean> storiesBeen) {
+                    public void onNext(NewsListBean newsListBean) {
                         mIZhiHuFragment.hidProgressDialog();
-                        mIZhiHuFragment.upDataNewsList(storiesBeen);
+                        mIZhiHuFragment.upDataNewsList(newsListBean);
                     }
                 });
+        addSubscription(s);
     }
 
     /**
      * 获取更多news，上拉加载
+     *
      * @param date 日期 如20170505
      */
     @Override
     public void getMoreNews(String date) {
-        ApiManager.getInstance().getZhuHuApiService().getMoreNews(date)
+        Subscription s = ApiManager.getInstance().getZhuHuApiService().getMoreNews(date)
                 .subscribeOn(Schedulers.io())
-                .map(new Func1<NewsListBean, List<NewsListBean.StoriesBean>>() {
+                .map(new Func1<NewsListBean, NewsListBean>() {
                     @Override
-                    public List<NewsListBean.StoriesBean> call(NewsListBean newsListBean) {
-                        if(newsListBean.getStories()!=null){
-                            return newsListBean.getStories();
+                    public NewsListBean call(NewsListBean newsListBean) {
+                        String newsDate = newsListBean.getDate();
+                        for (NewsListBean.StoriesBean storiesBean : newsListBean.getStories()) {
+                            storiesBean.setDate(newsDate);
                         }
-                        return null;
+                        return newsListBean;
                     }
                 })
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<List<NewsListBean.StoriesBean>>() {
+                .subscribe(new Observer<NewsListBean>() {
                     @Override
                     public void onCompleted() {
 
@@ -97,11 +100,13 @@ public class ZhiHuFragmentPresenterImpl extends BasePresenterImpl implements IZh
                     }
 
                     @Override
-                    public void onNext(List<NewsListBean.StoriesBean> storiesBeen) {
+                    public void onNext(NewsListBean newsListBean) {
                         mIZhiHuFragment.hidProgressDialog();
-                        mIZhiHuFragment.upDataNewsList(storiesBeen);
+                        mIZhiHuFragment.upDataNewsList(newsListBean);
                     }
+
                 });
+        addSubscription(s);
     }
 
     @Override
