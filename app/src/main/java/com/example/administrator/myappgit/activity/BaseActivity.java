@@ -12,11 +12,26 @@ import com.example.administrator.myappgit.MyApplication;
 
 public class BaseActivity extends AppCompatActivity {
 
+    protected final String TAG = getClass().getSimpleName();
+    public static BaseActivity activity;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ((MyApplication) MyApplication.getContext()).addActivity(this);
+        activity = this;
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        activity = this;
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        activity = null;
     }
 
     @Override
@@ -24,4 +39,5 @@ public class BaseActivity extends AppCompatActivity {
         super.onDestroy();
         ((MyApplication) MyApplication.getContext()).removeActivity(this);
     }
+
 }

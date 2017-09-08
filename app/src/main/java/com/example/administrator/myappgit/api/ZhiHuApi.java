@@ -1,7 +1,7 @@
 package com.example.administrator.myappgit.api;
 
-import com.example.administrator.myappgit.bean.ZhiHuBean.NewsContent;
 import com.example.administrator.myappgit.bean.ZhiHuBean.NewsListBean;
+import com.example.administrator.myappgit.bean.ZhiHuBean.ZhiHuNewDetail;
 
 import retrofit2.http.GET;
 import retrofit2.http.Path;
@@ -20,6 +20,6 @@ public interface ZhiHuApi {
     Observable<NewsListBean> getMoreNews(@Path("date") String date);
 
     @GET("api/4/news/{id}")
-    Observable<NewsContent> getNewContent(@Path("id") String id);
+    Observable<ZhiHuNewDetail> getNewsDetail(@Path("id") String id);
 
 }

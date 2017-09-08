@@ -23,6 +23,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".activity.ShowListActivity"/>
+        <activity android:name=".activity.ZhiHuDetailActivity"/>
     </application>
 
 </manifest>

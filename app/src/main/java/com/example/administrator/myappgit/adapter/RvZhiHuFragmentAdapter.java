@@ -5,6 +5,7 @@ import android.animation.AnimatorListenerAdapter;
 import android.animation.ObjectAnimator;
 import android.animation.PropertyValuesHolder;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.support.annotation.Nullable;
@@ -24,6 +25,7 @@ import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.Target;
 import com.example.administrator.myappgit.R;
+import com.example.administrator.myappgit.activity.ZhiHuDetailActivity;
 import com.example.administrator.myappgit.bean.ZhiHuBean.NewsListBean;
 import com.example.administrator.myappgit.interfaze.LoadMore;
 
@@ -107,13 +109,15 @@ public class RvZhiHuFragmentAdapter extends RecyclerView.Adapter<RvZhiHuFragment
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                gotoZhiHuDetail();
+                gotoZhiHuDetail(storiesBean.getId() + "");
             }
         });
     }
 
-    private void gotoZhiHuDetail() {
-
+    private void gotoZhiHuDetail(String id) {
+        Intent intent = new Intent(mContext, ZhiHuDetailActivity.class);
+        intent.putExtra("newsId", id);
+        mContext.startActivity(intent);
     }
 
     @Override
