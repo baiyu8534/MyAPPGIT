@@ -4,6 +4,7 @@ import android.app.ActivityOptions;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
@@ -14,6 +15,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.util.Pair;
 import android.view.Gravity;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -35,7 +37,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class MainActivity extends BaseActivity implements RvMainAdapter.RvItemClickListener, View.OnClickListener, IMainActivity {
+public class MainActivity extends BaseActivity implements RvMainAdapter.RvItemClickListener, View.OnClickListener,
+        IMainActivity, NavigationView.OnNavigationItemSelectedListener {
 
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
@@ -74,6 +77,7 @@ public class MainActivity extends BaseActivity implements RvMainAdapter.RvItemCl
     private void initListener() {
         mRvMainAdapter.setRvItemClickListener(this);
         mFloatButton.setOnClickListener(this);
+        mNvMain.setNavigationItemSelectedListener(this);
 
     }
 
@@ -112,12 +116,26 @@ public class MainActivity extends BaseActivity implements RvMainAdapter.RvItemCl
 //        getMenuInflater().inflate(R.menu.menu_main_toolbar, menu);
 //        return true;
 //    }
-//
+
+    //
 //    @Override
 //    public boolean onOptionsItemSelected(MenuItem item) {
 //        switch (item.getItemId()) {
 //            case R.id.toolbar_nv:
 //                mDrawerLayout.openDrawer(Gravity.RIGHT);
+//                break;
+//            case R.id.nv_item_1:
+//                mDrawerLayout.closeDrawer(Gravity.RIGHT);
+//                startActivity(new Intent(mContext, TestSwipeBackActivity.class));
+//                break;
+//            case R.id.nv_item_2:
+//
+//                break;
+//            case R.id.nv_item_3:
+//
+//                break;
+//            case R.id.nv_item_4:
+//
 //                break;
 //        }
 //        return true;
@@ -171,5 +189,28 @@ public class MainActivity extends BaseActivity implements RvMainAdapter.RvItemCl
             mRvMainAdapter.notifyDataSetChanged();
         }
 
+    }
+
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+        switch (menuItem.getItemId()) {
+            case R.id.toolbar_nv:
+                if (BuildConfig.DEBUG) Log.d("MainActivity", "aaa");
+                mDrawerLayout.openDrawer(Gravity.RIGHT);
+                break;
+            case R.id.nv_item_1:
+                mDrawerLayout.closeDrawer(Gravity.RIGHT);
+                break;
+            case R.id.nv_item_2:
+
+                break;
+            case R.id.nv_item_3:
+
+                break;
+            case R.id.nv_item_4:
+
+                break;
+        }
+        return true;
     }
 }

@@ -11,4 +11,10 @@
     <color name="mainRvItemBg2">#DF436A </color>
     <color name="mainRvItemBg3">#4CAF50 </color>
 
+    <color name="gray_system_bg">#E4E4E4</color>
+    <color name="gray_split_line_bg">#D5D5D5</color>
+    <color name="gray_split_line_bg_group">#D6D6D6</color>
+    <color name="gray_schedule">#cccccc</color>
+    <color name="gray_E5E5E5">#E5E5E5</color>
+
 </resources>

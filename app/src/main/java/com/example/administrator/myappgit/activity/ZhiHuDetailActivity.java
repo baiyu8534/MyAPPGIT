@@ -4,12 +4,14 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
@@ -18,7 +20,6 @@ import com.example.administrator.myappgit.R;
 import com.example.administrator.myappgit.bean.ZhiHuBean.ZhiHuNewDetail;
 import com.example.administrator.myappgit.presenter.implPresenter.IZhiHuDetailActivityPresenterImpl;
 import com.example.administrator.myappgit.ui.WhorlView;
-import com.liuguangqiang.swipeback.SwipeBackActivity;
 import com.liuguangqiang.swipeback.SwipeBackLayout;
 
 import java.lang.reflect.InvocationTargetException;
@@ -28,11 +29,10 @@ import java.util.List;
  * Created by baiyu on 2017/9/8.
  */
 
-public class ZhiHuDetailActivity extends SwipeBackActivity implements IZhiHuDetailActivity, SwipeBackLayout.SwipeBackListener {
+public class ZhiHuDetailActivity extends BaseActivity implements IZhiHuDetailActivity, SwipeBackLayout.SwipeBackListener {
 
     WebView mWvDetail;
     WhorlView mWvDialog;
-    //    SwipeBackLayout mSbl;
     private ImageView ivShadow;
     private IZhiHuDetailActivityPresenterImpl mIZhiHuDetailActivityPresenter;
     private String mNewsId;
@@ -41,11 +41,8 @@ public class ZhiHuDetailActivity extends SwipeBackActivity implements IZhiHuDeta
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
-        // FIXME: 2017/9/8 侧滑退出没问题，但是背景是白的。。要看下demo测试下为什么，要么就研究下侧滑关闭自己封装
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_zhuhu_detail_layout);
-        setDragEdge(SwipeBackLayout.DragEdge.LEFT);
-//        setContentView(setSwipeContentView(R.layout.activity_zhuhu_detail_layout));
+        setContentView(setSwipeContentView(R.layout.activity_zhuhu_detail_layout));
         mWvDetail = (WebView) findViewById(R.id.wv_detail);
         mWvDialog = (WhorlView) findViewById(R.id.wv_dialog);
         mImageVIew = (ImageView) findViewById(R.id.iv);
@@ -66,26 +63,25 @@ public class ZhiHuDetailActivity extends SwipeBackActivity implements IZhiHuDeta
 
     }
 
-//    private View setSwipeContentView(int resId) {
-//        View view = LayoutInflater.from(this).inflate(resId, null);
-////        mSbl = (SwipeBackLayout) view.findViewById(R.id.sbl);
-//        mWvDetail = (WebView) view.findViewById(R.id.wv_detail);
-//        mWvDialog = (WhorlView) view.findViewById(R.id.wv_dialog);
-//
-//        RelativeLayout container = new RelativeLayout(this);
-//        swipeBackLayout = new SwipeBackLayout(this);
-//        swipeBackLayout.setOnSwipeBackListener(this);
-//        swipeBackLayout.addView(view);
-//        ivShadow = new ImageView(this);
-//        ivShadow.setBackgroundColor(getResources().getColor(R.color.black_p50));
-//        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT);
-//
-//
-//        container.addView(ivShadow, params);
-//        container.addView(swipeBackLayout);
-//        return container;
-//
-//    }
+    private View setSwipeContentView(int resId) {
+        View view = LayoutInflater.from(this).inflate(resId, null);
+        mWvDetail = (WebView) view.findViewById(R.id.wv_detail);
+        mWvDialog = (WhorlView) view.findViewById(R.id.wv_dialog);
+
+        RelativeLayout container = new RelativeLayout(this);
+        swipeBackLayout = new SwipeBackLayout(this);
+        swipeBackLayout.setOnSwipeBackListener(this);
+        swipeBackLayout.addView(view);
+        swipeBackLayout.setDragEdge(SwipeBackLayout.DragEdge.LEFT);
+        ivShadow = new ImageView(this);
+        ivShadow.setBackgroundColor(getResources().getColor(R.color.black_p50));
+        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT,
+                RelativeLayout.LayoutParams.MATCH_PARENT);
+        container.addView(ivShadow, params);
+        container.addView(swipeBackLayout);
+        return container;
+
+    }
 
     private void initView() {
 //        swipeBackLayout.setDragEdge(SwipeBackLayout.DragEdge.LEFT);
@@ -123,7 +119,6 @@ public class ZhiHuDetailActivity extends SwipeBackActivity implements IZhiHuDeta
 
             mBody = "<link rel=\"stylesheet\" type=\"text/css\" href=\"" + scc.get(0) + "\" />" + mBody;
 // lets assume we have /assets/style.css file
-            System.out.println(mBody);
             mWvDetail.loadDataWithBaseURL("file:///android_asset/", mBody, "text/html", "UTF-8", null);
         }
     }
