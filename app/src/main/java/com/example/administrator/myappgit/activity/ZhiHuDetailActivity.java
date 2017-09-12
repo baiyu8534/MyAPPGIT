@@ -13,8 +13,6 @@ import android.webkit.WebView;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.RequestOptions;
 import com.example.administrator.myappgit.IView.IZhiHuDetailActivity;
 import com.example.administrator.myappgit.R;
 import com.example.administrator.myappgit.bean.ZhiHuBean.ZhiHuNewDetail;
@@ -84,7 +82,6 @@ public class ZhiHuDetailActivity extends BaseActivity implements IZhiHuDetailAct
     }
 
     private void initView() {
-//        swipeBackLayout.setDragEdge(SwipeBackLayout.DragEdge.LEFT);
 
         WebSettings settings = mWvDetail.getSettings();
         settings.setJavaScriptEnabled(true);
@@ -97,6 +94,7 @@ public class ZhiHuDetailActivity extends BaseActivity implements IZhiHuDetailAct
         settings.setAppCachePath(getCacheDir().getAbsolutePath() + "/webViewCache");
         settings.setAppCacheEnabled(true);
         settings.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
+        settings.setDisplayZoomControls(false);
         mWvDetail.setWebChromeClient(new WebChromeClient());
     }
 
@@ -106,15 +104,15 @@ public class ZhiHuDetailActivity extends BaseActivity implements IZhiHuDetailAct
         boolean isEmpty = TextUtils.isEmpty(detail.getBody());
         String mBody = detail.getBody();
         List<String> scc = detail.getCss();
-        // FIXME: 2017/9/8 image的高度要动态设置为activity的1/3 大概就这个高度，因为返回的html和css加载出来上面1/3是空着的 还有种方法就是拼html在html中加载图片
-        Glide.with(this).load(detail.getImage())
-                .apply(new RequestOptions().centerCrop()).into(mImageVIew);
+        // FIXME: 2017/9/8 有种方法就是拼html在html中加载图片，坑爹的，详情页要研究下
+//        Glide.with(this).load(detail.getImage())
+//                .apply(new RequestOptions().centerCrop()).into(mImageVIew);
         if (isEmpty) {
             mWvDetail.loadUrl(url);
         } else {
             //String data = WebUtil.buildHtmlWithCss(mBody, scc, false);
 //            mWvDetail.loadDataWithBaseURL(WebUtil.BASE_URL, mBody, WebUtil.MIME_TYPE, WebUtil.ENCODING, WebUtil.FAIL_URL);
-            mWvDetail.loadData(mBody, "text/html", "utf-8");
+//            mWvDetail.loadData(mBody, "text/html", "utf-8");
 
 
             mBody = "<link rel=\"stylesheet\" type=\"text/css\" href=\"" + scc.get(0) + "\" />" + mBody;
@@ -142,7 +140,7 @@ public class ZhiHuDetailActivity extends BaseActivity implements IZhiHuDetailAct
 
     @Override
     public void onViewPositionChanged(float fractionAnchor, float fractionScreen) {
-//        ivShadow.setAlpha(1 - fractionScreen);
+        ivShadow.setAlpha(1 - fractionScreen);
     }
 
     @Override
@@ -186,4 +184,5 @@ public class ZhiHuDetailActivity extends BaseActivity implements IZhiHuDetailAct
         super.onDestroy();
 
     }
+
 }

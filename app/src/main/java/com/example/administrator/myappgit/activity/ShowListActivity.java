@@ -114,8 +114,8 @@ public class ShowListActivity extends BaseActivity {
         mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+                // TODO: 2017/9/12 0012 待优化，看下网上的demo是怎么实现的，动态改变tabLayout和toolBar的颜色
                 //动态改变tabLayout和toolBar的颜色，和每个tabView中的Text的大小
-
 
                 if (position + positionOffset > 0 && position + positionOffset < 1 && position + positionOffset -
                         prePosition > 0) {
@@ -425,7 +425,10 @@ public class ShowListActivity extends BaseActivity {
     public boolean onKeyDown(int keyCode, KeyEvent event) {
 
         if (keyCode == KeyEvent.KEYCODE_BACK) {
-
+            if (mDrawerLayout.isDrawerOpen(Gravity.RIGHT)) {
+                mDrawerLayout.closeDrawer(Gravity.RIGHT);
+                return true;
+            }
             int selectedTabPosition = mTabShowList.getSelectedTabPosition();
             switch (selectedTabPosition) {
                 case 0:
@@ -449,4 +452,6 @@ public class ShowListActivity extends BaseActivity {
         }
         return super.onKeyDown(keyCode, event);
     }
+
+
 }

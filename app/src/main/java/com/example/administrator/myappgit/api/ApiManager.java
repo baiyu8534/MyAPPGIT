@@ -16,6 +16,7 @@ import okhttp3.ConnectionSpec;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Response;
+import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -25,6 +26,11 @@ import retrofit2.converter.gson.GsonConverterFactory;
  */
 
 public class ApiManager {
+    static final HttpLoggingInterceptor httpLoggingInterceptor;
+    static {
+        httpLoggingInterceptor = new HttpLoggingInterceptor();
+        httpLoggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+    }
     private static final Interceptor REWRITE_CACHE_CONTROL_INTERCEPTOR = new Interceptor() {
         @Override
         public Response intercept(Chain chain) throws IOException {
@@ -76,6 +82,8 @@ public class ApiManager {
             .retryOnConnectionFailure(true)
             .connectionSpecs(Arrays.asList(ConnectionSpec.CLEARTEXT, ConnectionSpec.MODERN_TLS))
             .addInterceptor(REWRITE_CACHE_CONTROL_INTERCEPTOR)
+            //日志
+            .addInterceptor(httpLoggingInterceptor)
             .addNetworkInterceptor(REWRITE_CACHE_CONTROL_INTERCEPTOR)
             .cache(cache)
             .build();

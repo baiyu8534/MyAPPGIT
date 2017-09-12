@@ -5,5 +5,5 @@ package com.example.administrator.myappgit.presenter;
  */
 
 public interface IMainActivityPresenter extends BasePresenter {
-    void getImgaes();
+    void getImgaes(int count, String q);
 }

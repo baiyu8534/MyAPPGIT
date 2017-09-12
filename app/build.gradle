@@ -42,6 +42,8 @@ dependencies {
     compile 'com.squareup.retrofit2:retrofit:2.3.0'
     compile 'com.squareup.retrofit2:converter-gson:2.3.0'
     compile 'com.squareup.retrofit2:adapter-rxjava:2.3.0'
+    //网络日志
+    compile 'com.squareup.okhttp3:logging-interceptor:3.9.0'
     //图片圆形化
     compile 'de.hdodenhof:circleimageview:2.1.0'
     //图片加载

@@ -26,6 +26,7 @@ import com.example.administrator.myappgit.IView.IMainActivity;
 import com.example.administrator.myappgit.activity.BaseActivity;
 import com.example.administrator.myappgit.activity.ShowListActivity;
 import com.example.administrator.myappgit.adapter.RvMainAdapter;
+import com.example.administrator.myappgit.api.PixabayApi;
 import com.example.administrator.myappgit.bean.PixadayBean.PixabayListBean;
 import com.example.administrator.myappgit.presenter.implPresenter.MainActivityPresenterImpl;
 import com.example.administrator.myappgit.ui.MainRvItemDecoration;
@@ -71,7 +72,8 @@ public class MainActivity extends BaseActivity implements RvMainAdapter.RvItemCl
         initListener();
 
         MainActivityPresenterImpl mainActivityPresenter = new MainActivityPresenterImpl(this, this);
-        mainActivityPresenter.getImgaes();
+        mainActivityPresenter.getImgaes(5, PixabayApi.PIXABAY_QUARY_TAG_SCENERY);
+//        mainActivityPresenter.getImgaes(5, "武汉");
     }
 
     private void initListener() {
@@ -147,12 +149,13 @@ public class MainActivity extends BaseActivity implements RvMainAdapter.RvItemCl
      */
     @Override
     public void onRvItemClickListener(int position) {
+        Intent intent = new Intent(this, ShowListActivity.class);
+        intent.putExtra("position", position);
+        List<Pair<View, String>> pairs = new ArrayList<>();
+        int firstVisibleItemPosition = mLinearLayoutManager.findFirstVisibleItemPosition();
+        int lastVisibleItemPosition = mLinearLayoutManager.findLastVisibleItemPosition();
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            Intent intent = new Intent(this, ShowListActivity.class);
-            intent.putExtra("position", position);
-            List<Pair<View, String>> pairs = new ArrayList<>();
-            int firstVisibleItemPosition = mLinearLayoutManager.findFirstVisibleItemPosition();
-            int lastVisibleItemPosition = mLinearLayoutManager.findLastVisibleItemPosition();
 
             for (int i = firstVisibleItemPosition; i <= lastVisibleItemPosition; i++) {
                 RvMainAdapter.MyViewHolder holder = (RvMainAdapter.MyViewHolder) mRvMain.findViewHolderForAdapterPosition(i);
@@ -164,7 +167,10 @@ public class MainActivity extends BaseActivity implements RvMainAdapter.RvItemCl
             pairs.add(Pair.create((View) mIvNvMenuIcon, "mIvNvMenuIcon"));
             Bundle bundle = ActivityOptions.makeSceneTransitionAnimation(this, pairs.toArray(new Pair[]{})).toBundle();
             startActivity(intent, bundle);
+        } else {
+            startActivity(intent);
         }
+
     }
 
     @Override

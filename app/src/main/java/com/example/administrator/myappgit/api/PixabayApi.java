@@ -3,6 +3,7 @@ package com.example.administrator.myappgit.api;
 import com.example.administrator.myappgit.bean.PixadayBean.PixabayListBean;
 
 import retrofit2.http.GET;
+import retrofit2.http.Query;
 import rx.Observable;
 
 /**
@@ -15,20 +16,24 @@ import rx.Observable;
  * &orientation=horizontal  图片方向
  * &order=latest  获取最新的
  * &per_page=4  获取数量
- *
- *
- * 很不幸，这个网站证书有问题？手机跑获取不到数据会蹦，但是模拟器就没问题
- * 华为的手机证书是坑爹的啊，在其他手机上就行华为就不信操
  */
 
 public interface PixabayApi {
 
     /**
-     * 获取5张最新的横向风景图片
+     * 风景
+     */
+    String PIXABAY_QUARY_TAG_SCENERY = "风景";
+
+    // FIXME: 2017/9/12 0012 证书应该没问题。。要调一下
+
+    /**
+     * 获取最新的查询条件的图片
+     *
      * @return
      */
-    @GET("?key=5927878-93b96f8853619c00eff382b7f&q=scenery&image_type=photo&orientation=horizontal" +
-            "&order=latest&per_page=5")
-    Observable<PixabayListBean> getImageList();
+    @GET("?key=5927878-93b96f8853619c00eff382b7f&image_type=photo&orientation=horizontal" +
+            "&order=latest&lang=zh}")
+    Observable<PixabayListBean> getImageList(@Query("per_page") int count, @Query("q") String q);
 
 }

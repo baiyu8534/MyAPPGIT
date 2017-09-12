@@ -29,13 +29,13 @@ public class MainActivityPresenterImpl extends BasePresenterImpl implements IMai
     }
 
     @Override
-    public void getImgaes() {
-        ApiManager.getInstance().getPixabayApiService().getImageList()
+    public void getImgaes(int count, String q) {
+        ApiManager.getInstance().getPixabayApiService().getImageList(count, q)
                 .subscribeOn(Schedulers.io())
                 .map(new Func1<PixabayListBean, List<PixabayListBean.HitsBean>>() {
                     @Override
                     public List<PixabayListBean.HitsBean> call(PixabayListBean pixabayListBean) {
-                        if(pixabayListBean.getHits() != null){
+                        if (pixabayListBean.getHits() != null) {
                             return pixabayListBean.getHits();
                         }
                         return null;
