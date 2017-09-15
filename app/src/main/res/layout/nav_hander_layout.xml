@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="180dp"
+
+    >
+
+    <!--*************** 头像 ****************-->
+
+    <com.example.showapp.view.WaveView
+
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="180dp"/>
+
+    <de.hdodenhof.circleimageview.CircleImageView
+
+        android:id="@+id/icon_image"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:layout_centerInParent="true"
+        android:src="@drawable/hander"/>
+
+    <!--*************** 邮箱 ****************-->
+    <TextView
+        android:id="@+id/mail"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:gravity="center"
+        android:text="657116885@qq.com"
+        android:textColor="@color/colorWhite"
+        android:textSize="14sp"/>
+
+    <!--*************** 用户名 ****************-->
+    <TextView
+        android:id="@+id/username"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/mail"
+        android:gravity="center"
+        android:text="baiyu5271"
+        android:textColor="@color/colorWhite"
+        android:textSize="14sp"/>
+
+</RelativeLayout>
