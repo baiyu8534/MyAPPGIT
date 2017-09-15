@@ -201,20 +201,19 @@ public class MainActivity extends BaseActivity implements RvMainAdapter.RvItemCl
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
         switch (menuItem.getItemId()) {
             case R.id.toolbar_nv:
-                if (BuildConfig.DEBUG) Log.d("MainActivity", "aaa");
                 mDrawerLayout.openDrawer(Gravity.RIGHT);
                 break;
             case R.id.nv_item_1:
                 mDrawerLayout.closeDrawer(Gravity.RIGHT);
                 break;
             case R.id.nv_item_2:
-
+                mDrawerLayout.closeDrawer(Gravity.RIGHT);
                 break;
             case R.id.nv_item_3:
-
+                mDrawerLayout.closeDrawer(Gravity.RIGHT);
                 break;
             case R.id.nv_item_4:
-
+                mDrawerLayout.closeDrawer(Gravity.RIGHT);
                 break;
         }
         return true;

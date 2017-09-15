@@ -14,4 +14,9 @@
     <string name="rv_main_item_3">天气</string>
     <string name="rv_main_item_4">美图</string>
     <string name="rv_main_item_5">天气</string>
+
+    <!-- guide引导页文字 -->
+    <string name="guide_text_1">生活总是让我们遍体鳞伤，\n但到后来</string>
+    <string name="guide_text_2">那些受伤的地方\n一定会变成\n我们最强壮的地方</string>
+    <string name="guide_text_3">用理想去成就人生，\n不要蹉跎了岁月</string>
 </resources>

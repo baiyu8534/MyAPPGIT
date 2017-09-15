@@ -108,6 +108,7 @@ public class ApiManager {
     private ZhiHuApi zhihuApi;
     private DouBanApi doubanApi;
     private PixabayApi pixabayApi;
+    private GankApi gankApi;
 
     public static ApiManager getInstance() {
         if (apiManager == null) {
@@ -154,6 +155,22 @@ public class ApiManager {
             }
         }
         return doubanApi;
+    }
+
+    public GankApi getGankApiService(){
+        if(gankApi == null){
+            synchronized (lock){
+                if(gankApi == null){
+                    gankApi = new Retrofit.Builder()
+                            .baseUrl("http://gank.io")
+                            .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+                            .client(client)
+                            .addConverterFactory(GsonConverterFactory.create())
+                            .build().create(GankApi.class);
+                }
+            }
+        }
+        return gankApi;
     }
 
     public PixabayApi getPixabayApiService(){
