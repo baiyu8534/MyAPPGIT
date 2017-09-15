@@ -15,17 +15,20 @@
         android:label="一个无聊的App"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity">
+        <activity android:name=".activity.ShowAllDemosActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
+        <activity android:name=".MainActivity"/>
         <activity android:name=".activity.ShowListActivity"/>
         <activity
             android:name=".activity.ZhiHuDetailActivity"
             android:theme="@style/SwipeBackStyle"/>
+        <activity android:name=".activity.GuideActivity"/>
+
     </application>
 
 </manifest>

@@ -10,6 +10,7 @@ import com.example.administrator.myappgit.presenter.IMainActivityPresenter;
 import java.util.List;
 
 import rx.Observer;
+import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Func1;
 import rx.schedulers.Schedulers;
@@ -30,7 +31,7 @@ public class MainActivityPresenterImpl extends BasePresenterImpl implements IMai
 
     @Override
     public void getImgaes(int count, String q) {
-        ApiManager.getInstance().getPixabayApiService().getImageList(count, q)
+        Subscription s = ApiManager.getInstance().getPixabayApiService().getImageList(count, q)
                 .subscribeOn(Schedulers.io())
                 .map(new Func1<PixabayListBean, List<PixabayListBean.HitsBean>>() {
                     @Override
@@ -58,6 +59,6 @@ public class MainActivityPresenterImpl extends BasePresenterImpl implements IMai
                         mIMainActivity.setPic(hitsBeen);
                     }
                 });
-
+        addSubscription(s);
     }
 }

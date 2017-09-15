@@ -1,6 +1,6 @@
 package com.example.administrator.myappgit.IView;
 
-import com.example.administrator.myappgit.bean.GankBean.GankImages;
+import java.util.ArrayList;
 
 /**
  * 文件名：IShowAllDemosActivity
@@ -16,5 +16,12 @@ public interface IShowAllDemosActivity {
      *
      * @param images
      */
-    void upDataImages(GankImages images);
+    void upDataImages(ArrayList<String> images);
+
+    /**
+     * 显示错误信息
+     *
+     * @param message
+     */
+    void showErrorMessage(String message);
 }

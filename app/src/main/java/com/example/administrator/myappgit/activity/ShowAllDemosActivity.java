@@ -15,9 +15,14 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.example.administrator.myappgit.IView.IShowAllDemosActivity;
+import com.example.administrator.myappgit.MainActivity;
 import com.example.administrator.myappgit.R;
-import com.example.administrator.myappgit.bean.GankBean.GankImages;
+import com.example.administrator.myappgit.adapter.RvShowAllDemosAdapter;
+import com.example.administrator.myappgit.bean.adapterBean.RvShowAllDemosAdapterItemBean;
+import com.example.administrator.myappgit.presenter.implPresenter.ShowAllDemosActivityPresenterImpl;
 import com.example.administrator.myappgit.ui.ShowAllDemosRvItemRecoration;
+
+import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -30,7 +35,7 @@ import butterknife.ButterKnife;
  * 版权：
  */
 
-public class ShowAllDemosActivity extends BaseActivity implements IShowAllDemosActivity {
+public class ShowAllDemosActivity extends BaseActivity implements IShowAllDemosActivity, SwipeRefreshLayout.OnRefreshListener {
 
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
@@ -44,22 +49,71 @@ public class ShowAllDemosActivity extends BaseActivity implements IShowAllDemosA
     NavigationView mNavView;
     @BindView(R.id.drawerLayout)
     DrawerLayout mDrawerLayout;
+    private ShowAllDemosActivityPresenterImpl mShowAllDemosActivityPresenter;
+
+    private String[] demoNames;
+    private Class[] mClasses;
+    private ArrayList<RvShowAllDemosAdapterItemBean> adapterItemBeans;
+    private RvShowAllDemosAdapter mAdapter;
+    /**
+     * 头像
+     */
+    private ImageView mIconImage;
+
+    /**
+     * 获取图片的页数
+     */
+    private int page = 1;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_show_all_demos_layout);
         ButterKnife.bind(this);
+        initData();
         initView();
+        initViewListener();
+        // FIXME: 2017/9/15 可以把图片加载放到启动页中
+        mShowAllDemosActivityPresenter.getImages(adapterItemBeans.size() + "", page + "");
+    }
+
+    private void initViewListener() {
+        mIconImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(mContext, "头像", Toast.LENGTH_SHORT).show();
+            }
+        });
+        mSwipeRefresh.setOnRefreshListener(this);
+    }
+
+    private void initData() {
+        mShowAllDemosActivityPresenter = new ShowAllDemosActivityPresenterImpl(this, this);
+        demoNames = new String[]{
+                getResources().getString(R.string.demo_name_1),
+                getResources().getString(R.string.demo_name_2),
+                getResources().getString(R.string.demo_name_3),
+                getResources().getString(R.string.demo_name_4)
+        };
+        mClasses = new Class[]{
+                MainActivity.class,
+                GuideActivity.class,
+                GuideActivity.class,
+                GuideActivity.class
+        };
+        adapterItemBeans = new ArrayList<>();
+
+        for (int i = 0; i < demoNames.length; i++) {
+            RvShowAllDemosAdapterItemBean bean = new RvShowAllDemosAdapterItemBean();
+            bean.setItemTitle(demoNames[i]);
+            bean.setItemImageUrl("");
+            bean.setActivityClass(mClasses[i]);
+            adapterItemBeans.add(bean);
+        }
+        mAdapter = new RvShowAllDemosAdapter(this, adapterItemBeans);
     }
 
     private void initView() {
-
-        GridLayoutManager gridLayoutManager = new GridLayoutManager(mContext, 2);
-        mRvShow.setLayoutManager(gridLayoutManager);
-        mRvShow.setHasFixedSize(true);
-        mRvShow.addItemDecoration(new ShowAllDemosRvItemRecoration(mContext));
-
         setSupportActionBar(mToolbar);
         getSupportActionBar().setHomeButtonEnabled(true); //设置返回键可用
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -74,18 +128,36 @@ public class ShowAllDemosActivity extends BaseActivity implements IShowAllDemosA
         View headerLayout =
                 mNavView.inflateHeaderView(R.layout.nav_hander_layout);
 
-        ImageView iconImage = (ImageView) headerLayout.findViewById(R.id.icon_image);
-        iconImage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(mContext, "头像", Toast.LENGTH_SHORT).show();
-            }
-        });
+        mIconImage = (ImageView) headerLayout.findViewById(R.id.icon_image);
 
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(mContext, 2);
+        mRvShow.setLayoutManager(gridLayoutManager);
+        mRvShow.setHasFixedSize(true);
+        mRvShow.addItemDecoration(new ShowAllDemosRvItemRecoration(mContext));
+        mRvShow.setAdapter(mAdapter);
     }
 
     @Override
-    public void upDataImages(GankImages images) {
+    public void upDataImages(ArrayList<String> images) {
+        for (int i = 0; i < adapterItemBeans.size(); i++) {
+            adapterItemBeans.get(i).setItemImageUrl(images.get(i));
+        }
+        mAdapter.notifyDataSetChanged();
+    }
 
+    @Override
+    public void showErrorMessage(String message) {
+        // FIXME: 2017/9/15 集成QMUI，用里面的message控件
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mShowAllDemosActivityPresenter.unsubscribe();
+    }
+
+    @Override
+    public void onRefresh() {
+        // FIXME: 2017/9/15 获取新的图片
     }
 }

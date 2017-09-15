@@ -19,4 +19,10 @@
     <string name="guide_text_1">生活总是让我们遍体鳞伤，\n但到后来</string>
     <string name="guide_text_2">那些受伤的地方\n一定会变成\n我们最强壮的地方</string>
     <string name="guide_text_3">用理想去成就人生，\n不要蹉跎了岁月</string>
+    
+    <!--demo名称-->
+    <string name="demo_name_1">知乎日报</string>
+    <string name="demo_name_2">导航页1</string>
+    <string name="demo_name_3">item背景滚动List</string>
+    <string name="demo_name_4">item背景滚动Rv</string>
 </resources>
