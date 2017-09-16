@@ -158,6 +158,11 @@ public class ShowAllDemosActivity extends BaseActivity implements IShowAllDemosA
 
     @Override
     public void onRefresh() {
-        // FIXME: 2017/9/15 获取新的图片
+        mShowAllDemosActivityPresenter.getImages(adapterItemBeans.size() + "", ++page + "");
+    }
+
+    @Override
+    public void setRefreshing(boolean refreshing) {
+        mSwipeRefresh.setRefreshing(refreshing);
     }
 }

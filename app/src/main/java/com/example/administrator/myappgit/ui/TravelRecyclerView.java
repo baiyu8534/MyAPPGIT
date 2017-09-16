@@ -1,8 +1,6 @@
 package com.example.administrator.myappgit.ui;
 
-import android.annotation.TargetApi;
 import android.content.Context;
-import android.os.Build;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
@@ -14,9 +12,9 @@ import com.example.administrator.myappgit.adapter.TravelRecyclerAdapter;
 
 
 /**
+ * itemBGroll rv
  * Created by baiyu on 2017/4/24.
  */
-@TargetApi(Build.VERSION_CODES.M)
 public class TravelRecyclerView extends RecyclerView {
     public TravelRecyclerView(Context context) {
         super(context);

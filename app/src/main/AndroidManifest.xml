@@ -28,6 +28,8 @@
             android:name=".activity.ZhiHuDetailActivity"
             android:theme="@style/SwipeBackStyle"/>
         <activity android:name=".activity.GuideActivity"/>
+        <activity android:name=".activity.ItemBGRollRvActivity"/>
+        <activity android:name=".activity.ItemBGRollListActivity"/>
 
     </application>
 

@@ -13,8 +13,10 @@ import android.widget.ListView;
 import com.example.administrator.myappgit.R;
 import com.example.administrator.myappgit.adapter.MyAdapter;
 
-
-public class MyListView extends ListView {
+/**
+ * item bg roll listview
+ */
+public class TravelListView extends ListView {
     private static final String TAG = "bai";
     MyAdapter adapter;
     // 记录显示的第一个条目
@@ -28,15 +30,15 @@ public class MyListView extends ListView {
     public void setMyAdapter(MyAdapter adapter) {
         this.adapter = adapter;
     }
-    public MyListView(Context context) {
+    public TravelListView(Context context) {
         super(context);
         init();
     }
-    public MyListView(Context context, AttributeSet attrs, int defStyle) {
+    public TravelListView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
         init();
     }
-    public MyListView(Context context, AttributeSet attrs) {
+    public TravelListView(Context context, AttributeSet attrs) {
         super(context, attrs);
         init();
     }
@@ -73,9 +75,9 @@ public class MyListView extends ListView {
                 isGoTop = true;
                 View Iview;
                 ImageView image;
-                for (int i = firstVisibleItem == 0 ? 1 : 0; i < MyListView.this
+                for (int i = firstVisibleItem == 0 ? 1 : 0; i < TravelListView.this
                         .getChildCount(); i++) {
-                    Iview = MyListView.this.getChildAt(i);
+                    Iview = TravelListView.this.getChildAt(i);
                     image = (ImageView) Iview.findViewById(R.id.iv);
                     if(image!=null) {
                         if (image.getScrollY() < 500) {
@@ -94,9 +96,9 @@ public class MyListView extends ListView {
                 isGoTop = false;
                 View Iview;
                 ImageView image;
-                for (int i = firstVisibleItem == 0 ? 1 : 0; i < MyListView.this
+                for (int i = firstVisibleItem == 0 ? 1 : 0; i < TravelListView.this
                         .getChildCount(); i++) {
-                    Iview = MyListView.this.getChildAt(i);
+                    Iview = TravelListView.this.getChildAt(i);
                     image = (ImageView) Iview.findViewById(R.id.iv);
                     if(image!=null) {
                         if (image.getScrollY() > -500) {

@@ -3,14 +3,11 @@ package com.example.administrator.myappgit.IView;
 import java.util.ArrayList;
 
 /**
- * 文件名：IShowAllDemosActivity
- * 描述：
- * 作者：白煜
- * 时间：2017/9/15 0015
- * 版权：
+ * Created by baiyu on 2017/9/16.
  */
 
-public interface IShowAllDemosActivity {
+public interface IItemBGRollRvActivity {
+
     /**
      * 更新图片显示
      *

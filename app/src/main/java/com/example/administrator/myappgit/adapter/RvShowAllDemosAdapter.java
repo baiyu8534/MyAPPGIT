@@ -51,6 +51,8 @@ public class RvShowAllDemosAdapter extends RecyclerView.Adapter<RvShowAllDemosAd
                         .placeholder(R.drawable.guide_3_s)
                         .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
                         .centerCrop())
+                //加载缩略图，缩略图先加载完就显示，否则不显示
+                .thumbnail(0.2f)
                 .into(viewHolder.iv_item_image);
         viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override

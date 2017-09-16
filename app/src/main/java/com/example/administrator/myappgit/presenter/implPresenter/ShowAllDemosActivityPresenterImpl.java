@@ -31,6 +31,7 @@ public class ShowAllDemosActivityPresenterImpl extends BasePresenterImpl impleme
 
     @Override
     public void getImages(String count, String page) {
+        mShowAllDemosActivity.setRefreshing(true);
         // FIXME: 2017/9/15 主页图片，可以在启动页加载一次，下次就直接用缓，这里就不弄加载框了
         Subscription s = ApiManager.getInstance().getGankApiService().getImages(count, page)
                 .subscribeOn(Schedulers.io())
@@ -58,11 +59,13 @@ public class ShowAllDemosActivityPresenterImpl extends BasePresenterImpl impleme
                     @Override
                     public void onError(Throwable e) {
                         // FIXME: 2017/9/15 提示刷新失败
+                        mShowAllDemosActivity.setRefreshing(false);
                     }
 
                     @Override
                     public void onNext(ArrayList<String> strings) {
                         mShowAllDemosActivity.upDataImages(strings);
+                        mShowAllDemosActivity.setRefreshing(false);
                     }
                 });
         addSubscription(s);
