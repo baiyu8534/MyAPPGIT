@@ -11,14 +11,14 @@ import android.widget.ImageView;
 import android.widget.ListView;
 
 import com.example.administrator.myappgit.R;
-import com.example.administrator.myappgit.adapter.MyAdapter;
+import com.example.administrator.myappgit.adapter.TraveListAdapter;
 
 /**
  * item bg roll listview
  */
 public class TravelListView extends ListView {
     private static final String TAG = "bai";
-    MyAdapter adapter;
+    TraveListAdapter adapter;
     // 记录显示的第一个条目
     private int mFirstVisibleItem;
     // 设置头的状态 下拉刷新 释放刷新 正在刷新
@@ -27,7 +27,7 @@ public class TravelListView extends ListView {
     }
     // 处理头的初始化状态 下拉刷新
     private HEADER_MENU_STATE state = HEADER_MENU_STATE.menu_notshow;
-    public void setMyAdapter(MyAdapter adapter) {
+    public void setMyAdapter(TraveListAdapter adapter) {
         this.adapter = adapter;
     }
     public TravelListView(Context context) {
@@ -48,7 +48,7 @@ public class TravelListView extends ListView {
         initheader();
     }
     private void initheader() {
-        header = inflate(getContext(), R.layout.listhander, null);
+        header = inflate(getContext(), R.layout.hander_trave_list_layout, null);
         addHeaderView(header);
         View headerMenu = header.findViewById(R.id.ll_headerMenu);
         headerMenu.measure(0, 0);

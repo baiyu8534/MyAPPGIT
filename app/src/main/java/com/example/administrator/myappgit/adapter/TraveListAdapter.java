@@ -10,12 +10,12 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.example.administrator.myappgit.R;
 
-public class MyAdapter extends BaseAdapter {
+public class TraveListAdapter extends BaseAdapter {
     int[] imageres;
     Context context;
     public boolean isUp = true;
 
-    public MyAdapter(int[] imageres, Context context) {
+    public TraveListAdapter(int[] imageres, Context context) {
         super();
         this.imageres = imageres;
         this.context = context;
@@ -41,7 +41,7 @@ public class MyAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        View item = View.inflate(context, R.layout.listitem, null);
+        View item = View.inflate(context, R.layout.item_trave_list_layout, null);
         ImageView iv = (ImageView) item.findViewById(R.id.iv);
         TextView tView = (TextView) item.findViewById(R.id.tv_2);
         tView.setText("CITY" + position);
