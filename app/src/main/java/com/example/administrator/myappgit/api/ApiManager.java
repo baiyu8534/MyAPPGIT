@@ -25,6 +25,7 @@ import javax.net.ssl.TrustManagerFactory;
 import javax.net.ssl.X509TrustManager;
 
 import okhttp3.Cache;
+import okhttp3.ConnectionPool;
 import okhttp3.ConnectionSpec;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
@@ -40,10 +41,12 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ApiManager {
     static final HttpLoggingInterceptor httpLoggingInterceptor;
+
     static {
         httpLoggingInterceptor = new HttpLoggingInterceptor();
         httpLoggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
     }
+
     private static final Interceptor REWRITE_CACHE_CONTROL_INTERCEPTOR = new Interceptor() {
         @Override
         public Response intercept(Chain chain) throws IOException {
@@ -98,6 +101,8 @@ public class ApiManager {
             //日志
             .addInterceptor(httpLoggingInterceptor)
             .addNetworkInterceptor(REWRITE_CACHE_CONTROL_INTERCEPTOR)
+            // 这里你可以根据自己的机型设置同时连接的个数和时间，我这里15个，和每个保持时间为10s
+            .connectionPool(new ConnectionPool(15, 10, TimeUnit.SECONDS))
             .cache(cache)
             .build();
     private static OkHttpClient pixClient = null;
@@ -139,11 +144,11 @@ public class ApiManager {
         return zhihuApi;
     }
 
-    public DouBanApi getDouBanApiService(){
-        synchronized (lock){
-            if(doubanApi == null){
-                synchronized (lock){
-                    if(doubanApi == null){
+    public DouBanApi getDouBanApiService() {
+        synchronized (lock) {
+            if (doubanApi == null) {
+                synchronized (lock) {
+                    if (doubanApi == null) {
                         doubanApi = new Retrofit.Builder()
                                 .baseUrl("https://api.douban.com")
                                 .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
@@ -157,10 +162,10 @@ public class ApiManager {
         return doubanApi;
     }
 
-    public GankApi getGankApiService(){
-        if(gankApi == null){
-            synchronized (lock){
-                if(gankApi == null){
+    public GankApi getGankApiService() {
+        if (gankApi == null) {
+            synchronized (lock) {
+                if (gankApi == null) {
                     gankApi = new Retrofit.Builder()
                             .baseUrl("http://gank.io")
                             .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
@@ -173,11 +178,11 @@ public class ApiManager {
         return gankApi;
     }
 
-    public PixabayApi getPixabayApiService(){
-        synchronized (lock){
-            if(pixabayApi == null){
-                synchronized (lock){
-                    if(pixabayApi == null){
+    public PixabayApi getPixabayApiService() {
+        synchronized (lock) {
+            if (pixabayApi == null) {
+                synchronized (lock) {
+                    if (pixabayApi == null) {
                         pixabayApi = new Retrofit.Builder()
                                 .baseUrl("https://pixabay.com/api/")
                                 .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
@@ -323,6 +328,7 @@ public class ApiManager {
 
     /**
      * 添加password
+     *
      * @param password
      * @return
      * @throws GeneralSecurityException

@@ -4,6 +4,7 @@ import com.example.administrator.myappgit.IView.IItemBGRollRvActivity;
 import com.example.administrator.myappgit.api.ApiManager;
 import com.example.administrator.myappgit.bean.GankBean.GankImages;
 import com.example.administrator.myappgit.presenter.IItemBGRollRvActivityPresenter;
+import com.example.administrator.myappgit.utils.NetWorkExceptionUtil;
 
 import java.util.ArrayList;
 
@@ -60,6 +61,13 @@ public class IItemBGRollRvActivityPresenterImpl extends BasePresenterImpl implem
                     public void onError(Throwable e) {
                         // FIXME: 2017/9/15 提示刷新失败
                         mIItemBGRollRvActivity.setRefreshing(false);
+                        if (e instanceof NetWorkExceptionUtil.ResponeThrowable) {
+                            System.out.println("message111"+((NetWorkExceptionUtil.ResponeThrowable) e).message);
+//                            onError((NetWorkExceptionUtil.ResponeThrowable) e);
+                        } else {
+                            System.out.println("message222"+NetWorkExceptionUtil.handleException(e).message);
+//                            onError(NetWorkExceptionUtil.handleException(e));
+                        }
                     }
 
                     @Override
