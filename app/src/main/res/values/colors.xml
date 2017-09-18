@@ -16,5 +16,6 @@
     <color name="gray_split_line_bg_group">#D6D6D6</color>
     <color name="gray_schedule">#cccccc</color>
     <color name="gray_E5E5E5">#E5E5E5</color>
+    <color name="black">#000000</color>
 
 </resources>

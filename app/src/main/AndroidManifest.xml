@@ -30,6 +30,7 @@
         <activity android:name=".activity.GuideActivity"/>
         <activity android:name=".activity.ItemBGRollRvActivity"/>
         <activity android:name=".activity.ItemBGRollListActivity"/>
+        <activity android:name=".activity.ShowImageActivity"/>
 
     </application>
 

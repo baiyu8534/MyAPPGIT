@@ -99,7 +99,7 @@ public class ShowAllDemosActivity extends BaseActivity implements IShowAllDemosA
                 MainActivity.class,
                 GuideActivity.class,
                 GuideActivity.class,
-                GuideActivity.class
+                ItemBGRollRvActivity.class
         };
         adapterItemBeans = new ArrayList<>();
 
@@ -135,6 +135,9 @@ public class ShowAllDemosActivity extends BaseActivity implements IShowAllDemosA
         mRvShow.setHasFixedSize(true);
         mRvShow.addItemDecoration(new ShowAllDemosRvItemRecoration(mContext));
         mRvShow.setAdapter(mAdapter);
+
+        mSwipeRefresh.setColorSchemeResources(R.color.mainRvItemBg2,R.color.colorPrimary);
+        mSwipeRefresh.setProgressBackgroundColorSchemeResource(R.color.colorWhite);
     }
 
     @Override
