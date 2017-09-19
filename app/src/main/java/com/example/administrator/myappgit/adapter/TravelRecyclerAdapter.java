@@ -82,6 +82,7 @@ public class TravelRecyclerAdapter extends RecyclerView.Adapter<TravelRecyclerAd
 
         // 判断是什么方向划出图片  提前滑动预定地点
         //ScreenUtil.getScreenHeight(mContext) / 5 是滚动的最大距离
+        // FIXME: 2017/9/19 坑爹的，开头3张图没移动，有的时候移动了，有的时候没移动，一定是加载和移动的顺序问题
         if (isUp)
             holder.iv_item.scrollTo(0, (-1 * ScreenUtil.getScreenHeight(mContext) / 5));
         else

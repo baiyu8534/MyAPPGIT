@@ -99,7 +99,7 @@ public class ShowAllDemosActivity extends BaseActivity implements IShowAllDemosA
         mClasses = new Class[]{
                 MainActivity.class,
                 GuideActivity.class,
-                GuideActivity.class,
+                ItemBGRollListActivity.class,
                 ItemBGRollRvActivity.class
         };
         adapterItemBeans = new ArrayList<>();

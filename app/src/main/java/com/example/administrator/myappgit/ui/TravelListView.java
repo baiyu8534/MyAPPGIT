@@ -12,6 +12,7 @@ import android.widget.ListView;
 
 import com.example.administrator.myappgit.R;
 import com.example.administrator.myappgit.adapter.TraveListAdapter;
+import com.example.administrator.myappgit.utils.ScreenUtil;
 
 /**
  * item bg roll listview
@@ -80,7 +81,7 @@ public class TravelListView extends ListView {
                     Iview = TravelListView.this.getChildAt(i);
                     image = (ImageView) Iview.findViewById(R.id.iv);
                     if(image!=null) {
-                        if (image.getScrollY() < 500) {
+                        if (image.getScrollY() < ScreenUtil.getScreenHeight(getContext())/5) {
                             image.scrollBy(0, (Y - proY) / 3);
                         }
                         // 不行。。
@@ -101,7 +102,7 @@ public class TravelListView extends ListView {
                     Iview = TravelListView.this.getChildAt(i);
                     image = (ImageView) Iview.findViewById(R.id.iv);
                     if(image!=null) {
-                        if (image.getScrollY() > -500) {
+                        if (image.getScrollY() > -ScreenUtil.getScreenHeight(getContext())/5) {
                             image.scrollBy(0, (Y - proY) / 3);
                         }
                         // else {

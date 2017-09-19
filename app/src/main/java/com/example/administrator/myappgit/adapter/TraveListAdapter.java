@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.example.administrator.myappgit.R;
+import com.example.administrator.myappgit.utils.ScreenUtil;
 
 public class TraveListAdapter extends BaseAdapter {
     int[] imageres;
@@ -52,9 +53,9 @@ public class TraveListAdapter extends BaseAdapter {
 
         // 判断是什么方向划出图片  提前滑动预定地点
         if (isUp)
-            iv.scrollBy(0, (-1 * 350));
+            iv.scrollBy(0, (-1 * ScreenUtil.getScreenHeight(context) / 5));
         else
-            iv.scrollBy(0, 350);
+            iv.scrollBy(0, ScreenUtil.getScreenHeight(context) / 5);
         return item;
     }
 
