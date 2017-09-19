@@ -10,7 +10,7 @@ import java.util.ArrayList;
  * 版权：
  */
 
-public interface IShowAllDemosActivity {
+public interface IShowAllDemosActivity extends IBaseView{
     /**
      * 更新图片显示
      *

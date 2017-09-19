@@ -11,6 +11,7 @@ import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
+import android.util.DisplayMetrics;
 import android.util.TypedValue;
 import android.view.Window;
 import android.view.WindowManager;
@@ -124,6 +125,46 @@ public class UIUtil {
         drawable.setBounds(0, 0, drawable.getIntrinsicWidth(),drawable.getIntrinsicHeight());
         drawable.draw(canvas);
         return bitmap;
+    }
+
+    /**
+     * 单位转换: dp -> px
+     * @param dp
+     * @return
+     */
+    public static int dp2px(Context context, int dp){
+        return (int) (getDensity(context) * dp + 0.5);
+    }
+
+    /**
+     * 单位转换:px -> dp
+     * @param px
+     * @return
+     */
+    public static int px2dp(Context context,int px){
+        return (int) (px/getDensity(context) + 0.5);
+    }
+
+    /**
+     * 屏幕密度
+     */
+    public static float sDensity = 0f;
+    public static float getDensity(Context context){
+        if(sDensity == 0f){
+            sDensity = getDisplayMetrics(context).density;
+        }
+        return sDensity;
+    }
+
+    /**
+     * DisplayMetrics
+     * @return
+     */
+    public static DisplayMetrics getDisplayMetrics(Context context){
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        ((WindowManager) context.getApplicationContext().getSystemService(Context.WINDOW_SERVICE))
+                .getDefaultDisplay().getMetrics(displayMetrics);
+        return displayMetrics;
     }
 
 

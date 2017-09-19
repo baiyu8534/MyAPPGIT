@@ -3,6 +3,7 @@ package com.example.administrator.myappgit.utils;
 import android.net.ParseException;
 
 import com.example.administrator.myappgit.MyApplication;
+import com.example.administrator.myappgit.R;
 import com.google.gson.JsonParseException;
 
 import org.apache.http.conn.ConnectTimeoutException;
@@ -45,7 +46,7 @@ public class NetWorkExceptionUtil {
                 case BAD_GATEWAY:
                 case SERVICE_UNAVAILABLE:
                 default:
-                    ex.message = "网络错误";
+                    ex.message = MyApplication.getContext().getString(R.string.error_message_network_error);
                     break;
             }
             return ex;
@@ -56,31 +57,31 @@ public class NetWorkExceptionUtil {
             return ex;
         } else if (e instanceof JsonParseException || e instanceof JSONException || e instanceof ParseException) {
             ex = new ResponeThrowable(e, ERROR.PARSE_ERROR);
-            ex.message = "解析错误";
+            ex.message = MyApplication.getContext().getString(R.string.error_message_parse_error);
             return ex;
         } else if (e instanceof ConnectException) {
             ex = new ResponeThrowable(e, ERROR.NETWORD_ERROR);
-            ex.message = "连接失败";
+            ex.message = MyApplication.getContext().getString(R.string.error_message_conn_fail);
             return ex;
         } else if (e instanceof javax.net.ssl.SSLHandshakeException) {
             ex = new ResponeThrowable(e, ERROR.SSL_ERROR);
-            ex.message = "证书验证失败";
+            ex.message = MyApplication.getContext().getString(R.string.error_message_certificate_verify_fail);
             return ex;
         } else if (e instanceof ConnectTimeoutException) {
             ex = new ResponeThrowable(e, ERROR.TIMEOUT_ERROR);
-            ex.message = "连接超时";
+            ex.message = MyApplication.getContext().getString(R.string.error_message_network_timeout);
             return ex;
         } else if (e instanceof java.net.SocketTimeoutException) {
             ex = new ResponeThrowable(e, ERROR.TIMEOUT_ERROR);
-            ex.message = "连接超时";
+            ex.message = MyApplication.getContext().getString(R.string.error_message_network_timeout);
             return ex;
         } else {
             if (!NetWorkUtil.isNetWorkAvailable(MyApplication.getContext())) {
                 ex = new ResponeThrowable(e, ERROR.UNKNOWN);
-                ex.message = "无网络，请连接网络";
+                ex.message = MyApplication.getContext().getString(R.string.error_message_no_network);
             }else{
                 ex = new ResponeThrowable(e, ERROR.UNKNOWN);
-                ex.message = "未知错误";
+                ex.message = MyApplication.getContext().getString(R.string.error_message_unknown_error);
             }
 
             return ex;

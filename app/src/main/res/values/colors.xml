@@ -18,4 +18,6 @@
     <color name="gray_E5E5E5">#E5E5E5</color>
     <color name="black">#000000</color>
 
+    <color name="dialog_top_float_hint_color">#88353C46</color>
+
 </resources>

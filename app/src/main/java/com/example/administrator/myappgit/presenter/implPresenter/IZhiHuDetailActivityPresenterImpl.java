@@ -40,7 +40,8 @@ public class IZhiHuDetailActivityPresenterImpl extends BasePresenterImpl impleme
 
                     @Override
                     public void onError(Throwable e) {
-                        mIZhiHuDetailActivity.showErrorMessage(e.getMessage());
+                        mIZhiHuDetailActivity.hidProgressDialog();
+                        informShowErrorMessage(e, mIZhiHuDetailActivity);
                     }
 
                     @Override

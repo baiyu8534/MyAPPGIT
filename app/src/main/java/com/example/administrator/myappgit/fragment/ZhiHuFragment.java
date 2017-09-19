@@ -1,6 +1,5 @@
 package com.example.administrator.myappgit.fragment;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
@@ -16,6 +15,7 @@ import com.example.administrator.myappgit.adapter.RvZhiHuFragmentAdapter;
 import com.example.administrator.myappgit.bean.ZhiHuBean.NewsListBean;
 import com.example.administrator.myappgit.presenter.implPresenter.ZhiHuFragmentPresenterImpl;
 import com.example.administrator.myappgit.ui.ShowRvItemDecoration;
+import com.example.administrator.myappgit.ui.TopFloatHintDialog;
 import com.example.administrator.myappgit.ui.WhorlView;
 
 import butterknife.BindView;
@@ -36,7 +36,6 @@ public class ZhiHuFragment extends BaseFragment implements IZhiHuFragment {
     Unbinder unbinder;
     @BindView(R.id.wv_dialog)
     WhorlView mWvDialog;
-    private Context mContext;
     private RvZhiHuFragmentAdapter mRvZhiHuFragmentAdapter;
 
     /**
@@ -68,7 +67,6 @@ public class ZhiHuFragment extends BaseFragment implements IZhiHuFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_zhuhu_layout, container, false);
-        mContext = getContext();
         unbinder = ButterKnife.bind(this, view);
         initView();
 
@@ -150,11 +148,6 @@ public class ZhiHuFragment extends BaseFragment implements IZhiHuFragment {
     }
 
     @Override
-    public void showErrorMessage() {
-
-    }
-
-    @Override
     public void onDestroyView() {
         super.onDestroyView();
         mZhiHuFragmentPresenter.unsubscribe();
@@ -164,5 +157,16 @@ public class ZhiHuFragment extends BaseFragment implements IZhiHuFragment {
 
     public void loadMoreData() {
         mZhiHuFragmentPresenter.getMoreNews(currentLoadDate);
+    }
+
+    @Override
+    public void showErrorMessage(String message) {
+        showMessageDialog(message, TopFloatHintDialog.Builder.ICON_TYPE_FAIL);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        mZhiHuFragmentPresenter.unsubscribe();
     }
 }

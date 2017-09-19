@@ -3,6 +3,7 @@ package com.example.administrator.myappgit.presenter.implPresenter;
 import android.content.Context;
 
 import com.example.administrator.myappgit.IView.IZhiHuFragment;
+import com.example.administrator.myappgit.R;
 import com.example.administrator.myappgit.api.ApiManager;
 import com.example.administrator.myappgit.bean.ZhiHuBean.NewsListBean;
 import com.example.administrator.myappgit.presenter.IZhiHuFragmentPresenter;
@@ -38,11 +39,17 @@ public class ZhiHuFragmentPresenterImpl extends BasePresenterImpl implements IZh
                 .map(new Func1<NewsListBean, NewsListBean>() {
                     @Override
                     public NewsListBean call(NewsListBean newsListBean) {
-                        String newsDate = newsListBean.getDate();
-                        for (NewsListBean.StoriesBean storiesBean : newsListBean.getStories()) {
-                            storiesBean.setDate(newsDate);
+                        if (newsListBean != null) {
+                            String newsDate = newsListBean.getDate();
+                            for (NewsListBean.StoriesBean storiesBean : newsListBean.getStories()) {
+                                storiesBean.setDate(newsDate);
+                            }
+                            return newsListBean;
+                        } else {
+                            informShowErrorMessage(mContext.getString(R.string.error_message_service_data_abnormal),
+                                    mIZhiHuFragment);
+                            return null;
                         }
-                        return newsListBean;
                     }
                 })
                 .observeOn(AndroidSchedulers.mainThread())
@@ -55,13 +62,15 @@ public class ZhiHuFragmentPresenterImpl extends BasePresenterImpl implements IZh
                     @Override
                     public void onError(Throwable e) {
                         mIZhiHuFragment.hidProgressDialog();
-                        mIZhiHuFragment.showErrorMessage();
+                        informShowErrorMessage(e, mIZhiHuFragment);
                     }
 
                     @Override
                     public void onNext(NewsListBean newsListBean) {
                         mIZhiHuFragment.hidProgressDialog();
-                        mIZhiHuFragment.upDataNewsList(newsListBean);
+                        if (null != newsListBean) {
+                            mIZhiHuFragment.upDataNewsList(newsListBean);
+                        }
                     }
                 });
         addSubscription(s);
@@ -96,7 +105,7 @@ public class ZhiHuFragmentPresenterImpl extends BasePresenterImpl implements IZh
                     @Override
                     public void onError(Throwable e) {
                         mIZhiHuFragment.hidProgressDialog();
-                        mIZhiHuFragment.showErrorMessage();
+                        informShowErrorMessage(e, mIZhiHuFragment);
                     }
 
                     @Override

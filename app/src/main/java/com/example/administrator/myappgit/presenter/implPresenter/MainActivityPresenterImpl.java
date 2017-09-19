@@ -3,6 +3,7 @@ package com.example.administrator.myappgit.presenter.implPresenter;
 import android.content.Context;
 
 import com.example.administrator.myappgit.IView.IMainActivity;
+import com.example.administrator.myappgit.R;
 import com.example.administrator.myappgit.api.ApiManager;
 import com.example.administrator.myappgit.bean.PixadayBean.PixabayListBean;
 import com.example.administrator.myappgit.presenter.IMainActivityPresenter;
@@ -38,8 +39,11 @@ public class MainActivityPresenterImpl extends BasePresenterImpl implements IMai
                     public List<PixabayListBean.HitsBean> call(PixabayListBean pixabayListBean) {
                         if (pixabayListBean.getHits() != null) {
                             return pixabayListBean.getHits();
+                        } else {
+                            informShowErrorMessage(mContext.getString(R.string.error_message_service_data_abnormal),
+                                    mIMainActivity);
+                            return null;
                         }
-                        return null;
                     }
                 })
                 .observeOn(AndroidSchedulers.mainThread())
@@ -52,11 +56,14 @@ public class MainActivityPresenterImpl extends BasePresenterImpl implements IMai
                     @Override
                     public void onError(Throwable e) {
                         mIMainActivity.setPic(null);
+                        informShowErrorMessage(e, mIMainActivity);
                     }
 
                     @Override
                     public void onNext(List<PixabayListBean.HitsBean> hitsBeen) {
-                        mIMainActivity.setPic(hitsBeen);
+                        if (null != hitsBeen) {
+                            mIMainActivity.setPic(hitsBeen);
+                        }
                     }
                 });
         addSubscription(s);

@@ -25,4 +25,13 @@
     <string name="demo_name_2">导航页1</string>
     <string name="demo_name_3">item背景滚动List</string>
     <string name="demo_name_4">item背景滚动Rv</string>
+
+    <string name="error_message_network_error">网络错误</string>
+    <string name="error_message_parse_error">解析错误</string>
+    <string name="error_message_conn_fail">连接失败</string>
+    <string name="error_message_certificate_verify_fail">证书验证失败</string>
+    <string name="error_message_network_timeout">连接超时</string>
+    <string name="error_message_no_network">无网络，请检查网络连接</string>
+    <string name="error_message_unknown_error">未知错误</string>
+    <string name="error_message_service_data_abnormal">服务器数据异常</string>
 </resources>

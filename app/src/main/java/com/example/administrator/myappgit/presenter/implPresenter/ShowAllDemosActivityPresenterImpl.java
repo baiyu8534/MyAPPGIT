@@ -3,6 +3,7 @@ package com.example.administrator.myappgit.presenter.implPresenter;
 import android.content.Context;
 
 import com.example.administrator.myappgit.IView.IShowAllDemosActivity;
+import com.example.administrator.myappgit.R;
 import com.example.administrator.myappgit.api.ApiManager;
 import com.example.administrator.myappgit.bean.GankBean.GankImages;
 import com.example.administrator.myappgit.presenter.IShowAllDemosActivityPresenter;
@@ -39,7 +40,9 @@ public class ShowAllDemosActivityPresenterImpl extends BasePresenterImpl impleme
                     @Override
                     public ArrayList<String> call(GankImages gankImages) {
                         if (gankImages == null) {
-                            // FIXME: 2017/9/15 可以搞个提示，让用户刷新
+                            informShowErrorMessage(mContext.getString(R.string.error_message_service_data_abnormal),
+                                    mShowAllDemosActivity);
+                            return null;
                         } else {
                             ArrayList<String> datas = new ArrayList<>();
                             for (GankImages.ResultsBean resultsBean : gankImages.getResults()) {
@@ -47,7 +50,6 @@ public class ShowAllDemosActivityPresenterImpl extends BasePresenterImpl impleme
                             }
                             return datas;
                         }
-                        return null;
                     }
                 }).observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<ArrayList<String>>() {
@@ -58,14 +60,16 @@ public class ShowAllDemosActivityPresenterImpl extends BasePresenterImpl impleme
 
                     @Override
                     public void onError(Throwable e) {
-                        // FIXME: 2017/9/15 提示刷新失败
                         mShowAllDemosActivity.setRefreshing(false);
+                        informShowErrorMessage(e, mShowAllDemosActivity);
                     }
 
                     @Override
                     public void onNext(ArrayList<String> strings) {
-                        mShowAllDemosActivity.upDataImages(strings);
                         mShowAllDemosActivity.setRefreshing(false);
+                        if (null != strings) {
+                            mShowAllDemosActivity.upDataImages(strings);
+                        }
                     }
                 });
         addSubscription(s);

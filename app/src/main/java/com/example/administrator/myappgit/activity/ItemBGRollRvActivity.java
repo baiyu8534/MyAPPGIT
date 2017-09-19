@@ -11,6 +11,7 @@ import com.example.administrator.myappgit.IView.IItemBGRollRvActivity;
 import com.example.administrator.myappgit.R;
 import com.example.administrator.myappgit.adapter.TravelRecyclerAdapter;
 import com.example.administrator.myappgit.presenter.implPresenter.IItemBGRollRvActivityPresenterImpl;
+import com.example.administrator.myappgit.ui.TopFloatHintDialog;
 import com.example.administrator.myappgit.ui.TravelRecyclerView;
 import com.example.administrator.myappgit.utils.ScreenUtil;
 
@@ -58,7 +59,7 @@ public class ItemBGRollRvActivity extends BaseActivity implements IItemBGRollRvA
                     int totalItemCount = mLinearLayoutManager.getItemCount();
                     int visibleItemCount = mLinearLayoutManager.getChildCount();
                     int unvisibleItemCount = mLinearLayoutManager.findFirstVisibleItemPosition();
-                    if (!isLoadingMoreData && (visibleItemCount + unvisibleItemCount >= totalItemCount)) {
+                    if (!isLoadingMoreData && (visibleItemCount + unvisibleItemCount + 2 >= totalItemCount)) {
                         System.out.println("loadMoreData");
                         isLoadingMoreData = true;
                         loadMoreData();
@@ -106,10 +107,10 @@ public class ItemBGRollRvActivity extends BaseActivity implements IItemBGRollRvA
     }
 
     private void initData() {
-        mPresenter = new IItemBGRollRvActivityPresenterImpl(this);
+        mPresenter = new IItemBGRollRvActivityPresenterImpl(this, this);
         mLinearLayoutManager = new LinearLayoutManager(mContext);
         imageUrls = new ArrayList<>();
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < 7; i++) {
             imageUrls.add("");
         }
         new TravelRecyclerAdapter(imageUrls, mContext);
@@ -135,11 +136,17 @@ public class ItemBGRollRvActivity extends BaseActivity implements IItemBGRollRvA
 
     @Override
     public void showErrorMessage(String message) {
-
+        showMessageDialog(message, TopFloatHintDialog.Builder.ICON_TYPE_FAIL);
     }
 
     @Override
     public void setRefreshing(boolean refreshing) {
 
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mPresenter.unsubscribe();
     }
 }

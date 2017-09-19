@@ -6,7 +6,7 @@ import java.util.ArrayList;
  * Created by baiyu on 2017/9/16.
  */
 
-public interface IItemBGRollRvActivity {
+public interface IItemBGRollRvActivity extends IBaseView {
 
     /**
      * 更新图片显示

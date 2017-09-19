@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="TopFloatHintDialog" parent="android:Theme">
+
+        <item name="android:windowBackground">@drawable/dialog_top_float_hint_bg</item>//此对话框的背景
+        <item name="android:windowIsTranslucent">true</item>//对话框是否透明
+        <item name="android:windowContentOverlay">@null</item>//对话框是否有遮盖
+        <item name="android:windowNoTitle">true</item>//对话框无标题
+        <item name="android:windowIsFloating">true</item>//对话框是否浮动
+        <item name="android:backgroundDimEnabled">false</item>
+
+    </style>
+</resources>

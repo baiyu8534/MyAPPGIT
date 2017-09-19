@@ -30,6 +30,7 @@ import com.example.administrator.myappgit.api.PixabayApi;
 import com.example.administrator.myappgit.bean.PixadayBean.PixabayListBean;
 import com.example.administrator.myappgit.presenter.implPresenter.MainActivityPresenterImpl;
 import com.example.administrator.myappgit.ui.MainRvItemDecoration;
+import com.example.administrator.myappgit.ui.TopFloatHintDialog;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -61,6 +62,7 @@ public class MainActivity extends BaseActivity implements RvMainAdapter.RvItemCl
     private LinearLayoutManager mLinearLayoutManager;
     private RvMainAdapter mRvMainAdapter;
     private ImageView mImagerNvHeader;
+    private MainActivityPresenterImpl mMainActivityPresenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,8 +73,8 @@ public class MainActivity extends BaseActivity implements RvMainAdapter.RvItemCl
         initView();
         initListener();
 
-        MainActivityPresenterImpl mainActivityPresenter = new MainActivityPresenterImpl(this, this);
-        mainActivityPresenter.getImgaes(5, PixabayApi.PIXABAY_QUARY_TAG_SCENERY);
+        mMainActivityPresenter = new MainActivityPresenterImpl(this, this);
+        mMainActivityPresenter.getImgaes(5, PixabayApi.PIXABAY_QUARY_TAG_SCENERY);
 //        mainActivityPresenter.getImgaes(5, "武汉");
     }
 
@@ -187,7 +189,7 @@ public class MainActivity extends BaseActivity implements RvMainAdapter.RvItemCl
 
     @Override
     public void setPic(List<PixabayListBean.HitsBean> hitsBeen) {
-
+        // FIXME: 2017/9/19 0019 处理下无网络时的默认显示的图片
         if (hitsBeen != null) {
             Glide.with(this).load(hitsBeen.get(0).getWebformatURL()).into(mImagerNvHeader);
 
@@ -217,5 +219,16 @@ public class MainActivity extends BaseActivity implements RvMainAdapter.RvItemCl
                 break;
         }
         return true;
+    }
+
+    @Override
+    public void showErrorMessage(String message) {
+        showMessageDialog(message, TopFloatHintDialog.Builder.ICON_TYPE_FAIL);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mMainActivityPresenter.unsubscribe();
     }
 }
