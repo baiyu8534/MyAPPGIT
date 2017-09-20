@@ -35,11 +35,11 @@ public class NetWorkUtil {
     }
 
     /**
-     * 检测3G是否连接
+     * 检测移动网络是否连接
      *
      * @return
      */
-    public static boolean is3gConnected(Context context) {
+    public static boolean isMobileConnected(Context context) {
         ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = cm.getActiveNetworkInfo();
         return networkInfo != null && networkInfo.getType() == ConnectivityManager.TYPE_MOBILE;

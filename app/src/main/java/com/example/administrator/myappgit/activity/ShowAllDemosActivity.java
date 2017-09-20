@@ -1,10 +1,7 @@
 package com.example.administrator.myappgit.activity;
 
 import android.app.Application;
-import android.content.Context;
 import android.content.Intent;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
@@ -31,6 +28,7 @@ import com.example.administrator.myappgit.bean.adapterBean.RvShowAllDemosAdapter
 import com.example.administrator.myappgit.presenter.implPresenter.ShowAllDemosActivityPresenterImpl;
 import com.example.administrator.myappgit.service.BaseService;
 import com.example.administrator.myappgit.ui.ShowAllDemosRvItemRecoration;
+import com.example.administrator.myappgit.utils.NetWorkUtil;
 import com.example.administrator.myappgit.utils.UIUtil;
 
 import java.util.ArrayList;
@@ -206,48 +204,66 @@ public class ShowAllDemosActivity extends BaseActivity implements IShowAllDemosA
      * 进入app后检查网络状态，保存网络的类型
      */
     private void checkNetWorkState() {
-        ConnectivityManager manager = (ConnectivityManager) mContext
-                .getSystemService(Context.CONNECTIVITY_SERVICE);
-        Log.i(TAG, "CONNECTIVITY_ACTION");
-
-        NetworkInfo activeNetwork = manager.getActiveNetworkInfo();
-        if (activeNetwork != null) { // connected to the internet
-            if (activeNetwork.isConnected()) {
-                //有网就保存网络状态
-                if (activeNetwork.getType() == ConnectivityManager.TYPE_WIFI) {
-                    // connected to wifi
-                    MyApplication.getInstance().setWifi(true);
-                    MyApplication.getInstance().setConnected(true);
-                    Log.e(TAG, "当前WiFi连接可用 ");
-                } else if (activeNetwork.getType() == ConnectivityManager.TYPE_MOBILE) {
-                    // connected to the mobile provider's data plan
-                    MyApplication.getInstance().setMobile(true);
-                    MyApplication.getInstance().setConnected(true);
-                    Log.e(TAG, "当前移动网络连接可用 ");
-                }
-            } else {
-                //没网就弹出提示让设置网络
-                Log.e(TAG, "当前没有网络连接，请确保你已经打开网络 ");
-                snackNewWorkErrorMessage();
-                MyApplication.getInstance().setWifi(false);
-                MyApplication.getInstance().setMobile(false);
-                MyApplication.getInstance().setConnected(false);
-            }
-        } else {
-            //没网就弹出提示让设置网络
+        if (NetWorkUtil.isWifiConnected(mContext)) {
+            MyApplication.getInstance().setWifi(true);
+            MyApplication.getInstance().setConnected(true);
+            Log.e(TAG, "当前WiFi连接可用 ");
+        }
+        if (NetWorkUtil.isMobileConnected(mContext)) {
+            MyApplication.getInstance().setMobile(true);
+            MyApplication.getInstance().setConnected(true);
+            Log.e(TAG, "当前移动网络连接可用 ");
+        }
+        if (!NetWorkUtil.isNetWorkAvailable(mContext)) {
             Log.e(TAG, "当前没有网络连接，请确保你已经打开网络 ");
             snackNewWorkErrorMessage();
             MyApplication.getInstance().setWifi(false);
             MyApplication.getInstance().setMobile(false);
             MyApplication.getInstance().setConnected(false);
-
         }
+
+//        ConnectivityManager manager = (ConnectivityManager) mContext
+//                .getSystemService(Context.CONNECTIVITY_SERVICE);
+//        Log.i(TAG, "CONNECTIVITY_ACTION");
+//
+//        NetworkInfo activeNetwork = manager.getActiveNetworkInfo();
+//        if (activeNetwork != null) { // connected to the internet
+//            if (activeNetwork.isConnected()) {
+//                //有网就保存网络状态
+//                if (activeNetwork.getType() == ConnectivityManager.TYPE_WIFI) {
+//                    // connected to wifi
+//                    MyApplication.getInstance().setWifi(true);
+//                    MyApplication.getInstance().setConnected(true);
+//                    Log.e(TAG, "当前WiFi连接可用 ");
+//                } else if (activeNetwork.getType() == ConnectivityManager.TYPE_MOBILE) {
+//                    // connected to the mobile provider's data plan
+//                    MyApplication.getInstance().setMobile(true);
+//                    MyApplication.getInstance().setConnected(true);
+//                    Log.e(TAG, "当前移动网络连接可用 ");
+//                }
+//            } else {
+//                //没网就弹出提示让设置网络
+//                Log.e(TAG, "当前没有网络连接，请确保你已经打开网络 ");
+//                snackNewWorkErrorMessage();
+//                MyApplication.getInstance().setWifi(false);
+//                MyApplication.getInstance().setMobile(false);
+//                MyApplication.getInstance().setConnected(false);
+//            }
+//        } else {
+//            //没网就弹出提示让设置网络
+//            Log.e(TAG, "当前没有网络连接，请确保你已经打开网络 ");
+//            snackNewWorkErrorMessage();
+//            MyApplication.getInstance().setWifi(false);
+//            MyApplication.getInstance().setMobile(false);
+//            MyApplication.getInstance().setConnected(false);
+//
+//        }
     }
 
     /**
      * 无网络时提示
      */
-    private void snackNewWorkErrorMessage(){
+    private void snackNewWorkErrorMessage() {
         UIUtil.snackLong(mRvShow, getString(R.string.alert_message_no_network_conn),
                 new View.OnClickListener() {
                     @Override
