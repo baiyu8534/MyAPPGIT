@@ -22,17 +22,17 @@
         app:whorlview_parallax="fast"
         />
     <!--<com.example.administrator.myappgit.ui.WhorlView-->
-        <!--android:id="@+id/wv_dialog"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_gravity="center"-->
-        <!--android:layout_marginTop="32dp"-->
-        <!--app:whorlview_circle_colors="#5677fc_#F44336_#4CAF50"-->
-        <!--app:whorlview_circle_speed="270"-->
-        <!--app:whorlview_parallax="fast"-->
-        <!--app:whorlview_strokeWidth="8"-->
-        <!--app:whorlview_sweepAngle="8"-->
-        <!--/>-->
+    <!--android:id="@+id/wv_dialog"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_gravity="center"-->
+    <!--android:layout_marginTop="32dp"-->
+    <!--app:whorlview_circle_colors="#5677fc_#F44336_#4CAF50"-->
+    <!--app:whorlview_circle_speed="270"-->
+    <!--app:whorlview_parallax="fast"-->
+    <!--app:whorlview_strokeWidth="8"-->
+    <!--app:whorlview_sweepAngle="8"-->
+    <!--/>-->
 
     <ViewStub
         android:id="@+id/vs_no_connection"

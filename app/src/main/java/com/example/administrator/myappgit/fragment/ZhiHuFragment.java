@@ -66,6 +66,7 @@ public class ZhiHuFragment extends BaseFragment implements IZhiHuFragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        // FIXME: 2017/9/20 0020 没网时不显示列表，显示一个图标加一个按钮提示没网（暂定）
         View view = inflater.inflate(R.layout.fragment_zhuhu_layout, container, false);
         unbinder = ButterKnife.bind(this, view);
         initView();

@@ -19,7 +19,6 @@
             android:background="@color/colorPrimary">
 
 
-
         </android.support.v7.widget.Toolbar>
 
         <include layout="@layout/toolbar_layout"/>
@@ -28,8 +27,8 @@
             android:id="@+id/rv_main"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:scrollbars="none"
             android:layout_marginTop="?attr/actionBarSize"
+            android:scrollbars="none"
             >
 
         </android.support.v7.widget.RecyclerView>

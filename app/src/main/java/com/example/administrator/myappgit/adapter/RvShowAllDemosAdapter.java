@@ -47,8 +47,8 @@ public class RvShowAllDemosAdapter extends RecyclerView.Adapter<RvShowAllDemosAd
         viewHolder.tv_item_title.setText(datas.get(position).getItemTitle());
         Glide.with(mContext).load(datas.get(position).getItemImageUrl())
                 .apply(new RequestOptions()
-                        .error(R.drawable.guide_3_s)
-                        .placeholder(R.drawable.guide_3_s)
+                        .error(R.drawable.show_image_default)
+                        .placeholder(R.drawable.show_image_default)
                         .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
                         .centerCrop())
                 //加载缩略图，缩略图先加载完就显示，否则不显示

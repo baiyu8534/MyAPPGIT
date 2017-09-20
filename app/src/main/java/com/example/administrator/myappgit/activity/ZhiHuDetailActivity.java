@@ -41,6 +41,7 @@ public class ZhiHuDetailActivity extends BaseActivity implements IZhiHuDetailAct
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        // FIXME: 2017/9/20 0020 没网时不显示列表，显示一个图标加一个按钮提示没网（暂定）
         setContentView(setSwipeContentView(R.layout.activity_zhuhu_detail_layout));
         mWvDetail = (WebView) findViewById(R.id.wv_detail);
         mWvDialog = (WhorlView) findViewById(R.id.wv_dialog);

@@ -18,6 +18,20 @@ public class MyApplication extends Application {
     private static MyApplication myApplication;
     private static int mainTid;
 
+    // FIXME: 2017/9/20 0020 等加了在service中加了网络状态的动态监听，就可以动态的设置，在做网络请求时去判断是否做出相应的提示
+    /**
+     * 当前网络为wifi
+     */
+    private boolean isWifi;
+    /**
+     * 当前网络为移动数据
+     */
+    private boolean isMobile;
+    /**
+     * 当前网络是否连接
+     */
+    private boolean isConnected;
+
     private static List<BaseActivity> activitys;
     /**
      * 当前正在显示的activity
@@ -36,7 +50,35 @@ public class MyApplication extends Application {
         mainTid = android.os.Process.myTid();
     }
 
+    public boolean isWifi() {
+        return isWifi;
+    }
+
+    public boolean isMobile() {
+        return isMobile;
+    }
+
+    public boolean isConnected() {
+        return isConnected;
+    }
+
+    public void setWifi(boolean wifi) {
+        isWifi = wifi;
+    }
+
+    public void setMobile(boolean mobile) {
+        isMobile = mobile;
+    }
+
+    public void setConnected(boolean connected) {
+        isConnected = connected;
+    }
+
     public static Context getContext() {
+        return myApplication;
+    }
+
+    public static MyApplication getInstance(){
         return myApplication;
     }
 

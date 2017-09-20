@@ -40,6 +40,7 @@ public class ItemBGRollRvActivity extends BaseActivity implements IItemBGRollRvA
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        // FIXME: 2017/9/20 0020 没网时不显示列表，显示一个图标加一个按钮提示没网（暂定）
         setContentView(R.layout.activity_item_bg_roll_rv_layout);
         ButterKnife.bind(this);
         initData();
