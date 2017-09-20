@@ -18,9 +18,6 @@ import android.widget.TextView;
 import com.example.administrator.myappgit.R;
 import com.example.administrator.myappgit.app.AppConstant;
 
-import static com.example.administrator.myappgit.app.AppConstant.ICON_TYPE_FAIL;
-import static com.example.administrator.myappgit.app.AppConstant.ICON_TYPE_SUCCESS;
-
 /**
  * 文件名：TopFloatHintDialog
  * 描述：顶层悬浮dialog
@@ -79,8 +76,8 @@ public class TopFloatHintDialog extends Dialog {
                 case AppConstant.ICON_TYPE_LOADING:
 
                     break;
-                case ICON_TYPE_SUCCESS:
-                case ICON_TYPE_FAIL:
+                case AppConstant.ICON_TYPE_SUCCESS:
+                case AppConstant.ICON_TYPE_FAIL:
                 case AppConstant.ICON_TYPE_INFO:
                     ImageView imageView = new ImageView(mContext);
                     LinearLayout.LayoutParams imageViewLP = new LinearLayout.LayoutParams(LinearLayout.LayoutParams
