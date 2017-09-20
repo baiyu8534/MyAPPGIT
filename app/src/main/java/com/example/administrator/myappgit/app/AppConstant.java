@@ -7,23 +7,23 @@ package com.example.administrator.myappgit.app;
 
 public class AppConstant {
 
-    public static final int HANDLER_WHAT_NETWORK_ERROR = 1401;
-
     /**
      * 显示 Loading 图标
      */
-    public static final int ICON_TYPE_LOADING = 1;
+    public static final int ICON_TYPE_LOADING = 1402;
     /**
      * 显示成功图标
      */
-    public static final int ICON_TYPE_SUCCESS = 2;
+    public static final int ICON_TYPE_SUCCESS = 1403;
     /**
      * 显示失败图标
      */
-    public static final int ICON_TYPE_FAIL = 3;
+    public static final int ICON_TYPE_FAIL = 1404;
     /**
      * 显示信息图标
      */
-    public static final int ICON_TYPE_INFO = 4;
+    public static final int ICON_TYPE_INFO = 1405;
+
+    public static final int HANDLER_WHAT_NETWORK_CONN_FAIL = 1406;
 
 }

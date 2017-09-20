@@ -26,7 +26,7 @@ public class BaseActivity extends AppCompatActivity {
 
     public BaseActivityHandler mBaseActivityHandler;
 
-    private static class BaseActivityHandler extends Handler {
+    public static class BaseActivityHandler extends Handler {
         private WeakReference<BaseActivity> activityWeakReference;
 
         public BaseActivityHandler(BaseActivity activity) {
@@ -38,9 +38,10 @@ public class BaseActivity extends AppCompatActivity {
             BaseActivity activity = activityWeakReference.get();
             if (activity != null) {
                 switch (msg.what) {
-                    case AppConstant.HANDLER_WHAT_NETWORK_ERROR:
+                    case AppConstant.HANDLER_WHAT_NETWORK_CONN_FAIL:
                         activity.showMessageDialog(activity.getString(R.string.error_message_network_connections_break),
                                 AppConstant.ICON_TYPE_FAIL);
+                        activity.networkConnFail();
                         break;
                 }
             }
@@ -121,6 +122,12 @@ public class BaseActivity extends AppCompatActivity {
         <!--允许 弹出系统级别的AlterDialog-->
         <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>*/
 
+    }
+
+    /**
+     * 需要监听网络变化的activity复写这个方法即可
+     */
+    protected void networkConnFail(){
     }
 
 }

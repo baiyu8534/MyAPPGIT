@@ -8,6 +8,13 @@ import android.content.IntentFilter;
 import android.net.ConnectivityManager;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
+import android.util.Log;
+
+import com.example.administrator.myappgit.MyApplication;
+import com.example.administrator.myappgit.app.AppConstant;
+import com.example.administrator.myappgit.utils.NetWorkUtil;
+
+import static android.content.ContentValues.TAG;
 
 /**
  * 文件名：BaseService
@@ -20,9 +27,11 @@ import android.support.annotation.Nullable;
 public class BaseService extends Service {
 
     // FIXME: 2017/9/20 0020 监听网络连接的变化
+    private Context mContext;
     @Override
     public void onCreate() {
         super.onCreate();
+        mContext = this;
         // 注册广播
         IntentFilter mFilter = new IntentFilter();
         // 添加接收网络连接状态改变的Action
@@ -47,6 +56,23 @@ public class BaseService extends Service {
             String action = intent.getAction();
             if (action.equals(ConnectivityManager.CONNECTIVITY_ACTION)) {
                 // FIXME: 2017/9/20 0020 通知当前Activity
+                if (NetWorkUtil.isWifiConnected(mContext)) {
+                    MyApplication.getInstance().setWifi(true);
+                    MyApplication.getInstance().setConnected(true);
+                    Log.e(TAG, "当前WiFi连接可用 ");
+                }
+                if (NetWorkUtil.isMobileConnected(mContext)) {
+                    MyApplication.getInstance().setMobile(true);
+                    MyApplication.getInstance().setConnected(true);
+                    Log.e(TAG, "当前移动网络连接可用 ");
+                }
+                if (!NetWorkUtil.isNetWorkAvailable(mContext)) {
+                    Log.e(TAG, "当前没有网络连接，请确保你已经打开网络 ");
+                    MyApplication.getInstance().getCurrentActivity().mBaseActivityHandler.sendEmptyMessage(AppConstant.HANDLER_WHAT_NETWORK_CONN_FAIL);
+                    MyApplication.getInstance().setWifi(false);
+                    MyApplication.getInstance().setMobile(false);
+                    MyApplication.getInstance().setConnected(false);
+                }
             }
         }
     };
