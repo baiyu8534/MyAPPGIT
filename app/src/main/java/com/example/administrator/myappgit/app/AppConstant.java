@@ -7,9 +7,23 @@ package com.example.administrator.myappgit.app;
 
 public class AppConstant {
 
-    public static final int SHOW_PAGER_TAG_ZHIHU = 1000;
-    public static final int SHOW_PAGER_TAG_DOUBAN = 1001;
-    public static final int SHOW_PAGER_TAG_TIANQI = 1002;
-    public static final int SHOW_PAGER_TAG_METU = 1003;
+    public static final int HANDLER_WHAT_NETWORK_ERROR = 1401;
+
+    /**
+     * 显示 Loading 图标
+     */
+    public static final int ICON_TYPE_LOADING = 1;
+    /**
+     * 显示成功图标
+     */
+    public static final int ICON_TYPE_SUCCESS = 2;
+    /**
+     * 显示失败图标
+     */
+    public static final int ICON_TYPE_FAIL = 3;
+    /**
+     * 显示信息图标
+     */
+    public static final int ICON_TYPE_INFO = 4;
 
 }

@@ -32,6 +32,7 @@
         <activity android:name=".activity.ItemBGRollListActivity"/>
         <activity android:name=".activity.ShowImageActivity"/>
 
+        <service android:name=".service.BaseService"/>
     </application>
 
 </manifest>

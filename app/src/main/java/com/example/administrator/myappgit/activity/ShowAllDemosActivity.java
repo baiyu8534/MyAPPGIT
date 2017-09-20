@@ -18,10 +18,10 @@ import com.example.administrator.myappgit.IView.IShowAllDemosActivity;
 import com.example.administrator.myappgit.MainActivity;
 import com.example.administrator.myappgit.R;
 import com.example.administrator.myappgit.adapter.RvShowAllDemosAdapter;
+import com.example.administrator.myappgit.app.AppConstant;
 import com.example.administrator.myappgit.bean.adapterBean.RvShowAllDemosAdapterItemBean;
 import com.example.administrator.myappgit.presenter.implPresenter.ShowAllDemosActivityPresenterImpl;
 import com.example.administrator.myappgit.ui.ShowAllDemosRvItemRecoration;
-import com.example.administrator.myappgit.ui.TopFloatHintDialog;
 
 import java.util.ArrayList;
 
@@ -151,7 +151,7 @@ public class ShowAllDemosActivity extends BaseActivity implements IShowAllDemosA
 
     @Override
     public void showErrorMessage(String message) {
-        showMessageDialog(message, TopFloatHintDialog.Builder.ICON_TYPE_FAIL);
+        showMessageDialog(message, AppConstant.ICON_TYPE_FAIL);
     }
 
     @Override

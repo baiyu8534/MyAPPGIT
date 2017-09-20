@@ -34,4 +34,5 @@
     <string name="error_message_no_network">无网络，请检查网络连接</string>
     <string name="error_message_unknown_error">未知错误</string>
     <string name="error_message_service_data_abnormal">服务器数据异常</string>
+    <string name="error_message_network_connections_break">网络连接已断开</string>
 </resources>

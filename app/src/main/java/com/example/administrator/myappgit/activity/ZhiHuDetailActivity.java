@@ -15,9 +15,9 @@ import android.widget.RelativeLayout;
 
 import com.example.administrator.myappgit.IView.IZhiHuDetailActivity;
 import com.example.administrator.myappgit.R;
+import com.example.administrator.myappgit.app.AppConstant;
 import com.example.administrator.myappgit.bean.ZhiHuBean.ZhiHuNewDetail;
 import com.example.administrator.myappgit.presenter.implPresenter.IZhiHuDetailActivityPresenterImpl;
-import com.example.administrator.myappgit.ui.TopFloatHintDialog;
 import com.example.administrator.myappgit.ui.WhorlView;
 import com.liuguangqiang.swipeback.SwipeBackLayout;
 
@@ -136,7 +136,7 @@ public class ZhiHuDetailActivity extends BaseActivity implements IZhiHuDetailAct
 
     @Override
     public void showErrorMessage(String message) {
-        showMessageDialog(message, TopFloatHintDialog.Builder.ICON_TYPE_FAIL);
+        showMessageDialog(message, AppConstant.ICON_TYPE_FAIL);
     }
 
     @Override

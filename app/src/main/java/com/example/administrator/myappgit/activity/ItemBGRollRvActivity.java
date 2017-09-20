@@ -10,8 +10,8 @@ import android.widget.ImageView;
 import com.example.administrator.myappgit.IView.IItemBGRollRvActivity;
 import com.example.administrator.myappgit.R;
 import com.example.administrator.myappgit.adapter.TravelRecyclerAdapter;
+import com.example.administrator.myappgit.app.AppConstant;
 import com.example.administrator.myappgit.presenter.implPresenter.IItemBGRollRvActivityPresenterImpl;
-import com.example.administrator.myappgit.ui.TopFloatHintDialog;
 import com.example.administrator.myappgit.ui.TravelRecyclerView;
 import com.example.administrator.myappgit.utils.ScreenUtil;
 
@@ -136,7 +136,7 @@ public class ItemBGRollRvActivity extends BaseActivity implements IItemBGRollRvA
 
     @Override
     public void showErrorMessage(String message) {
-        showMessageDialog(message, TopFloatHintDialog.Builder.ICON_TYPE_FAIL);
+        showMessageDialog(message, AppConstant.ICON_TYPE_FAIL);
     }
 
     @Override

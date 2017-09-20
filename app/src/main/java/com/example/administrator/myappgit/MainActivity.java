@@ -27,10 +27,10 @@ import com.example.administrator.myappgit.activity.BaseActivity;
 import com.example.administrator.myappgit.activity.ShowListActivity;
 import com.example.administrator.myappgit.adapter.RvMainAdapter;
 import com.example.administrator.myappgit.api.PixabayApi;
+import com.example.administrator.myappgit.app.AppConstant;
 import com.example.administrator.myappgit.bean.PixadayBean.PixabayListBean;
 import com.example.administrator.myappgit.presenter.implPresenter.MainActivityPresenterImpl;
 import com.example.administrator.myappgit.ui.MainRvItemDecoration;
-import com.example.administrator.myappgit.ui.TopFloatHintDialog;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -223,7 +223,7 @@ public class MainActivity extends BaseActivity implements RvMainAdapter.RvItemCl
 
     @Override
     public void showErrorMessage(String message) {
-        showMessageDialog(message, TopFloatHintDialog.Builder.ICON_TYPE_FAIL);
+        showMessageDialog(message, AppConstant.ICON_TYPE_FAIL);
     }
 
     @Override

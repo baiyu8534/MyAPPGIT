@@ -19,6 +19,10 @@ public class MyApplication extends Application {
     private static int mainTid;
 
     private static List<BaseActivity> activitys;
+    /**
+     * 当前正在显示的activity
+     */
+    private BaseActivity currentActivity;
 
     static {
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM);
@@ -56,11 +60,16 @@ public class MyApplication extends Application {
         }
     }
 
-    public static void finishApp(){
+    public static void finishApp() {
         finishAllActivity();
         System.exit(0);
     }
 
-    //提交成功
+    public BaseActivity getCurrentActivity() {
+        return currentActivity;
+    }
 
+    public void setCurrentActivity(BaseActivity currentActivity) {
+        this.currentActivity = currentActivity;
+    }
 }

@@ -25,7 +25,7 @@ public interface PixabayApi {
      */
     String PIXABAY_QUARY_TAG_SCENERY = "风景";
 
-    // FIXME: 2017/9/12 0012 证书应该没问题。。要调一下
+    // FIXME: 2017/9/12 0012 证书就是坑爹的，加载了证书也不行
 
     /**
      * 获取最新的查询条件的图片

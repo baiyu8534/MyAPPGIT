@@ -16,6 +16,10 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.administrator.myappgit.R;
+import com.example.administrator.myappgit.app.AppConstant;
+
+import static com.example.administrator.myappgit.app.AppConstant.ICON_TYPE_FAIL;
+import static com.example.administrator.myappgit.app.AppConstant.ICON_TYPE_SUCCESS;
 
 /**
  * 文件名：TopFloatHintDialog
@@ -42,24 +46,6 @@ public class TopFloatHintDialog extends Dialog {
     }
 
     public static class Builder {
-
-        /**
-         * 显示 Loading 图标
-         */
-        public static final int ICON_TYPE_LOADING = 1;
-        /**
-         * 显示成功图标
-         */
-        public static final int ICON_TYPE_SUCCESS = 2;
-        /**
-         * 显示失败图标
-         */
-        public static final int ICON_TYPE_FAIL = 3;
-        /**
-         * 显示信息图标
-         */
-        public static final int ICON_TYPE_INFO = 4;
-
         private Context mContext;
         private int iconType;
         private CharSequence message;
@@ -90,20 +76,20 @@ public class TopFloatHintDialog extends Dialog {
             dialog.getWindow().setAttributes(attributes);
 
             switch (iconType) {
-                case ICON_TYPE_LOADING:
+                case AppConstant.ICON_TYPE_LOADING:
 
                     break;
                 case ICON_TYPE_SUCCESS:
                 case ICON_TYPE_FAIL:
-                case ICON_TYPE_INFO:
+                case AppConstant.ICON_TYPE_INFO:
                     ImageView imageView = new ImageView(mContext);
                     LinearLayout.LayoutParams imageViewLP = new LinearLayout.LayoutParams(LinearLayout.LayoutParams
                             .WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
                     imageView.setLayoutParams(imageViewLP);
 
-                    if (iconType == ICON_TYPE_SUCCESS) {
+                    if (iconType == AppConstant.ICON_TYPE_SUCCESS) {
                         imageView.setImageDrawable(mContext.getResources().getDrawable(R.mipmap.qmui_icon_notify_done));
-                    } else if (iconType == ICON_TYPE_FAIL) {
+                    } else if (iconType == AppConstant.ICON_TYPE_FAIL) {
                         imageView.setImageDrawable(mContext.getResources().getDrawable(R.mipmap.qmui_icon_notify_error));
                     } else {
                         imageView.setImageDrawable(mContext.getResources().getDrawable(R.mipmap.qmui_icon_notify_info));

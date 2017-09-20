@@ -12,10 +12,10 @@ import android.view.ViewStub;
 import com.example.administrator.myappgit.IView.IZhiHuFragment;
 import com.example.administrator.myappgit.R;
 import com.example.administrator.myappgit.adapter.RvZhiHuFragmentAdapter;
+import com.example.administrator.myappgit.app.AppConstant;
 import com.example.administrator.myappgit.bean.ZhiHuBean.NewsListBean;
 import com.example.administrator.myappgit.presenter.implPresenter.ZhiHuFragmentPresenterImpl;
 import com.example.administrator.myappgit.ui.ShowRvItemDecoration;
-import com.example.administrator.myappgit.ui.TopFloatHintDialog;
 import com.example.administrator.myappgit.ui.WhorlView;
 
 import butterknife.BindView;
@@ -161,7 +161,7 @@ public class ZhiHuFragment extends BaseFragment implements IZhiHuFragment {
 
     @Override
     public void showErrorMessage(String message) {
-        showMessageDialog(message, TopFloatHintDialog.Builder.ICON_TYPE_FAIL);
+        showMessageDialog(message, AppConstant.ICON_TYPE_FAIL);
     }
 
     @Override
