@@ -29,6 +29,7 @@ import com.example.administrator.myappgit.adapter.RvShowAllDemosAdapter;
 import com.example.administrator.myappgit.app.AppConstant;
 import com.example.administrator.myappgit.bean.adapterBean.RvShowAllDemosAdapterItemBean;
 import com.example.administrator.myappgit.presenter.implPresenter.ShowAllDemosActivityPresenterImpl;
+import com.example.administrator.myappgit.service.BaseService;
 import com.example.administrator.myappgit.ui.ShowAllDemosRvItemRecoration;
 import com.example.administrator.myappgit.utils.UIUtil;
 
@@ -90,6 +91,7 @@ public class ShowAllDemosActivity extends BaseActivity implements IShowAllDemosA
         if (MyApplication.getInstance().isConnected()) {
             mShowAllDemosActivityPresenter.getImages(adapterItemBeans.size() + "", page + "");
         }
+        startService(new Intent(mContext, BaseService.class));
     }
 
     private void initViewListener() {
@@ -193,7 +195,7 @@ public class ShowAllDemosActivity extends BaseActivity implements IShowAllDemosA
                 Toast.makeText(getApplicationContext(), "再按一次退出程序", Toast.LENGTH_SHORT).show();
                 exitTime = System.currentTimeMillis();
             } else {
-                MyApplication.finishApp();
+                MyApplication.getInstance().finishApp();
             }
             return true;
         }

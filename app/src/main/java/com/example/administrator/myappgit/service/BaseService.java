@@ -15,6 +15,7 @@ import android.support.annotation.Nullable;
 
 public class BaseService extends Service {
 
+    // FIXME: 2017/9/20 0020 监听网络连接的变化
     @Override
     public void onCreate() {
         super.onCreate();

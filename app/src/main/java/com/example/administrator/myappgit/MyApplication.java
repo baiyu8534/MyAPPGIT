@@ -1,11 +1,15 @@
 package com.example.administrator.myappgit;
 
+import android.app.ActivityManager;
 import android.app.Application;
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.app.AppCompatDelegate;
 
 import com.example.administrator.myappgit.activity.BaseActivity;
+import com.example.administrator.myappgit.service.BaseService;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -78,7 +82,7 @@ public class MyApplication extends Application {
         return myApplication;
     }
 
-    public static MyApplication getInstance(){
+    public static MyApplication getInstance() {
         return myApplication;
     }
 
@@ -102,7 +106,18 @@ public class MyApplication extends Application {
         }
     }
 
-    public static void finishApp() {
+    public void finishApp() {
+        ActivityManager myManager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
+        ArrayList<ActivityManager.RunningServiceInfo> runningService = (ArrayList<ActivityManager.RunningServiceInfo>)
+                myManager.getRunningServices(30);
+        for (int i = 0; i < runningService.size(); i++) {
+            //判断启动的service有没有baseService
+            if (runningService.get(i).service.getClassName().toString().equals("com.example.administrator.myappgit.service" +
+                    ".BaseService")) {
+                stopService(new Intent(this, BaseService.class));
+            }
+        }
+
         finishAllActivity();
         System.exit(0);
     }
