@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.view.ViewStub;
 
 import com.example.administrator.myappgit.IView.IZhiHuFragment;
+import com.example.administrator.myappgit.MyApplication;
 import com.example.administrator.myappgit.R;
 import com.example.administrator.myappgit.adapter.RvZhiHuFragmentAdapter;
 import com.example.administrator.myappgit.app.AppConstant;
@@ -17,6 +18,7 @@ import com.example.administrator.myappgit.bean.ZhiHuBean.NewsListBean;
 import com.example.administrator.myappgit.presenter.implPresenter.ZhiHuFragmentPresenterImpl;
 import com.example.administrator.myappgit.ui.ShowRvItemDecoration;
 import com.example.administrator.myappgit.ui.WhorlView;
+import com.example.administrator.myappgit.utils.UIUtil;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -31,6 +33,7 @@ public class ZhiHuFragment extends BaseFragment implements IZhiHuFragment {
 
     @BindView(R.id.rv_show_list)
     RecyclerView mRvShowList;
+    // FIXME: 2017/9/21 0021 ViewStub不怎么靠谱啊，好像只能是textview。。
     @BindView(R.id.vs_no_connection)
     ViewStub mVsNoConnection;
     Unbinder unbinder;
@@ -45,8 +48,6 @@ public class ZhiHuFragment extends BaseFragment implements IZhiHuFragment {
 
     private boolean loading;
 
-    // FIXME: 2017/9/6 要加网络是否通畅的判断和相应的操作
-    private boolean networkIsOk = true;
     private ZhiHuFragmentPresenterImpl mZhiHuFragmentPresenter;
     private RecyclerView.OnScrollListener mOnScrollListener;
     private LinearLayoutManager mLinearLayoutManager;
@@ -66,22 +67,24 @@ public class ZhiHuFragment extends BaseFragment implements IZhiHuFragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        // FIXME: 2017/9/20 0020 没网时不显示列表，显示一个图标加一个按钮提示没网（暂定）
         View view = inflater.inflate(R.layout.fragment_zhuhu_layout, container, false);
         unbinder = ButterKnife.bind(this, view);
         initView();
 
         mZhiHuFragmentPresenter = new ZhiHuFragmentPresenterImpl(getContext(), this);
-        if (networkIsOk) {
-            loadData();
-        }
-
+        loadData();
         return view;
     }
 
     private void loadData() {
-        currentLoadDate = "0";
-        mZhiHuFragmentPresenter.getNewsList();
+        if (MyApplication.getInstance().isConnected()) {
+            currentLoadDate = "0";
+            mZhiHuFragmentPresenter.getNewsList();
+        } else {
+            // FIXME: 2017/9/21 0021 第一次加载失败，不显示列表，找个显示的。。。但是也会导致下次进来不显示缓存。。
+            UIUtil.showMessageDialog(getActivity(), getString(R.string.alert_message_no_network_conn), AppConstant
+                    .ICON_TYPE_FAIL);
+        }
     }
 
     private void initViewListener() {
@@ -157,12 +160,22 @@ public class ZhiHuFragment extends BaseFragment implements IZhiHuFragment {
 
 
     public void loadMoreData() {
-        mZhiHuFragmentPresenter.getMoreNews(currentLoadDate);
+        //加判断的好处就是可以少执行写代码
+        if (MyApplication.getInstance().isConnected()) {
+            mZhiHuFragmentPresenter.getMoreNews(currentLoadDate);
+        } else {
+            // FIXME: 2017/9/21 0021 不能放这。。要不滑下去后，一直死循环去显示dialog，在service中加个有网时的通知
+//            if (loading) {
+//                loading = false;
+//            }
+            UIUtil.showMessageDialog(getActivity(), getString(R.string.alert_message_no_network_conn), AppConstant
+                    .ICON_TYPE_FAIL);
+        }
     }
 
     @Override
-    public void showErrorMessage(String message) {
-        showMessageDialog(message, AppConstant.ICON_TYPE_FAIL);
+    public void showNetworkRequestErrorMessage(String message) {
+        UIUtil.showMessageDialog(getActivity(), message, AppConstant.ICON_TYPE_FAIL);
     }
 
     @Override

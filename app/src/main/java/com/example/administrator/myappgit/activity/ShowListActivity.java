@@ -453,5 +453,8 @@ public class ShowListActivity extends BaseActivity {
         return super.onKeyDown(keyCode, event);
     }
 
-
+    @Override
+    protected void noNetworkConnFail() {
+        UIUtil.snackNewWorkErrorMessage(mViewPager, getString(R.string.error_message_network_connections_break));
+    }
 }

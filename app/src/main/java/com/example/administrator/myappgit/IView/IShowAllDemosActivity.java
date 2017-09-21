@@ -23,7 +23,7 @@ public interface IShowAllDemosActivity extends IBaseView{
      *
      * @param message
      */
-    void showErrorMessage(String message);
+    void showNetworkRequestErrorMessage(String message);
 
     /**
      * 控制下拉刷新的显示

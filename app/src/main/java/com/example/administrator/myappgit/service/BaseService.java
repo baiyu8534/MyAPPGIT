@@ -26,7 +26,6 @@ import static android.content.ContentValues.TAG;
 
 public class BaseService extends Service {
 
-    // FIXME: 2017/9/20 0020 监听网络连接的变化
     private Context mContext;
     @Override
     public void onCreate() {
@@ -55,7 +54,6 @@ public class BaseService extends Service {
         public void onReceive(Context context, Intent intent) {
             String action = intent.getAction();
             if (action.equals(ConnectivityManager.CONNECTIVITY_ACTION)) {
-                // FIXME: 2017/9/20 0020 通知当前Activity
                 if (NetWorkUtil.isWifiConnected(mContext)) {
                     MyApplication.getInstance().setWifi(true);
                     MyApplication.getInstance().setConnected(true);

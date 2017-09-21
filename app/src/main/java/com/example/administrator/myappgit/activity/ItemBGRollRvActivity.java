@@ -8,12 +8,14 @@ import android.view.View;
 import android.widget.ImageView;
 
 import com.example.administrator.myappgit.IView.IItemBGRollRvActivity;
+import com.example.administrator.myappgit.MyApplication;
 import com.example.administrator.myappgit.R;
 import com.example.administrator.myappgit.adapter.TravelRecyclerAdapter;
 import com.example.administrator.myappgit.app.AppConstant;
 import com.example.administrator.myappgit.presenter.implPresenter.IItemBGRollRvActivityPresenterImpl;
 import com.example.administrator.myappgit.ui.TravelRecyclerView;
 import com.example.administrator.myappgit.utils.ScreenUtil;
+import com.example.administrator.myappgit.utils.UIUtil;
 
 import java.util.ArrayList;
 
@@ -98,7 +100,26 @@ public class ItemBGRollRvActivity extends BaseActivity implements IItemBGRollRvA
     }
 
     private void loadMoreData() {
-        mPresenter.getImages(imageUrls.size() + "", page++ + "");
+        if (page == 1) {
+            //进页面第一次加载
+            if (MyApplication.getInstance().isConnected()) {
+                mPresenter.getImages(imageUrls.size() + "", page++ + "");
+            } else {
+                // FIXME: 2017/9/21 0021 第一次加载，没网不显示列表，的找个显示的。。但是也会导致下次进来不显示缓存。。
+                UIUtil.showMessageDialog(this, getString(R.string.alert_message_no_network_conn), AppConstant.ICON_TYPE_FAIL);
+            }
+        } else {
+            //少执行写代码，而且adapter不会增加数据和刷新显示
+            if (MyApplication.getInstance().isConnected()) {
+                mPresenter.getImages(imageUrls.size() + "", page++ + "");
+            } else {
+                // FIXME: 2017/9/21 0021 不能放这。。要不滑下去后，一直死循环去显示dialog，在service中加个有网时的通知
+//                if (isLoadingMoreData) {
+//                    isLoadingMoreData = false;
+//                }
+                UIUtil.showMessageDialog(this, getString(R.string.alert_message_no_network_conn), AppConstant.ICON_TYPE_FAIL);
+            }
+        }
     }
 
     private void initView() {
@@ -121,8 +142,9 @@ public class ItemBGRollRvActivity extends BaseActivity implements IItemBGRollRvA
 
     @Override
     public void upDataImages(ArrayList<String> images) {
-        if (isLoadingMoreData)
+        if (isLoadingMoreData) {
             isLoadingMoreData = false;
+        }
         int oldSize = imageUrls.size();
         if (page == 2) {
             //第一次加载
@@ -136,8 +158,8 @@ public class ItemBGRollRvActivity extends BaseActivity implements IItemBGRollRvA
     }
 
     @Override
-    public void showErrorMessage(String message) {
-        showMessageDialog(message, AppConstant.ICON_TYPE_FAIL);
+    public void showNetworkRequestErrorMessage(String message) {
+        UIUtil.showMessageDialog(this, message, AppConstant.ICON_TYPE_FAIL);
     }
 
     @Override
@@ -149,5 +171,10 @@ public class ItemBGRollRvActivity extends BaseActivity implements IItemBGRollRvA
     protected void onDestroy() {
         super.onDestroy();
         mPresenter.unsubscribe();
+    }
+
+    @Override
+    protected void noNetworkConnFail() {
+        UIUtil.snackNewWorkErrorMessage(mTrvShowImages, getString(R.string.error_message_network_connections_break));
     }
 }

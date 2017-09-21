@@ -29,6 +29,6 @@ public interface IZhiHuFragment extends IBaseView {
      *
      * @param message
      */
-    void showErrorMessage(String message);
+    void showNetworkRequestErrorMessage(String message);
 
 }

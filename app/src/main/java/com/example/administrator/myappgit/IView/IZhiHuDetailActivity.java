@@ -29,5 +29,5 @@ public interface IZhiHuDetailActivity extends IBaseView {
      *
      * @param message
      */
-    void showErrorMessage(String message);
+    void showNetworkRequestErrorMessage(String message);
 }

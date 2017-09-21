@@ -1,6 +1,5 @@
 package com.example.administrator.myappgit.activity;
 
-import android.app.Application;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -12,7 +11,6 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.ImageView;
@@ -28,15 +26,12 @@ import com.example.administrator.myappgit.bean.adapterBean.RvShowAllDemosAdapter
 import com.example.administrator.myappgit.presenter.implPresenter.ShowAllDemosActivityPresenterImpl;
 import com.example.administrator.myappgit.service.BaseService;
 import com.example.administrator.myappgit.ui.ShowAllDemosRvItemRecoration;
-import com.example.administrator.myappgit.utils.NetWorkUtil;
 import com.example.administrator.myappgit.utils.UIUtil;
 
 import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-
-import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
 
 /**
  * 文件名：ShowAllDemosActivity
@@ -81,15 +76,17 @@ public class ShowAllDemosActivity extends BaseActivity implements IShowAllDemosA
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_show_all_demos_layout);
         ButterKnife.bind(this);
+        // FIXME: 2017/9/21 0021 妈的要搞个启动页了。。在启动页开service,在这开，数据不及时，导致虽然有网，但第一次加载时isConnected()=false
+        startService(new Intent(mContext, BaseService.class));
+
         initData();
         initView();
         initViewListener();
         // FIXME: 2017/9/15 可以把图片加载放到启动页中
-        checkNetWorkState();
-        if (MyApplication.getInstance().isConnected()) {
+        //先注释掉。。没启动页。。。
+//        if (MyApplication.getInstance().isConnected()) {
             mShowAllDemosActivityPresenter.getImages(adapterItemBeans.size() + "", page + "");
-        }
-        startService(new Intent(mContext, BaseService.class));
+//        }
     }
 
     private void initViewListener() {
@@ -164,8 +161,8 @@ public class ShowAllDemosActivity extends BaseActivity implements IShowAllDemosA
     }
 
     @Override
-    public void showErrorMessage(String message) {
-        showMessageDialog(message, AppConstant.ICON_TYPE_FAIL);
+    public void showNetworkRequestErrorMessage(String message) {
+        UIUtil.showMessageDialog(this, message, AppConstant.ICON_TYPE_FAIL);
     }
 
     @Override
@@ -176,7 +173,13 @@ public class ShowAllDemosActivity extends BaseActivity implements IShowAllDemosA
 
     @Override
     public void onRefresh() {
-        mShowAllDemosActivityPresenter.getImages(adapterItemBeans.size() + "", ++page + "");
+        //加判断的好处就是可以少执行写代码
+        if (MyApplication.getInstance().isConnected()) {
+            mShowAllDemosActivityPresenter.getImages(adapterItemBeans.size() + "", ++page + "");
+        } else {
+            UIUtil.showMessageDialog(this, getString(R.string.alert_message_no_network_conn), AppConstant.ICON_TYPE_FAIL);
+            mSwipeRefresh.setRefreshing(false);
+        }
     }
 
     @Override
@@ -200,82 +203,9 @@ public class ShowAllDemosActivity extends BaseActivity implements IShowAllDemosA
         return super.onKeyDown(keyCode, event);
     }
 
-    /**
-     * 进入app后检查网络状态，保存网络的类型
-     */
-    private void checkNetWorkState() {
-        if (NetWorkUtil.isWifiConnected(mContext)) {
-            MyApplication.getInstance().setWifi(true);
-            MyApplication.getInstance().setConnected(true);
-            Log.e(TAG, "当前WiFi连接可用 ");
-        }
-        if (NetWorkUtil.isMobileConnected(mContext)) {
-            MyApplication.getInstance().setMobile(true);
-            MyApplication.getInstance().setConnected(true);
-            Log.e(TAG, "当前移动网络连接可用 ");
-        }
-        if (!NetWorkUtil.isNetWorkAvailable(mContext)) {
-            Log.e(TAG, "当前没有网络连接，请确保你已经打开网络 ");
-            snackNewWorkErrorMessage();
-            MyApplication.getInstance().setWifi(false);
-            MyApplication.getInstance().setMobile(false);
-            MyApplication.getInstance().setConnected(false);
-        }
-
-//        ConnectivityManager manager = (ConnectivityManager) mContext
-//                .getSystemService(Context.CONNECTIVITY_SERVICE);
-//        Log.i(TAG, "CONNECTIVITY_ACTION");
-//
-//        NetworkInfo activeNetwork = manager.getActiveNetworkInfo();
-//        if (activeNetwork != null) { // connected to the internet
-//            if (activeNetwork.isConnected()) {
-//                //有网就保存网络状态
-//                if (activeNetwork.getType() == ConnectivityManager.TYPE_WIFI) {
-//                    // connected to wifi
-//                    MyApplication.getInstance().setWifi(true);
-//                    MyApplication.getInstance().setConnected(true);
-//                    Log.e(TAG, "当前WiFi连接可用 ");
-//                } else if (activeNetwork.getType() == ConnectivityManager.TYPE_MOBILE) {
-//                    // connected to the mobile provider's data plan
-//                    MyApplication.getInstance().setMobile(true);
-//                    MyApplication.getInstance().setConnected(true);
-//                    Log.e(TAG, "当前移动网络连接可用 ");
-//                }
-//            } else {
-//                //没网就弹出提示让设置网络
-//                Log.e(TAG, "当前没有网络连接，请确保你已经打开网络 ");
-//                snackNewWorkErrorMessage();
-//                MyApplication.getInstance().setWifi(false);
-//                MyApplication.getInstance().setMobile(false);
-//                MyApplication.getInstance().setConnected(false);
-//            }
-//        } else {
-//            //没网就弹出提示让设置网络
-//            Log.e(TAG, "当前没有网络连接，请确保你已经打开网络 ");
-//            snackNewWorkErrorMessage();
-//            MyApplication.getInstance().setWifi(false);
-//            MyApplication.getInstance().setMobile(false);
-//            MyApplication.getInstance().setConnected(false);
-//
-//        }
-    }
-
-    /**
-     * 无网络时提示
-     */
-    private void snackNewWorkErrorMessage() {
-        UIUtil.snackLong(mRvShow, getString(R.string.alert_message_no_network_conn),
-                new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        // 跳转到系统的网络设置界面
-                        Intent intent = new Intent(android.provider.Settings.ACTION_WIRELESS_SETTINGS);
-                        if ((mContext instanceof Application)) {
-                            intent.addFlags(FLAG_ACTIVITY_NEW_TASK);
-                        }
-                        mContext.startActivity(intent);
-                    }
-                });
+    @Override
+    protected void noNetworkConnFail() {
+        UIUtil.snackNewWorkErrorMessage(mRvShow, getString(R.string.alert_message_no_network_conn));
     }
 
 }

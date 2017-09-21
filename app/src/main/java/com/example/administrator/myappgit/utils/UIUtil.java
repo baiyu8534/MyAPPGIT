@@ -1,8 +1,10 @@
 package com.example.administrator.myappgit.utils;
 
 import android.app.Activity;
+import android.app.Application;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
@@ -12,6 +14,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.support.design.widget.Snackbar;
+import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
 import android.view.View;
@@ -21,6 +24,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.administrator.myappgit.R;
+import com.example.administrator.myappgit.ui.TopFloatHintDialog;
+
+import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
 
 /**
  * UI相关的工具
@@ -193,22 +199,133 @@ public class UIUtil {
     }
 
     public static void snackShort(View view, String message) {
-        Snackbar.make(view, message, Snackbar.LENGTH_SHORT).show();
+        snackShort(view, message, null, null);
     }
 
-    public static void snackShort(View view, String message, View.OnClickListener listener) {
-        Snackbar.make(view, message, Snackbar.LENGTH_SHORT)
-                .setAction(view.getContext().getString(R.string.confirm), listener)
-                .show();
+    public static void snackShort(View view, String message, String action, View.OnClickListener listener) {
+        final Snackbar snackbar = Snackbar.make(view, message, Snackbar.LENGTH_SHORT);
+        if (!TextUtils.isEmpty(action) && listener == null) {
+            snackbar.setAction(action, new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    snackbar.dismiss();
+                }
+            });
+        } else if ((!TextUtils.isEmpty(action) && listener != null)) {
+            snackbar.setAction(action, listener);
+        }
+        snackbar.show();
     }
+
+    //snackbar 只能显示一个按钮（官方建议） 想显示两个要自定义
+//    public static void snackShort(View view, String message, String action1, View.OnClickListener action1listener
+//            , String action2, View.OnClickListener action2listener) {
+//        final Snackbar snackbar = Snackbar.make(view, message, Snackbar.LENGTH_SHORT);
+//        if (!TextUtils.isEmpty(action1) && action1listener == null) {
+//            snackbar.setAction(action1, new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//                    snackbar.dismiss();
+//                }
+//            });
+//        } else if ((!TextUtils.isEmpty(action1) && action1listener != null)) {
+//            snackbar.setAction(action1, action1listener);
+//        }
+//
+//        if (!TextUtils.isEmpty(action2) && action2listener == null) {
+//            snackbar.setAction(action2, new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//                    snackbar.dismiss();
+//                }
+//            });
+//        } else if (!TextUtils.isEmpty(action2) && action2listener != null) {
+//            snackbar.setAction(action2, action2listener);
+//        }
+//        snackbar.show();
+//    }
 
     public static void snackLong(View view, String message) {
-        Snackbar.make(view, message, Snackbar.LENGTH_LONG).show();
+        snackLong(view, message, null, null);
     }
 
-    public static void snackLong(View view, String message, View.OnClickListener listener) {
-        Snackbar.make(view, message, Snackbar.LENGTH_LONG)
-                .setAction(view.getContext().getString(R.string.confirm), listener)
-                .show();
+    public static void snackLong(View view, String message, String action, View.OnClickListener listener) {
+        final Snackbar snackbar = Snackbar.make(view, message, Snackbar.LENGTH_LONG);
+        if (!TextUtils.isEmpty(action) && listener == null) {
+            snackbar.setAction(action, new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    snackbar.dismiss();
+                }
+            });
+        } else if (!TextUtils.isEmpty(action) && listener != null) {
+            snackbar.setAction(action, listener);
+        }
+        snackbar.show();
+    }
+
+
+    /**
+     * 网络断开时 snackBar 提示用户，让用户去选择是否去设置网络
+     *
+     * @param view
+     * @param message
+     */
+    public static void snackNewWorkErrorMessage(final View view, String message) {
+        UIUtil.snackLong(view, message,
+                view.getContext().getString(R.string.setting),
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        // 跳转到系统的网络设置界面
+                        Intent intent = new Intent(android.provider.Settings.ACTION_WIRELESS_SETTINGS);
+                        if ((view.getContext() instanceof Application)) {
+                            intent.addFlags(FLAG_ACTIVITY_NEW_TASK);
+                        }
+                        view.getContext().startActivity(intent);
+                    }
+                });
+    }
+
+    /**
+     * 统一的提示信息dialog
+     *
+     * @param message
+     * @param iconType
+     */
+    public static void showMessageDialog(final Activity context, String message, int iconType) {
+        final TopFloatHintDialog topFloatHintDialog = new TopFloatHintDialog.Builder(context)
+                .setIconType(iconType)
+                .setMessage(message)
+                .create();
+        topFloatHintDialog.show();
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Thread.sleep(2000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                context.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        topFloatHintDialog.dismiss();
+                    }
+                });
+            }
+        }).start();
+        //若我们 使用的Context不是Activity 的Context 而是Application的 Context，我们 需要做以下处理 ，否则会报错
+        // 设置为系统级别的Dialog
+        /*
+        mWifiDialog.getWindow().setType(WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
+        if ((context instanceof Application)) {
+            intent.addFlags(FLAG_ACTIVITY_NEW_TASK);
+        }
+        context.startActivity(intent);
+        在AndroidMainFest中添加以下权限 。
+        <!--允许 弹出系统级别的AlterDialog-->
+        <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>*/
+
     }
 }

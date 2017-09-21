@@ -10,6 +10,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.RequestOptions;
 import com.example.administrator.myappgit.R;
 import com.example.administrator.myappgit.bean.PixadayBean.PixabayListBean;
 
@@ -76,9 +78,16 @@ public class RvMainAdapter extends RecyclerView.Adapter<RvMainAdapter.MyViewHold
             }
         });
 
-        if (hitsBeen != null) {
-            Glide.with(mContext).load(hitsBeen.get(position+1).getWebformatURL()).into(holder.iv_item);
-        }
+        //就显示不出来这个颜色和下个activity的actionbar的颜色同步了。。但是达不到gif的效果也无所谓了
+        Glide.with(mContext).load(null == hitsBeen ? "" : hitsBeen.get(position + 1).getWebformatURL())
+                .apply(new RequestOptions()
+                        .error(R.drawable.show_image_default)
+                        .placeholder(R.drawable.show_image_default)
+                        .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
+                        .centerCrop())
+                //加载缩略图，缩略图先加载完就显示，否则不显示
+                .thumbnail(0.2f)
+                .into(holder.iv_item);
 
     }
 

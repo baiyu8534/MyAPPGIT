@@ -22,6 +22,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.RequestOptions;
 import com.example.administrator.myappgit.IView.IMainActivity;
 import com.example.administrator.myappgit.activity.BaseActivity;
 import com.example.administrator.myappgit.activity.ShowListActivity;
@@ -31,6 +33,7 @@ import com.example.administrator.myappgit.app.AppConstant;
 import com.example.administrator.myappgit.bean.PixadayBean.PixabayListBean;
 import com.example.administrator.myappgit.presenter.implPresenter.MainActivityPresenterImpl;
 import com.example.administrator.myappgit.ui.MainRvItemDecoration;
+import com.example.administrator.myappgit.utils.UIUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -73,9 +76,10 @@ public class MainActivity extends BaseActivity implements RvMainAdapter.RvItemCl
         initView();
         initListener();
 
+        //不判断网络了。。就几张图片。。加载不出来了就显示默认的，返回的错误用架构了的提示就行了
         mMainActivityPresenter = new MainActivityPresenterImpl(this, this);
         mMainActivityPresenter.getImgaes(5, PixabayApi.PIXABAY_QUARY_TAG_SCENERY);
-//        mainActivityPresenter.getImgaes(5, "武汉");
+
     }
 
     private void initListener() {
@@ -189,12 +193,20 @@ public class MainActivity extends BaseActivity implements RvMainAdapter.RvItemCl
 
     @Override
     public void setPic(List<PixabayListBean.HitsBean> hitsBeen) {
-        // FIXME: 2017/9/19 0019 处理下无网络时的默认显示的图片
         if (hitsBeen != null) {
-            Glide.with(this).load(hitsBeen.get(0).getWebformatURL()).into(mImagerNvHeader);
-
+            Glide.with(mContext).load(hitsBeen.get(0).getWebformatURL())
+                    .apply(new RequestOptions()
+                            .error(R.drawable.show_image_default)
+                            .placeholder(R.drawable.show_image_default)
+                            .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
+                            .centerCrop())
+                    //加载缩略图，缩略图先加载完就显示，否则不显示
+                    .thumbnail(0.2f)
+                    .into(mImagerNvHeader);
             mRvMainAdapter.setHitsBeen(hitsBeen);
             mRvMainAdapter.notifyDataSetChanged();
+        } else {
+            Glide.with(this).load(R.drawable.hander).into(mImagerNvHeader);
         }
 
     }
@@ -222,13 +234,18 @@ public class MainActivity extends BaseActivity implements RvMainAdapter.RvItemCl
     }
 
     @Override
-    public void showErrorMessage(String message) {
-        showMessageDialog(message, AppConstant.ICON_TYPE_FAIL);
+    public void showNetworkRequestErrorMessage(String message) {
+        UIUtil.showMessageDialog(this, message, AppConstant.ICON_TYPE_FAIL);
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
         mMainActivityPresenter.unsubscribe();
+    }
+
+    @Override
+    protected void noNetworkConnFail() {
+        UIUtil.snackNewWorkErrorMessage(mRvMain, getString(R.string.error_message_network_connections_break));
     }
 }

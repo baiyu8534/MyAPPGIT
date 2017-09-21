@@ -42,9 +42,9 @@ public class BasePresenterImpl implements BasePresenter {
     @Override
     public void informShowErrorMessage(Throwable e, IBaseView iView) {
         if (e instanceof NetWorkExceptionUtil.ResponeThrowable) {
-            iView.showErrorMessage(((NetWorkExceptionUtil.ResponeThrowable) e).message);
+            iView.showNetworkRequestErrorMessage(((NetWorkExceptionUtil.ResponeThrowable) e).message);
         } else {
-            iView.showErrorMessage(NetWorkExceptionUtil.handleException(e).message);
+            iView.showNetworkRequestErrorMessage(NetWorkExceptionUtil.handleException(e).message);
         }
     }
 
@@ -56,7 +56,7 @@ public class BasePresenterImpl implements BasePresenter {
      */
     @Override
     public void informShowErrorMessage(String message, IBaseView iView) {
-        iView.showErrorMessage(message);
+        iView.showNetworkRequestErrorMessage(message);
     }
 
 }

@@ -14,11 +14,13 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 import com.example.administrator.myappgit.IView.IZhiHuDetailActivity;
+import com.example.administrator.myappgit.MyApplication;
 import com.example.administrator.myappgit.R;
 import com.example.administrator.myappgit.app.AppConstant;
 import com.example.administrator.myappgit.bean.ZhiHuBean.ZhiHuNewDetail;
 import com.example.administrator.myappgit.presenter.implPresenter.IZhiHuDetailActivityPresenterImpl;
 import com.example.administrator.myappgit.ui.WhorlView;
+import com.example.administrator.myappgit.utils.UIUtil;
 import com.liuguangqiang.swipeback.SwipeBackLayout;
 
 import java.lang.reflect.InvocationTargetException;
@@ -55,7 +57,12 @@ public class ZhiHuDetailActivity extends BaseActivity implements IZhiHuDetailAct
     }
 
     private void getData() {
-        mIZhiHuDetailActivityPresenter.getZhiHuNewsDetail(mNewsId);
+        if (MyApplication.getInstance().isConnected()) {
+            mIZhiHuDetailActivityPresenter.getZhiHuNewsDetail(mNewsId);
+        } else {
+            // FIXME: 2017/9/21 0021 webView没数据，换个显示的。。
+            UIUtil.showMessageDialog(this, getString(R.string.alert_message_no_network_conn), AppConstant.ICON_TYPE_FAIL);
+        }
     }
 
 
@@ -136,8 +143,8 @@ public class ZhiHuDetailActivity extends BaseActivity implements IZhiHuDetailAct
     }
 
     @Override
-    public void showErrorMessage(String message) {
-        showMessageDialog(message, AppConstant.ICON_TYPE_FAIL);
+    public void showNetworkRequestErrorMessage(String message) {
+        UIUtil.showMessageDialog(this, message, AppConstant.ICON_TYPE_FAIL);
     }
 
     @Override
@@ -185,6 +192,11 @@ public class ZhiHuDetailActivity extends BaseActivity implements IZhiHuDetailAct
         mIZhiHuDetailActivityPresenter.unsubscribe();
         super.onDestroy();
 
+    }
+
+    @Override
+    protected void noNetworkConnFail() {
+        UIUtil.snackNewWorkErrorMessage(mWvDetail, getString(R.string.error_message_network_connections_break));
     }
 
 }

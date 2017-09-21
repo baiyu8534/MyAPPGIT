@@ -8,9 +8,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 
 import com.example.administrator.myappgit.MyApplication;
-import com.example.administrator.myappgit.R;
 import com.example.administrator.myappgit.app.AppConstant;
-import com.example.administrator.myappgit.ui.TopFloatHintDialog;
 
 import java.lang.ref.WeakReference;
 
@@ -39,9 +37,7 @@ public class BaseActivity extends AppCompatActivity {
             if (activity != null) {
                 switch (msg.what) {
                     case AppConstant.HANDLER_WHAT_NETWORK_CONN_FAIL:
-                        activity.showMessageDialog(activity.getString(R.string.error_message_network_connections_break),
-                                AppConstant.ICON_TYPE_FAIL);
-                        activity.networkConnFail();
+                        activity.noNetworkConnFail();
                         break;
                 }
             }
@@ -73,7 +69,6 @@ public class BaseActivity extends AppCompatActivity {
     @Override
     protected void onStop() {
         super.onStop();
-        ((MyApplication) MyApplication.getContext()).setCurrentActivity(null);
     }
 
     @Override
@@ -83,51 +78,16 @@ public class BaseActivity extends AppCompatActivity {
     }
 
     /**
-     * 统一的提示信息dialog
-     *
-     * @param message
-     * @param iconType
+     * 需要监听网络断开的activity复写这个方法即可
      */
-    protected void showMessageDialog(String message, int iconType) {
-        final TopFloatHintDialog topFloatHintDialog = new TopFloatHintDialog.Builder(mContext)
-                .setIconType(iconType)
-                .setMessage(message)
-                .create();
-        topFloatHintDialog.show();
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    Thread.sleep(2000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        topFloatHintDialog.dismiss();
-                    }
-                });
-            }
-        }).start();
-        //若我们 使用的Context不是Activity 的Context 而是Application的 Context，我们 需要做以下处理 ，否则会报错
-        // 设置为系统级别的Dialog
-        /*
-        mWifiDialog.getWindow().setType(WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
-        if ((context instanceof Application)) {
-            intent.addFlags(FLAG_ACTIVITY_NEW_TASK);
-        }
-        context.startActivity(intent);
-        在AndroidMainFest中添加以下权限 。
-        <!--允许 弹出系统级别的AlterDialog-->
-        <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>*/
-
+    protected void noNetworkConnFail() {
     }
 
     /**
-     * 需要监听网络变化的activity复写这个方法即可
+     * 需要监听网络回复的activity复写这个方法即可
      */
-    protected void networkConnFail(){
+    protected void noNetworkConnSuccess() {
     }
+
 
 }
