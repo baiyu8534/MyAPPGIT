@@ -24,6 +24,8 @@ public class BaseActivity extends AppCompatActivity {
 
     public BaseActivityHandler mBaseActivityHandler;
 
+    // FIXME: 2017/9/21 0021 紧急！！看下CurrentActivity是怎么设置和销毁的。。。
+
     public static class BaseActivityHandler extends Handler {
         private WeakReference<BaseActivity> activityWeakReference;
 
@@ -55,6 +57,12 @@ public class BaseActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onStart() {
+        super.onStart();
+        ((MyApplication) getApplication()).setCurrentActivity(this);
+    }
+
+    @Override
     protected void onResume() {
         super.onResume();
         activity = this;
@@ -69,11 +77,13 @@ public class BaseActivity extends AppCompatActivity {
     @Override
     protected void onStop() {
         super.onStop();
+        ((MyApplication) MyApplication.getContext()).setCurrentActivity(null);
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        ((MyApplication) MyApplication.getContext()).setCurrentActivity(null);
         ((MyApplication) MyApplication.getContext()).removeActivity(this);
     }
 
