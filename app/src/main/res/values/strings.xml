@@ -29,6 +29,7 @@
     <string name="confirm">确定</string>
     <string name="cancel">取消</string>
     <string name="setting">设置</string>
+    <string name="refresh">点击刷新</string>
 
     <string name="error_message_network_error">网络错误</string>
     <string name="error_message_parse_error">解析错误</string>
@@ -41,4 +42,5 @@
     <string name="error_message_network_connections_break">网络连接已断开</string>
 
     <string name="alert_message_no_network_conn">无网络连接</string>
+    
 </resources>

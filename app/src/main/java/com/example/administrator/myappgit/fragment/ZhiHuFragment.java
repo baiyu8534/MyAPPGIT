@@ -4,13 +4,13 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewStub;
 
 import com.example.administrator.myappgit.IView.IZhiHuFragment;
-import com.example.administrator.myappgit.MyApplication;
 import com.example.administrator.myappgit.R;
 import com.example.administrator.myappgit.adapter.RvZhiHuFragmentAdapter;
 import com.example.administrator.myappgit.app.AppConstant;
@@ -77,14 +77,12 @@ public class ZhiHuFragment extends BaseFragment implements IZhiHuFragment {
     }
 
     private void loadData() {
-        if (MyApplication.getInstance().isConnected()) {
-            currentLoadDate = "0";
-            mZhiHuFragmentPresenter.getNewsList();
-        } else {
-            // FIXME: 2017/9/21 0021 第一次加载失败，不显示列表，找个显示的。。。但是也会导致下次进来不显示缓存。。
-            UIUtil.showMessageDialog(getActivity(), getString(R.string.alert_message_no_network_conn), AppConstant
-                    .ICON_TYPE_FAIL);
-        }
+        //有没有网都让他去请求
+        //有网 ok
+        //没网，但有缓存，就可以加载缓存 ok
+        //没网，没缓存，框架显示错误信息
+        currentLoadDate = "0";
+        mZhiHuFragmentPresenter.getNewsList();
     }
 
     private void initViewListener() {
@@ -160,22 +158,26 @@ public class ZhiHuFragment extends BaseFragment implements IZhiHuFragment {
 
 
     public void loadMoreData() {
-        //加判断的好处就是可以少执行写代码
-        if (MyApplication.getInstance().isConnected()) {
-            mZhiHuFragmentPresenter.getMoreNews(currentLoadDate);
-        } else {
-            // FIXME: 2017/9/21 0021 不能放这。。要不滑下去后，一直死循环去显示dialog，在service中加个有网时的通知
+        //有没有网都让他刷新
+        //有网 ok
+        //没网，但有缓存，就可以加载缓存 ok
+        //没网，没缓存，框架显示错误信息
+        mZhiHuFragmentPresenter.getMoreNews(currentLoadDate);
+        // FIXME: 2017/9/21 0021 不能放这。。要不滑下去后，一直死循环去显示dialog，在service中加个有网时的通知，在这个fragment的activity中通知他网络ok吧
 //            if (loading) {
 //                loading = false;
 //            }
-            UIUtil.showMessageDialog(getActivity(), getString(R.string.alert_message_no_network_conn), AppConstant
-                    .ICON_TYPE_FAIL);
-        }
     }
 
     @Override
     public void showNetworkRequestErrorMessage(String message) {
-        UIUtil.showMessageDialog(getActivity(), message, AppConstant.ICON_TYPE_FAIL);
+        //第一次加载，要么有网加载数据，要么没网加载缓存，出错就是加载不出来
+        //根据message显示不同UI，第一次未必是没网
+        if (Integer.parseInt(currentLoadDate) == 0) {
+            Log.d("ZhiHuFragment", "显示没网UI");
+        } else {
+            UIUtil.showMessageDialog(getActivity(), message, AppConstant.ICON_TYPE_FAIL);
+        }
     }
 
     @Override

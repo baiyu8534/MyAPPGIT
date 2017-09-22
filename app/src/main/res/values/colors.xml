@@ -18,6 +18,16 @@
     <color name="gray_E5E5E5">#E5E5E5</color>
     <color name="black">#000000</color>
 
+    <color name="color_gray_1">#353C46</color>
+    <color name="color_gray_2">#49505A</color>
+    <color name="color_gray_3">#5D646E</color>
+    <color name="color_gray_4">#717882</color>
+    <color name="color_gray_5">#858C96</color>
+    <color name="color_gray_6">#99A0AA</color>
+    <color name="color_gray_7">#ADB4BE</color>
+    <color name="color_gray_8">#C4C8D0</color>
+    <color name="color_gray_9">#D8DCE4</color>
+
     <color name="dialog_top_float_hint_color">#aa353C46</color>
 
 </resources>

@@ -1,9 +1,76 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.example.administrator.myappgit.ui.TravelRecyclerView
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/trv_showImages"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:background="@color/colorWhite">
 
-</com.example.administrator.myappgit.ui.TravelRecyclerView>
+    <com.example.administrator.myappgit.ui.TravelRecyclerView
+        android:id="@+id/trv_showImages"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+    </com.example.administrator.myappgit.ui.TravelRecyclerView>
+
+    <com.example.administrator.myappgit.ui.WhorlView
+        android:id="@+id/wv_dialog"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        app:whorlview_circle_colors="#5677fc_#F44336_#4CAF50"
+        app:whorlview_circle_speed="360"
+        app:whorlview_parallax="fast"
+        />
+
+    <RelativeLayout
+        android:id="@+id/rl_network_error"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/colorWhite"
+        android:visibility="visible">
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true">
+
+            <ImageView
+                android:id="@+id/iv_network_error"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:src="@drawable/ic_menu_star"/>
+
+            <TextView
+                android:id="@+id/tv_network_error"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/iv_network_error"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="5dp"
+                android:text="加载失败"
+                android:textSize="20sp"/>
+
+            <TextView
+                android:id="@+id/tv_network_error_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tv_network_error"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="5dp"
+                android:background="@drawable/button_refresh_bg"
+                android:paddingBottom="10dp"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp"
+                android:paddingTop="10dp"
+                android:text="@string/refresh"
+                android:textSize="20sp"/>
+
+        </RelativeLayout>
+
+    </RelativeLayout>
+
+
+</RelativeLayout>

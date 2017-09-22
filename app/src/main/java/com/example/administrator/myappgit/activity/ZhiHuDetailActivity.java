@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,9 +15,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 import com.example.administrator.myappgit.IView.IZhiHuDetailActivity;
-import com.example.administrator.myappgit.MyApplication;
 import com.example.administrator.myappgit.R;
-import com.example.administrator.myappgit.app.AppConstant;
 import com.example.administrator.myappgit.bean.ZhiHuBean.ZhiHuNewDetail;
 import com.example.administrator.myappgit.presenter.implPresenter.IZhiHuDetailActivityPresenterImpl;
 import com.example.administrator.myappgit.ui.WhorlView;
@@ -57,12 +56,11 @@ public class ZhiHuDetailActivity extends BaseActivity implements IZhiHuDetailAct
     }
 
     private void getData() {
-        if (MyApplication.getInstance().isConnected()) {
-            mIZhiHuDetailActivityPresenter.getZhiHuNewsDetail(mNewsId);
-        } else {
-            // FIXME: 2017/9/21 0021 webView没数据，换个显示的。。
-            UIUtil.showMessageDialog(this, getString(R.string.alert_message_no_network_conn), AppConstant.ICON_TYPE_FAIL);
-        }
+        //有没有网都让他去请求
+        //有网 ok
+        //没网，但有缓存，就可以加载缓存 ok
+        //没网，没缓存，框架显示错误信息
+        mIZhiHuDetailActivityPresenter.getZhiHuNewsDetail(mNewsId);
     }
 
 
@@ -144,7 +142,11 @@ public class ZhiHuDetailActivity extends BaseActivity implements IZhiHuDetailAct
 
     @Override
     public void showNetworkRequestErrorMessage(String message) {
-        UIUtil.showMessageDialog(this, message, AppConstant.ICON_TYPE_FAIL);
+        //UIUtil.showMessageDialog(this, message, AppConstant.ICON_TYPE_FAIL);
+        //不关有没有网，直接去请求数据，有缓存就显示缓存，应为这个页面有没有刷新
+        //所有要么显示缓存要么显示没网的UI
+        //所有显示错误信息就一定是显示没网的UI
+        Log.d("ZhiHuDetailActivity", "显示没网的UI");
     }
 
     @Override

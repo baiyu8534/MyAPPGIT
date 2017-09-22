@@ -83,10 +83,8 @@ public class ShowAllDemosActivity extends BaseActivity implements IShowAllDemosA
         initView();
         initViewListener();
         // FIXME: 2017/9/15 可以把图片加载放到启动页中
-        //先注释掉。。没启动页。。。
-//        if (MyApplication.getInstance().isConnected()) {
-            mShowAllDemosActivityPresenter.getImages(adapterItemBeans.size() + "", page + "");
-//        }
+        //第一次不加网络判断了，这样可以加载缓存
+        mShowAllDemosActivityPresenter.getImages(adapterItemBeans.size() + "", page + "");
     }
 
     private void initViewListener() {
@@ -162,6 +160,7 @@ public class ShowAllDemosActivity extends BaseActivity implements IShowAllDemosA
 
     @Override
     public void showNetworkRequestErrorMessage(String message) {
+        mSwipeRefresh.setRefreshing(false);
         UIUtil.showMessageDialog(this, message, AppConstant.ICON_TYPE_FAIL);
     }
 
@@ -173,13 +172,11 @@ public class ShowAllDemosActivity extends BaseActivity implements IShowAllDemosA
 
     @Override
     public void onRefresh() {
-        //加判断的好处就是可以少执行写代码
-        if (MyApplication.getInstance().isConnected()) {
-            mShowAllDemosActivityPresenter.getImages(adapterItemBeans.size() + "", ++page + "");
-        } else {
-            UIUtil.showMessageDialog(this, getString(R.string.alert_message_no_network_conn), AppConstant.ICON_TYPE_FAIL);
-            mSwipeRefresh.setRefreshing(false);
-        }
+        //有没有网都让他刷新
+        //有网 ok
+        //没网，但有缓存，就可以加载缓存 ok
+        //没网，没缓存，框架显示错误信息
+        mShowAllDemosActivityPresenter.getImages(adapterItemBeans.size() + "", ++page + "");
     }
 
     @Override

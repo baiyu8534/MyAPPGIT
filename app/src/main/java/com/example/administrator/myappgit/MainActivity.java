@@ -76,7 +76,7 @@ public class MainActivity extends BaseActivity implements RvMainAdapter.RvItemCl
         initView();
         initListener();
 
-        //不判断网络了。。就几张图片。。加载不出来了就显示默认的，返回的错误用架构了的提示就行了
+        //不判断网络了。。就几张图片。。加载不出来了,有缓存就显示缓存，没有就显示默认的，返回的错误用架构了的提示就行了
         mMainActivityPresenter = new MainActivityPresenterImpl(this, this);
         mMainActivityPresenter.getImgaes(5, PixabayApi.PIXABAY_QUARY_TAG_SCENERY);
 
