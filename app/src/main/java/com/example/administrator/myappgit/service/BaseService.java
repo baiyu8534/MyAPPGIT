@@ -12,6 +12,7 @@ import android.util.Log;
 
 import com.example.administrator.myappgit.MyApplication;
 import com.example.administrator.myappgit.app.AppConstant;
+import com.example.administrator.myappgit.app.GlobalVariable;
 import com.example.administrator.myappgit.utils.NetWorkUtil;
 
 import static android.content.ContentValues.TAG;
@@ -66,7 +67,9 @@ public class BaseService extends Service {
                 }
                 if (!NetWorkUtil.isNetWorkAvailable(mContext)) {
                     Log.e(TAG, "当前没有网络连接，请确保你已经打开网络 ");
-                    MyApplication.getInstance().getCurrentActivity().mBaseActivityHandler.sendEmptyMessage(AppConstant.HANDLER_WHAT_NETWORK_CONN_FAIL);
+                    if(GlobalVariable.currentActivity.mBaseActivityHandler != null) {
+                        GlobalVariable.currentActivity.mBaseActivityHandler.sendEmptyMessage(AppConstant.HANDLER_WHAT_NETWORK_CONN_FAIL);
+                    }
                     MyApplication.getInstance().setWifi(false);
                     MyApplication.getInstance().setMobile(false);
                     MyApplication.getInstance().setConnected(false);

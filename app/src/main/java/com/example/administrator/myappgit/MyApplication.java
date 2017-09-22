@@ -22,7 +22,6 @@ public class MyApplication extends Application {
     private static MyApplication myApplication;
     private static int mainTid;
 
-    // FIXME: 2017/9/20 0020 等加了在service中加了网络状态的动态监听，就可以动态的设置，在做网络请求时去判断是否做出相应的提示
     /**
      * 当前网络为wifi
      */
@@ -37,10 +36,6 @@ public class MyApplication extends Application {
     private boolean isConnected;
 
     private static List<BaseActivity> activitys;
-    /**
-     * 当前正在显示的activity
-     */
-    private BaseActivity currentActivity;
 
     static {
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM);
@@ -49,7 +44,9 @@ public class MyApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        myApplication = this;
+        if(myApplication == null) {
+            myApplication = MyApplication.this;
+        }
         activitys = new LinkedList<>();
         mainTid = android.os.Process.myTid();
     }
@@ -120,13 +117,5 @@ public class MyApplication extends Application {
 
         finishAllActivity();
         System.exit(0);
-    }
-
-    public BaseActivity getCurrentActivity() {
-        return currentActivity;
-    }
-
-    public void setCurrentActivity(BaseActivity currentActivity) {
-        this.currentActivity = currentActivity;
     }
 }
