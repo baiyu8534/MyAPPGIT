@@ -74,8 +74,8 @@ public class ApiManager {
 
     private static ApiManager apiManager;
     private static File httpCacheDirectory = new File(MyApplication.getContext().getCacheDir(), "MyAppCacheDir");
-    //缓存10M
-    private static long cacheSize = 10 * 1024 * 1024;
+    //缓存50M
+    private static long cacheSize = 50 * 1024 * 1024;
     private static Cache cache = new Cache(httpCacheDirectory, cacheSize);
 
     /* private static OkHttpClient.Builder builder = new OkHttpClient.Builder()

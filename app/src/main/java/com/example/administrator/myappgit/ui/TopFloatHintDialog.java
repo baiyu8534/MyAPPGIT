@@ -33,8 +33,9 @@ public class TopFloatHintDialog extends Dialog {
 
     public TopFloatHintDialog(@NonNull Context context, @StyleRes int themeResId) {
         super(context, themeResId);
-        setCanceledOnTouchOutside(false);
-        setCancelable(false);
+        //弹出后，用户点了其他地方会消失，不然就是出来后用户点什么都没反应，要一直到dialog消失
+        setCanceledOnTouchOutside(true);
+        setCancelable(true);
     }
 
     protected TopFloatHintDialog(@NonNull Context context, boolean cancelable, @Nullable OnCancelListener cancelListener) {
