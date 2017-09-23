@@ -36,7 +36,7 @@ public class IItemBGRollRvActivityPresenterImpl extends BasePresenterImpl implem
 
     @Override
     public void getImages(String count, String page) {
-
+        mIItemBGRollRvActivity.showProgressDialog();
         Subscription s = ApiManager.getInstance().getGankApiService().getImages(count, page)
                 .subscribeOn(Schedulers.io())
                 .map(new Func1<GankImages, ArrayList<String>>() {
@@ -64,19 +64,18 @@ public class IItemBGRollRvActivityPresenterImpl extends BasePresenterImpl implem
 
                     @Override
                     public void onError(Throwable e) {
-                        mIItemBGRollRvActivity.setRefreshing(false);
+                        mIItemBGRollRvActivity.hidProgressDialog();
                         informShowErrorMessage(e, mIItemBGRollRvActivity);
                     }
 
                     @Override
                     public void onNext(ArrayList<String> strings) {
-                        mIItemBGRollRvActivity.setRefreshing(false);
+                        mIItemBGRollRvActivity.hidProgressDialog();
                         if (null != strings) {
                             mIItemBGRollRvActivity.upDataImages(strings);
                         }
                     }
                 });
         addSubscription(s);
-
     }
 }

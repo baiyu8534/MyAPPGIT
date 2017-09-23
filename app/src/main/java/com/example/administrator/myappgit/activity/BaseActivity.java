@@ -40,6 +40,9 @@ public class BaseActivity extends AppCompatActivity {
                     case AppConstant.HANDLER_WHAT_NETWORK_CONN_FAIL:
                         activity.noNetworkConnFail();
                         break;
+                    case AppConstant.HANDLER_WHAT_NETWORK_CONN_SUCCESS:
+                        activity.noNetworkConnSuccess();
+                        break;
                 }
             }
         }

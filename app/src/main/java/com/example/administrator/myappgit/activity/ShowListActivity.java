@@ -86,6 +86,7 @@ public class ShowListActivity extends BaseActivity {
     private TextView mTabTextView4;
 
     private ArgbEvaluator mArgbEvaluator;
+    private ZhiHuFragment mZhiHuFragment;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -266,8 +267,8 @@ public class ShowListActivity extends BaseActivity {
     }
 
     private void initView() {
-
-        mFragments.add(new ZhiHuFragment());
+        mZhiHuFragment = new ZhiHuFragment();
+        mFragments.add(mZhiHuFragment);
         mFragments.add(new WeatherFragment());
         mFragments.add(new WeatherFragment());
         mFragments.add(new WeatherFragment());
@@ -456,5 +457,10 @@ public class ShowListActivity extends BaseActivity {
     @Override
     protected void noNetworkConnFail() {
         UIUtil.snackNewWorkErrorMessage(mViewPager, getString(R.string.error_message_network_connections_break));
+    }
+
+    @Override
+    protected void noNetworkConnSuccess() {
+        mZhiHuFragment.setLoadMoreRefreshState();
     }
 }

@@ -7,6 +7,8 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.example.administrator.myappgit.IView.IItemBGRollRvActivity;
 import com.example.administrator.myappgit.R;
@@ -14,6 +16,7 @@ import com.example.administrator.myappgit.adapter.TravelRecyclerAdapter;
 import com.example.administrator.myappgit.app.AppConstant;
 import com.example.administrator.myappgit.presenter.implPresenter.IItemBGRollRvActivityPresenterImpl;
 import com.example.administrator.myappgit.ui.TravelRecyclerView;
+import com.example.administrator.myappgit.ui.WhorlView;
 import com.example.administrator.myappgit.utils.ScreenUtil;
 import com.example.administrator.myappgit.utils.UIUtil;
 
@@ -31,6 +34,16 @@ public class ItemBGRollRvActivity extends BaseActivity implements IItemBGRollRvA
 
     @BindView(R.id.trv_showImages)
     TravelRecyclerView mTrvShowImages;
+    @BindView(R.id.wv_dialog)
+    WhorlView mWvDialog;
+    @BindView(R.id.iv_network_error)
+    ImageView mIvNetworkError;
+    @BindView(R.id.tv_network_error)
+    TextView mTvNetworkError;
+    @BindView(R.id.tv_network_error_button)
+    TextView mTvNetworkErrorButton;
+    @BindView(R.id.rl_network_error)
+    RelativeLayout mRlNetworkError;
     private LinearLayoutManager mLinearLayoutManager;
     private ArrayList<String> imageUrls;
     private TravelRecyclerAdapter mAdapter;
@@ -42,7 +55,6 @@ public class ItemBGRollRvActivity extends BaseActivity implements IItemBGRollRvA
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // FIXME: 2017/9/20 0020 没网时不显示列表，显示一个图标加一个按钮提示没网（暂定）
         setContentView(R.layout.activity_item_bg_roll_rv_layout);
         ButterKnife.bind(this);
         initData();
@@ -97,6 +109,13 @@ public class ItemBGRollRvActivity extends BaseActivity implements IItemBGRollRvA
                 }
             }
         });
+        mTvNetworkErrorButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mRlNetworkError.setVisibility(View.GONE);
+                mPresenter.getImages(imageUrls.size() + "", page++ + "");
+            }
+        });
     }
 
     private void loadMoreData() {
@@ -110,6 +129,8 @@ public class ItemBGRollRvActivity extends BaseActivity implements IItemBGRollRvA
     private void initView() {
         mTrvShowImages.setLayoutManager(mLinearLayoutManager);
         mTrvShowImages.setHasFixedSize(true);
+        //刚开始隐藏，只要加载成功一次就显示，要不然第一次没成功就会显示没图的Rv
+        mTrvShowImages.setVisibility(View.GONE);
         mTrvShowImages.setAdapter(mAdapter);
     }
 
@@ -127,6 +148,9 @@ public class ItemBGRollRvActivity extends BaseActivity implements IItemBGRollRvA
 
     @Override
     public void upDataImages(ArrayList<String> images) {
+        if (mTrvShowImages.getVisibility() == View.GONE) {
+            mTrvShowImages.setVisibility(View.VISIBLE);
+        }
         if (isLoadingMoreData) {
             isLoadingMoreData = false;
         }
@@ -144,18 +168,28 @@ public class ItemBGRollRvActivity extends BaseActivity implements IItemBGRollRvA
 
     @Override
     public void showNetworkRequestErrorMessage(String message) {
+        page--;
         if (page == 1) {
             //第一次加载，要么有网加载数据，要么没网加载缓存，出错就是加载不出来
             //第一次都没成功，就显示无网的UI，根据message显示不同UI，第一次未必是没网
             Log.d("ItemBGRollRvActivity", "第一次都没成功，就显示无网的UI");
-        }else{
+            mRlNetworkError.setVisibility(View.VISIBLE);
+            mTvNetworkError.setText(message);
+        } else {
             UIUtil.showMessageDialog(this, message, AppConstant.ICON_TYPE_FAIL);
         }
     }
 
     @Override
-    public void setRefreshing(boolean refreshing) {
+    public void showProgressDialog() {
+        mWvDialog.setVisibility(View.VISIBLE);
+        mWvDialog.start();
+    }
 
+    @Override
+    public void hidProgressDialog() {
+        mWvDialog.setVisibility(View.GONE);
+        mWvDialog.stop();
     }
 
     @Override
@@ -172,8 +206,13 @@ public class ItemBGRollRvActivity extends BaseActivity implements IItemBGRollRvA
     @Override
     protected void noNetworkConnSuccess() {
         // FIXME: 2017/9/21 0021 在service中加个有网时的通知
-//                if (isLoadingMoreData) {
-//                    isLoadingMoreData = false;
-//                }
+        if (isLoadingMoreData) {
+            isLoadingMoreData = false;
+        }
+        if (mRlNetworkError.getVisibility() == View.VISIBLE) {
+            mRlNetworkError.setVisibility(View.GONE);
+            loadMoreData();
+        }
     }
+
 }

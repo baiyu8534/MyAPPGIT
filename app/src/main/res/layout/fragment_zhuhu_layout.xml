@@ -12,6 +12,8 @@
         android:scrollbars="vertical"
         app:elevation="1dp"/>
 
+    <include layout="@layout/refresh_network_error_layout"/>
+
     <com.example.administrator.myappgit.ui.WhorlView
         android:id="@+id/wv_dialog"
         android:layout_width="wrap_content"
@@ -33,12 +35,5 @@
     <!--app:whorlview_strokeWidth="8"-->
     <!--app:whorlview_sweepAngle="8"-->
     <!--/>-->
-
-    <ViewStub
-        android:id="@+id/vs_no_connection"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        />
 
 </FrameLayout>

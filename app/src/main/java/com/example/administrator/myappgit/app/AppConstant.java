@@ -25,5 +25,6 @@ public class AppConstant {
     public static final int ICON_TYPE_INFO = 1405;
 
     public static final int HANDLER_WHAT_NETWORK_CONN_FAIL = 1406;
+    public static final int HANDLER_WHAT_NETWORK_CONN_SUCCESS = 1407;
 
 }

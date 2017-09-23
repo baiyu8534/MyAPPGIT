@@ -58,12 +58,18 @@ public class BaseService extends Service {
                 if (NetWorkUtil.isWifiConnected(mContext)) {
                     MyApplication.getInstance().setWifi(true);
                     MyApplication.getInstance().setConnected(true);
+                    if(GlobalVariable.currentActivity != null) {
+                        GlobalVariable.currentActivity.mBaseActivityHandler.sendEmptyMessage(AppConstant.HANDLER_WHAT_NETWORK_CONN_SUCCESS);
+                    }
                     Log.e(TAG, "当前WiFi连接可用 ");
                 }
                 if (NetWorkUtil.isMobileConnected(mContext)) {
                     MyApplication.getInstance().setMobile(true);
                     MyApplication.getInstance().setConnected(true);
                     Log.e(TAG, "当前移动网络连接可用 ");
+                    if(GlobalVariable.currentActivity != null) {
+                        GlobalVariable.currentActivity.mBaseActivityHandler.sendEmptyMessage(AppConstant.HANDLER_WHAT_NETWORK_CONN_SUCCESS);
+                    }
                 }
                 if (!NetWorkUtil.isNetWorkAvailable(mContext)) {
                     Log.e(TAG, "当前没有网络连接，请确保你已经打开网络 ");

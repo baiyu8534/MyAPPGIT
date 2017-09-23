@@ -13,6 +13,7 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.example.administrator.myappgit.IView.IZhiHuDetailActivity;
 import com.example.administrator.myappgit.R;
@@ -25,6 +26,9 @@ import com.liuguangqiang.swipeback.SwipeBackLayout;
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 /**
  * Created by baiyu on 2017/9/8.
  */
@@ -33,6 +37,14 @@ public class ZhiHuDetailActivity extends BaseActivity implements IZhiHuDetailAct
 
     WebView mWvDetail;
     WhorlView mWvDialog;
+    @BindView(R.id.iv_network_error)
+    ImageView mIvNetworkError;
+    @BindView(R.id.tv_network_error)
+    TextView mTvNetworkError;
+    @BindView(R.id.tv_network_error_button)
+    TextView mTvNetworkErrorButton;
+    @BindView(R.id.rl_network_error)
+    RelativeLayout mRlNetworkError;
     private ImageView ivShadow;
     private IZhiHuDetailActivityPresenterImpl mIZhiHuDetailActivityPresenter;
     private String mNewsId;
@@ -42,8 +54,8 @@ public class ZhiHuDetailActivity extends BaseActivity implements IZhiHuDetailAct
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // FIXME: 2017/9/20 0020 没网时不显示列表，显示一个图标加一个按钮提示没网（暂定）
         setContentView(setSwipeContentView(R.layout.activity_zhuhu_detail_layout));
+        ButterKnife.bind(this);
         mWvDetail = (WebView) findViewById(R.id.wv_detail);
         mWvDialog = (WhorlView) findViewById(R.id.wv_dialog);
         mImageVIew = (ImageView) findViewById(R.id.iv);
@@ -65,7 +77,13 @@ public class ZhiHuDetailActivity extends BaseActivity implements IZhiHuDetailAct
 
 
     private void initListener() {
-
+        mTvNetworkErrorButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mRlNetworkError.setVisibility(View.GONE);
+                getData();
+            }
+        });
     }
 
     private View setSwipeContentView(int resId) {
@@ -147,6 +165,7 @@ public class ZhiHuDetailActivity extends BaseActivity implements IZhiHuDetailAct
         //所有要么显示缓存要么显示没网的UI
         //所有显示错误信息就一定是显示没网的UI
         Log.d("ZhiHuDetailActivity", "显示没网的UI");
+        mRlNetworkError.setVisibility(View.VISIBLE);
     }
 
     @Override
@@ -201,4 +220,11 @@ public class ZhiHuDetailActivity extends BaseActivity implements IZhiHuDetailAct
         UIUtil.snackNewWorkErrorMessage(mWvDetail, getString(R.string.error_message_network_connections_break));
     }
 
+    @Override
+    protected void noNetworkConnSuccess() {
+        if(mRlNetworkError.getVisibility() == View.VISIBLE){
+            mRlNetworkError.setVisibility(View.GONE);
+            getData();
+        }
+    }
 }

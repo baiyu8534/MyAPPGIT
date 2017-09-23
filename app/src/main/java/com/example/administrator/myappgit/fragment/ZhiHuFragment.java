@@ -8,7 +8,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewStub;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.example.administrator.myappgit.IView.IZhiHuFragment;
 import com.example.administrator.myappgit.R;
@@ -33,12 +35,17 @@ public class ZhiHuFragment extends BaseFragment implements IZhiHuFragment {
 
     @BindView(R.id.rv_show_list)
     RecyclerView mRvShowList;
-    // FIXME: 2017/9/21 0021 ViewStub不怎么靠谱啊，好像只能是textview。。
-    @BindView(R.id.vs_no_connection)
-    ViewStub mVsNoConnection;
     Unbinder unbinder;
     @BindView(R.id.wv_dialog)
     WhorlView mWvDialog;
+    @BindView(R.id.iv_network_error)
+    ImageView mIvNetworkError;
+    @BindView(R.id.tv_network_error)
+    TextView mTvNetworkError;
+    @BindView(R.id.tv_network_error_button)
+    TextView mTvNetworkErrorButton;
+    @BindView(R.id.rl_network_error)
+    RelativeLayout mRlNetworkError;
     private RvZhiHuFragmentAdapter mRvZhiHuFragmentAdapter;
 
     /**
@@ -109,6 +116,14 @@ public class ZhiHuFragment extends BaseFragment implements IZhiHuFragment {
             }
         };
 
+        mTvNetworkErrorButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mRlNetworkError.setVisibility(View.GONE);
+                loadData();
+            }
+        });
+
     }
 
     private void initView() {
@@ -163,10 +178,6 @@ public class ZhiHuFragment extends BaseFragment implements IZhiHuFragment {
         //没网，但有缓存，就可以加载缓存 ok
         //没网，没缓存，框架显示错误信息
         mZhiHuFragmentPresenter.getMoreNews(currentLoadDate);
-        // FIXME: 2017/9/21 0021 不能放这。。要不滑下去后，一直死循环去显示dialog，在service中加个有网时的通知，在这个fragment的activity中通知他网络ok吧
-//            if (loading) {
-//                loading = false;
-//            }
     }
 
     @Override
@@ -175,6 +186,7 @@ public class ZhiHuFragment extends BaseFragment implements IZhiHuFragment {
         //根据message显示不同UI，第一次未必是没网
         if (Integer.parseInt(currentLoadDate) == 0) {
             Log.d("ZhiHuFragment", "显示没网UI");
+            mRlNetworkError.setVisibility(View.VISIBLE);
         } else {
             UIUtil.showMessageDialog(getActivity(), message, AppConstant.ICON_TYPE_FAIL);
         }
@@ -184,5 +196,15 @@ public class ZhiHuFragment extends BaseFragment implements IZhiHuFragment {
     public void onDestroy() {
         super.onDestroy();
         mZhiHuFragmentPresenter.unsubscribe();
+    }
+
+    public void setLoadMoreRefreshState() {
+        if (loading) {
+            loading = false;
+        }
+        if (mRlNetworkError.getVisibility() == View.VISIBLE) {
+            mRlNetworkError.setVisibility(View.GONE);
+            loadData();
+        }
     }
 }

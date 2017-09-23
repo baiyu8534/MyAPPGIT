@@ -23,9 +23,12 @@ public interface IItemBGRollRvActivity extends IBaseView {
     void showNetworkRequestErrorMessage(String message);
 
     /**
-     * 控制下拉刷新的显示
-     *
-     * @param refreshing
+     * 显示加载控件
      */
-    void setRefreshing(boolean refreshing);
+    void showProgressDialog();
+
+    /**
+     * 隐藏加载控件
+     */
+    void hidProgressDialog();
 }

@@ -70,6 +70,11 @@ public class ShowAllDemosActivity extends BaseActivity implements IShowAllDemosA
      * 获取图片的页数
      */
     private int page = 1;
+    /**
+     * 是否第一次网络请求。当没网络时启动app：主页面第一次显示snackBar提示用户去设置网络，
+     * 之后刷新就显示dialog去提示用户
+     */
+    private boolean isFirstNetworkRequest = true;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -152,6 +157,9 @@ public class ShowAllDemosActivity extends BaseActivity implements IShowAllDemosA
 
     @Override
     public void upDataImages(ArrayList<String> images) {
+        if(isFirstNetworkRequest){
+            isFirstNetworkRequest = false;
+        }
         for (int i = 0; i < adapterItemBeans.size(); i++) {
             adapterItemBeans.get(i).setItemImageUrl(images.get(i));
         }
@@ -160,8 +168,13 @@ public class ShowAllDemosActivity extends BaseActivity implements IShowAllDemosA
 
     @Override
     public void showNetworkRequestErrorMessage(String message) {
+        page--;
         mSwipeRefresh.setRefreshing(false);
-        UIUtil.showMessageDialog(this, message, AppConstant.ICON_TYPE_FAIL);
+        if(isFirstNetworkRequest){
+            isFirstNetworkRequest = false;
+        }else{
+            UIUtil.showMessageDialog(this, message, AppConstant.ICON_TYPE_FAIL);
+        }
     }
 
     @Override
@@ -205,4 +218,8 @@ public class ShowAllDemosActivity extends BaseActivity implements IShowAllDemosA
         UIUtil.snackNewWorkErrorMessage(mRvShow, getString(R.string.alert_message_no_network_conn));
     }
 
+    @Override
+    protected void noNetworkConnSuccess() {
+        //当网络恢复时，暂时没有需要做的操作
+    }
 }
