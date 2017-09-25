@@ -205,7 +205,6 @@ public class ItemBGRollRvActivity extends BaseActivity implements IItemBGRollRvA
 
     @Override
     protected void noNetworkConnSuccess() {
-        // FIXME: 2017/9/21 0021 在service中加个有网时的通知
         if (isLoadingMoreData) {
             isLoadingMoreData = false;
         }

@@ -13,6 +13,7 @@ import com.example.administrator.myappgit.activity.BaseActivity;
 public class GlobalVariable {
     /**
      * 当前正在显示的activity
+     * 可以放到Application中，弄一个静态的MyApplication，MyApplication.getinstance().currentActivity;
      */
     public static BaseActivity currentActivity = null;
 }
