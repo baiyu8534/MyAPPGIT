@@ -91,6 +91,10 @@ public class BaseActivity extends AppCompatActivity {
      * 需要监听网络断开的activity复写这个方法即可
      */
     protected void noNetworkConnFail() {
+        //放不到这里，因为用snackBar，需要view。如果用其他提示方法就可以统一放这里，比如Dialog
+        //用snackBar就导致了我得在所有activity中都加
+        //虽然在这可以获取contentView，但是snackBar不是随便给个view就可以的。。。很烦。。
+        //UIUtil.snackNewWorkErrorMessage(mRvShow, getString(R.string.alert_message_no_network_conn));
     }
 
     /**

@@ -36,6 +36,8 @@
         <activity android:name=".activity.ItemBGRollRvActivity"/>
         <activity android:name=".activity.ItemBGRollListActivity"/>
         <activity android:name=".activity.ShowImageActivity"/>
+        <activity android:name=".activity.TitanicTextViewActivity"/>
+        <activity android:name=".activity.ParallaxActivity"/>
 
         <service android:name=".service.BaseService"/>
     </application>
