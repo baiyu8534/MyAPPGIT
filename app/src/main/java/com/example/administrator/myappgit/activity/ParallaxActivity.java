@@ -1,5 +1,6 @@
 package com.example.administrator.myappgit.activity;
 
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.view.PagerAdapter;
@@ -18,10 +19,10 @@ import butterknife.ButterKnife;
 
 /**
  * 文件名：ParallaxActivity
- * 描述：视差滚动，测试中
+ * 描述：视差滚动
  * 作者：白煜
  * 时间：2017/9/25 0025
- * 版权：测试中
+ * 版权：
  */
 
 public class ParallaxActivity extends BaseActivity {
@@ -72,73 +73,78 @@ public class ParallaxActivity extends BaseActivity {
 
 //        Glide.with(mContext).load(R.drawable.vp_bg).into(mIvViewPagerBg);
         mIvViewPagerBg.setImageResource(R.drawable.vp_bg);
-        mIvViewPagerBg.scrollTo((-1 * 500), 0);
+        mIvViewPagerBg.scrollTo((-1 * 900), 0);
     }
 
     private void initViewListener() {
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-//            mVpParallax.setOnScrollChangeListener(new View.OnScrollChangeListener() {
-//                @Override
-//                public void onScrollChange(View v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
-//
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            mVpParallax.setOnScrollChangeListener(new View.OnScrollChangeListener() {
+                @Override
+                public void onScrollChange(View v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
+                    mIvViewPagerBg.scrollBy((scrollX - oldScrollX) / 2, 0);
+                }
+            });
+        }
+
+//        mVpParallax.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+//            @Override
+//            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+//                int temp = 0;
+//                if(positionOffset > prepositionOffset) {
+//                    temp = (int) (100 * (positionOffset - prepositionOffset));
+//                }else{
+//                    temp = (int) (100 * (prepositionOffset - positionOffset));
 //                }
-//            });
-//        }
-        mVpParallax.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-                int temp = (int) (100 * (positionOffset - prepositionOffset));
-                if (temp > 0 && temp < 100) {
-                    scrollByX = temp * 3;
-                }
-                prepositionOffset = positionOffset;
-                if (position + positionOffset > 0 && position + positionOffset < 1 && position + positionOffset -
-                        prePosition > 0) {
-                    System.out.println("0->1::::prepositionOffset::" + prepositionOffset);
-
-
-                    mIvViewPagerBg.scrollBy(scrollByX, 0);
-                    prePosition = position + positionOffset;
-                } else if (position + positionOffset > 1 && position + positionOffset < 2 && position + positionOffset -
-                        prePosition > 0) {
-                    System.out.println("1->2::::scrollByX::" + scrollByX);
-                    mIvViewPagerBg.scrollBy(scrollByX, 0);
-                    prePosition = position + positionOffset;
-                } else if (position + positionOffset > 2 && position + positionOffset < 3 && position + positionOffset -
-                        prePosition > 0) {
-                    System.out.println("2->3::::scrollByX::" + scrollByX);
-                    mIvViewPagerBg.scrollBy(scrollByX, 0);
-                    prePosition = position + positionOffset;
-                } else if (position + positionOffset > 2 && position + positionOffset < 3 && position + positionOffset -
-                        prePosition < 0) {
-                    System.out.println("3->2::::scrollByX::" + scrollByX);
-                    mIvViewPagerBg.scrollBy(-scrollByX, 0);
-
-                    prePosition = position + positionOffset;
-                } else if (position + positionOffset > 1 && position + positionOffset < 2 && position + positionOffset -
-                        prePosition < 0) {
-                    System.out.println("2->1::::scrollByX::" + scrollByX);
-                    mIvViewPagerBg.scrollBy(-scrollByX, 0);
-
-                    prePosition = position + positionOffset;
-                } else if (position + positionOffset > 0 && position + positionOffset < 1 && position + positionOffset -
-                        prePosition < 0) {
-                    System.out.println("1->0::::scrollByX::" + scrollByX);
-                    mIvViewPagerBg.scrollBy(-scrollByX, 0);
-                    prePosition = position + positionOffset;
-                }
-            }
-
-            @Override
-            public void onPageSelected(int i) {
-
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int i) {
-
-            }
-        });
+//
+//                if (temp > 0 && temp < 100) {
+//                    scrollByX = temp * 3;
+//                }
+//                prepositionOffset = positionOffset;
+//                if (position + positionOffset > 0 && position + positionOffset < 1 && position + positionOffset -
+//                        prePosition > 0) {
+////                    System.out.println("0->1::::scrollByX::" + scrollByX);
+//                    mIvViewPagerBg.scrollBy(scrollByX, 0);
+//                    prePosition = position + positionOffset;
+//                } else if (position + positionOffset > 1 && position + positionOffset < 2 && position + positionOffset -
+//                        prePosition > 0) {
+////                    System.out.println("1->2::::scrollByX::" + scrollByX);
+//                    mIvViewPagerBg.scrollBy(scrollByX, 0);
+//                    prePosition = position + positionOffset;
+//                } else if (position + positionOffset > 2 && position + positionOffset < 3 && position + positionOffset -
+//                        prePosition > 0) {
+////                    System.out.println("2->3::::scrollByX::" + scrollByX);
+//                    mIvViewPagerBg.scrollBy(scrollByX, 0);
+//                    prePosition = position + positionOffset;
+//                } else if (position + positionOffset > 2 && position + positionOffset < 3 && position + positionOffset -
+//                        prePosition < 0) {
+////                    System.out.println("3->2::::scrollByX::" + scrollByX);
+//                    mIvViewPagerBg.scrollBy(-scrollByX, 0);
+//
+//                    prePosition = position + positionOffset;
+//                } else if (position + positionOffset > 1 && position + positionOffset < 2 && position + positionOffset -
+//                        prePosition < 0) {
+////                    System.out.println("2->1::::scrollByX::" + scrollByX);
+//                    mIvViewPagerBg.scrollBy(-scrollByX, 0);
+//
+//                    prePosition = position + positionOffset;
+//                } else if (position + positionOffset > 0 && position + positionOffset < 1 && position + positionOffset -
+//                        prePosition < 0) {
+////                    System.out.println("1->0::::scrollByX::" + scrollByX);
+//                    mIvViewPagerBg.scrollBy(-scrollByX, 0);
+//                    prePosition = position + positionOffset;
+//                }
+//            }
+//
+//            @Override
+//            public void onPageSelected(int i) {
+//
+//            }
+//
+//            @Override
+//            public void onPageScrollStateChanged(int i) {
+//
+//            }
+//        });
     }
 
     @Override

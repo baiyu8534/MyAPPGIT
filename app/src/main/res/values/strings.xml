@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">知了日报</string>
-    
+
     <string name="nv_menu_item_1">设置</string>
     <string name="nv_menu_item_2">关于</string>
     <string name="nv_menu_item_3">主题</string>
@@ -19,7 +19,7 @@
     <string name="guide_text_1">生活总是让我们遍体鳞伤，\n但到后来</string>
     <string name="guide_text_2">那些受伤的地方\n一定会变成\n我们最强壮的地方</string>
     <string name="guide_text_3">用理想去成就人生，\n不要蹉跎了岁月</string>
-    
+
     <!--demo名称-->
     <string name="demo_name_1">知乎日报</string>
     <string name="demo_name_2">导航页1</string>
@@ -27,6 +27,13 @@
     <string name="demo_name_4">item背景滚动Rv</string>
     <string name="demo_name_5">TitanicTextView</string>
     <string name="demo_name_6">视差滚动ViewPager</string>
+
+    <string name="demo_name_1_message"></string>
+    <string name="demo_name_2_message"></string>
+    <string name="demo_name_3_message"></string>
+    <string name="demo_name_4_message"></string>
+    <string name="demo_name_5_message"></string>
+    <string name="demo_name_6_message">不怎么样，滚动倒是没问题，但是图不好弄，还不如把所有控件放到pager上控制他们的滚动，而且M以上才可以监听每次滑动到的位置，M以下只能拿到移动的百分比（就不好控制具体距离了）</string>
 
     <string name="confirm">确定</string>
     <string name="cancel">取消</string>
@@ -44,5 +51,5 @@
     <string name="error_message_network_connections_break">网络连接已断开</string>
 
     <string name="alert_message_no_network_conn">无网络连接</string>
-    
+
 </resources>
