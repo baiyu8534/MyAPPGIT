@@ -41,7 +41,8 @@ import butterknife.ButterKnife;
  * 版权：
  */
 
-public class ShowAllDemosActivity extends BaseActivity implements IShowAllDemosActivity, SwipeRefreshLayout.OnRefreshListener {
+public class ShowAllDemosActivity extends BaseActivity implements IShowAllDemosActivity, SwipeRefreshLayout.OnRefreshListener,
+        View.OnClickListener {
 
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
@@ -100,6 +101,7 @@ public class ShowAllDemosActivity extends BaseActivity implements IShowAllDemosA
             }
         });
         mSwipeRefresh.setOnRefreshListener(this);
+        mFab.setOnClickListener(this);
     }
 
     private void initData() {
@@ -161,7 +163,7 @@ public class ShowAllDemosActivity extends BaseActivity implements IShowAllDemosA
 
     @Override
     public void upDataImages(ArrayList<String> images) {
-        if(isFirstNetworkRequest){
+        if (isFirstNetworkRequest) {
             isFirstNetworkRequest = false;
         }
         for (int i = 0; i < adapterItemBeans.size(); i++) {
@@ -174,9 +176,9 @@ public class ShowAllDemosActivity extends BaseActivity implements IShowAllDemosA
     public void showNetworkRequestErrorMessage(String message) {
         page--;
         mSwipeRefresh.setRefreshing(false);
-        if(isFirstNetworkRequest){
+        if (isFirstNetworkRequest) {
             isFirstNetworkRequest = false;
-        }else{
+        } else {
             UIUtil.showMessageDialog(this, message, AppConstant.ICON_TYPE_FAIL);
         }
     }
@@ -225,5 +227,14 @@ public class ShowAllDemosActivity extends BaseActivity implements IShowAllDemosA
     @Override
     protected void noNetworkConnSuccess() {
         //当网络恢复时，暂时没有需要做的操作
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.fab:
+                UIUtil.toastShort(mContext, "FloatingActionButton");
+                break;
+        }
     }
 }

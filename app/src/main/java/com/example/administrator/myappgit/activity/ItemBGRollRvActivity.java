@@ -49,9 +49,18 @@ public class ItemBGRollRvActivity extends BaseActivity implements IItemBGRollRvA
     private TravelRecyclerAdapter mAdapter;
     private IItemBGRollRvActivityPresenterImpl mPresenter;
 
+    /**
+     * 从第一页开始获取数据
+     */
     private int page;
     private boolean isLoadingMoreData = false;
 
+    /**
+     * 每页图片数量
+     */
+    private int numberOfPage;
+
+    // TODO: 2017/9/28 0028 提前了一点去加载图片，不过应为图片有点大，网速好没什么，但滑的快了就卡住了。。图片小点，就没事了（具体优化可以看下漫画app是怎么做的）
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -74,7 +83,7 @@ public class ItemBGRollRvActivity extends BaseActivity implements IItemBGRollRvA
                     int totalItemCount = mLinearLayoutManager.getItemCount();
                     int visibleItemCount = mLinearLayoutManager.getChildCount();
                     int unvisibleItemCount = mLinearLayoutManager.findFirstVisibleItemPosition();
-                    if (!isLoadingMoreData && (visibleItemCount + unvisibleItemCount + 2 >= totalItemCount)) {
+                    if (!isLoadingMoreData && (visibleItemCount + unvisibleItemCount + 5 >= totalItemCount)) {
                         System.out.println("loadMoreData");
                         isLoadingMoreData = true;
                         loadMoreData();
@@ -135,14 +144,15 @@ public class ItemBGRollRvActivity extends BaseActivity implements IItemBGRollRvA
     }
 
     private void initData() {
+        page = 1;
+        numberOfPage = 10;
         mPresenter = new IItemBGRollRvActivityPresenterImpl(this, this);
         mLinearLayoutManager = new LinearLayoutManager(mContext);
         imageUrls = new ArrayList<>();
-        for (int i = 0; i < 7; i++) {
+        for (int i = 0; i < numberOfPage; i++) {
             imageUrls.add("");
         }
         new TravelRecyclerAdapter(imageUrls, mContext);
-        page = 1;
         mAdapter = new TravelRecyclerAdapter(imageUrls, mContext);
     }
 
@@ -163,7 +173,8 @@ public class ItemBGRollRvActivity extends BaseActivity implements IItemBGRollRvA
         } else {
             imageUrls.addAll(images);
         }
-        mAdapter.notifyItemRangeChanged(oldSize == 0 ? 0 : oldSize - 1, imageUrls.size() - 1);
+//       mAdapter.notifyDataSetChanged(); 会闪
+        mAdapter.notifyItemRangeChanged(oldSize == 0 ? 0 : oldSize - 1, numberOfPage);
     }
 
     @Override

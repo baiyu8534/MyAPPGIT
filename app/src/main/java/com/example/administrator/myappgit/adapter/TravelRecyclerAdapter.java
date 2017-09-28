@@ -14,6 +14,7 @@ import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.administrator.myappgit.R;
 import com.example.administrator.myappgit.activity.ItemBGRollRvActivity;
@@ -60,6 +61,7 @@ public class TravelRecyclerAdapter extends RecyclerView.Adapter<TravelRecyclerAd
                         .override(ScreenUtil.getScreenWidth(mContext), ScreenUtil.getScreenHeight(mContext))
                         .centerCrop()
                 )
+                .transition(new DrawableTransitionOptions().crossFade())
                 // TODO: 2017/9/21 0021 加载缩略图，缩略图先加载完就显示，否则不显示 没卵用图片填不满，很小。。可以研究想
 //                .thumbnail(0.2f)
                 .into(holder.iv_item);
