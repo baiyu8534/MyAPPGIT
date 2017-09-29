@@ -1,6 +1,8 @@
 package com.example.administrator.myappgit.activity;
 
 import android.content.Context;
+import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -55,6 +57,10 @@ public class BaseActivity extends AppCompatActivity {
         activity = this;
         mContext = this;
         mBaseActivityHandler = new BaseActivityHandler(this);
+        //设置底部导航栏为透明
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            getWindow().setNavigationBarColor(Color.TRANSPARENT);
+        }
     }
 
     @Override
