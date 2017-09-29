@@ -28,11 +28,11 @@
     <string name="demo_name_5">TitanicTextView</string>
     <string name="demo_name_6">视差滚动ViewPager</string>
 
-    <string name="demo_name_1_message"></string>
-    <string name="demo_name_2_message"></string>
-    <string name="demo_name_3_message"></string>
-    <string name="demo_name_4_message"></string>
-    <string name="demo_name_5_message"></string>
+    <string name="demo_name_1_message">MVP的架构，用RxJava+retrofit2.0来实现网络请求，监听网络状态，有完整的网络错误时的通知前台策略。有统一的消息策略，在不同组件中都可以把消息传到当前显示的activity中。还有一个转场动画，rv中textView和tabView中的TextView联动。切换ViewPage时动态改变appBarLayout和状态栏的背景，不过滑快了就有点不同步了（想解决可以研究一下网上的标签页的框架）。给appBarLayout设置addOnOffsetChangedListener，可以拿到appBarLayout的移动的offset（百分比），就可以控制上面控件的移动了，但是用offset不好控制，效果不好</string>
+    <string name="demo_name_2_message">普通的viewPage，给vp设置OnPageChangeListener，在onPageScrolled中控制textView的透明度和大小，用onPageScrolled中的positionOffset（移动的百分比）来控制</string>
+    <string name="demo_name_3_message">给lv设置setOnScrollListener，在onScroll中控制item中imageView的滚动，和rv的思路一样。lv可以加header，不过控制起来比较麻烦，要控制和判断的比较多，尤其头部部分隐藏的时候。开启关闭的时候没加动画，而且关闭时lv会跳一下。。用rv就不用这么麻烦，第一的item用不同的type，加载不同的item布局即可，不用考虑item和rv的联动关系</string>
+    <string name="demo_name_4_message">监听了rv的setOnScrollListener，用onScrolled(RecyclerView recyclerView, int dx, int dy)中的dx，dy，来判断rv滑动的方向和控制每个item中的imageView的scrollBy（x,y）,就可以达到每个item中的背景随rv滚动，然后判断每个item出现的时候从上还是从下出现，提前设置imageView的scrollTo到指定位置</string>
+    <string name="demo_name_5_message">就是一个自定义的textView，给pen设置BitmapShader，设置一个上方透明，下面波浪的图片，然后用ObjectAnimator动态改变textView中的关于BitmapShader的Matrix，产生波浪一边上下移动一边左右移动</string>
     <string name="demo_name_6_message">不怎么样，滚动倒是没问题，但是图不好弄，还不如把所有控件放到pager上控制他们的滚动，而且M以上才可以监听每次滑动到的位置，M以下只能拿到移动的百分比（就不好控制具体距离了）</string>
 
     <string name="confirm">确定</string>
@@ -51,5 +51,6 @@
     <string name="error_message_network_connections_break">网络连接已断开</string>
 
     <string name="alert_message_no_network_conn">无网络连接</string>
+    <string name="message_out_app_tip">再按一次退出程序</string>
 
 </resources>
