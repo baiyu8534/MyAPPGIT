@@ -24,6 +24,7 @@ import com.example.administrator.myappgit.BuildConfig;
 import com.example.administrator.myappgit.R;
 import com.example.administrator.myappgit.app.AppConstant;
 import com.example.administrator.myappgit.utils.FileUtil;
+import com.example.administrator.myappgit.utils.SharedPreferencesUtil;
 import com.example.administrator.myappgit.utils.UIUtil;
 
 import java.io.File;
@@ -49,13 +50,17 @@ public class ShowImageActivity extends BaseActivity {
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
-        // FIXME: 2017/9/18 0018 要加教程遮罩，长按保存，设置桌面
+        // TODO: 2017/9/18 0018 要加教程遮罩 可以用第三方的，也不大，用的话还可以精简一下
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_show_iamge_layout);
         ButterKnife.bind(this);
         initData();
         initView();
         initViewListener();
+        if (SharedPreferencesUtil.getPrefBoolean(mContext, "ShowImageActivity_first_open", true)) {
+            UIUtil.showFirstMessageDialog(this, "长按图片可保存和设置为壁纸");
+            SharedPreferencesUtil.setPrefBoolean(mContext, "ShowImageActivity_first_open", false);
+        }
     }
 
     private void initViewListener() {

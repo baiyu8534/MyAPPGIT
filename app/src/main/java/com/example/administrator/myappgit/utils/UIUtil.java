@@ -24,6 +24,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.administrator.myappgit.R;
+import com.example.administrator.myappgit.app.AppConstant;
 import com.example.administrator.myappgit.ui.TopFloatHintDialog;
 
 import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
@@ -328,4 +329,48 @@ public class UIUtil {
         <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>*/
 
     }
+
+    /**
+     * 第一次使用教学dialog
+     *
+     * @param message
+     */
+    public static void showFirstMessageDialog(final Activity context, String message) {
+        final TopFloatHintDialog topFloatHintDialog = new TopFloatHintDialog.Builder(context)
+                .setIconType(AppConstant.ICON_TYPE_INFO)
+                .setMessage(message)
+                .create();
+        topFloatHintDialog.setCancelable(false);
+        topFloatHintDialog.setCanceledOnTouchOutside(false);
+        topFloatHintDialog.show();
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Thread.sleep(3000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                context.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        topFloatHintDialog.dismiss();
+                    }
+                });
+            }
+        }).start();
+        //若我们 使用的Context不是Activity 的Context 而是Application的 Context，我们 需要做以下处理 ，否则会报错
+        // 设置为系统级别的Dialog
+        /*
+        mWifiDialog.getWindow().setType(WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
+        if ((context instanceof Application)) {
+            intent.addFlags(FLAG_ACTIVITY_NEW_TASK);
+        }
+        context.startActivity(intent);
+        在AndroidMainFest中添加以下权限 。
+        <!--允许 弹出系统级别的AlterDialog-->
+        <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>*/
+
+    }
+
 }
