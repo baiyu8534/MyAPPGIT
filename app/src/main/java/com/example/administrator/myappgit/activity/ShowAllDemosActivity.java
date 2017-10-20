@@ -112,7 +112,8 @@ public class ShowAllDemosActivity extends BaseActivity implements IShowAllDemosA
                 getResources().getString(R.string.demo_name_3),
                 getResources().getString(R.string.demo_name_4),
                 getResources().getString(R.string.demo_name_5),
-                getResources().getString(R.string.demo_name_6)
+                getResources().getString(R.string.demo_name_6),
+                getString(R.string.demo_name_7)
         };
         mClasses = new Class[]{
                 MainActivity.class,
@@ -120,7 +121,8 @@ public class ShowAllDemosActivity extends BaseActivity implements IShowAllDemosA
                 ItemBGRollListActivity.class,
                 ItemBGRollRvActivity.class,
                 TitanicTextViewActivity.class,
-                ParallaxActivity.class
+                ParallaxActivity.class,
+                VariationTabLayoutActivity.class
         };
         adapterItemBeans = new ArrayList<>();
 

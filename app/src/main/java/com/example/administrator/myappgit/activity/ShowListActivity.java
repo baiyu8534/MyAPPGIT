@@ -357,6 +357,7 @@ public class ShowListActivity extends BaseActivity {
      * 给每个textView设置TransitionName
      */
     private void setTabTransitionName() {
+        // TODO: 2017/10/20 0020 可以抽取成一个自定义的tabLayout
         LinearLayout tabView = null;
         for (int i = 0; i < mFragments.size(); i++) {
 

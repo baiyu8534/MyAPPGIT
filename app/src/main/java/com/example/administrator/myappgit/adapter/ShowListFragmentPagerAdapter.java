@@ -6,6 +6,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
 import com.example.administrator.myappgit.R;
+import com.example.administrator.myappgit.ui.VariationTabLayout;
 
 import java.util.List;
 
@@ -13,7 +14,7 @@ import java.util.List;
  * Created by Administrator on 2017/7/14 0014.
  */
 
-public class ShowListFragmentPagerAdapter extends FragmentPagerAdapter {
+public class ShowListFragmentPagerAdapter extends FragmentPagerAdapter implements VariationTabLayout.IMyOneTabLayoutIconAdapter {
 
     private Context mContext;
     private List<Fragment> mFragmentList;
@@ -45,5 +46,20 @@ public class ShowListFragmentPagerAdapter extends FragmentPagerAdapter {
     @Override
     public CharSequence getPageTitle(int position) {
         return mContext.getResources().getString(titleRes[position]);
+    }
+
+    @Override
+    public int getTabIcon(int position) {
+        switch (position){
+            case 0:
+                return R.drawable.ic_chrome_reader_mode_black_48dp;
+            case 1:
+                return R.drawable.ic_description_black_48dp;
+            case 2:
+                return R.drawable.ic_crop_original_black_48dp;
+            case 3:
+                return R.drawable.ic_filter_drama_black_48dp;
+        }
+        return R.drawable.ic_chrome_reader_mode_black_48dp;
     }
 }
