@@ -380,7 +380,7 @@ public class UIUtil {
      * 设置状态栏透明
      * @param activity
      */
-    public static void translucentStatusBar(Activity activity) {
+    public static void setTranslucentStatusBar(Activity activity) {
         //用了这个。。toolBar的动画效果就迟钝了，会发生不会自动
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {//5.0及以上
 //            View decorView = activity.getWindow().getDecorView();
@@ -433,6 +433,16 @@ public class UIUtil {
                 ViewCompat.setFitsSystemWindows(mContentChild, false);
             }
         }
+    }
+
+    /**
+     * 设置导航栏为透明色
+     * @param activity
+     */
+    public static void setTranslucentNavigationBar(Activity activity){
+        //设置导航栏为透明，但是要在xml中适当地方加android:fitsSystemWindows="true" android:clipToPadding="true"
+        //否则UI会和状态栏重叠
+        activity.getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
     }
 
 }

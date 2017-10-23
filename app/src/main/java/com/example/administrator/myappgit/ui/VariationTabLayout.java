@@ -12,6 +12,9 @@ import android.widget.TextView;
 
 import com.example.administrator.myappgit.R;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * 文件名：VariationTabLayout
  * 描述：icon和text相互变幻的TabLayout
@@ -24,6 +27,8 @@ public class VariationTabLayout extends TabLayout {
 
     private RelativeLayout mRelativeLayout;
     private OnTabSelectedListener mOnTabSelectedListener;
+    private List<TextView> tabTextViewList;
+    private List<ImageView> tabImageViewList;
 
     public interface IMyOneTabLayoutIconAdapter {
         int getTabIcon(int position);
@@ -44,6 +49,14 @@ public class VariationTabLayout extends TabLayout {
         init(context);
     }
 
+    public List<TextView> getTabTextViewList() {
+        return tabTextViewList;
+    }
+
+    public List<ImageView> getTabImageViewList() {
+        return tabImageViewList;
+    }
+
     @Override
     public void setupWithViewPager(@Nullable ViewPager viewPager) {
         super.setupWithViewPager(viewPager);
@@ -57,6 +70,8 @@ public class VariationTabLayout extends TabLayout {
             TextView textView = (TextView) getTabAt(i).getCustomView().findViewById(R.id.tv);
             textView.setText(viewPager.getAdapter().getPageTitle(i));
             imageView.setImageResource(adapter.getTabIcon(i));
+            tabTextViewList.add(textView);
+            tabImageViewList.add(imageView);
         }
         for (int i = 0; i < getTabCount(); i++) {
             if (i == getSelectedTabPosition()) {
@@ -74,20 +89,24 @@ public class VariationTabLayout extends TabLayout {
     }
 
 
-
     private void init(Context context) {
 //        initCustomView(context);
+        if (tabTextViewList == null) {
+            tabTextViewList = new ArrayList<>();
+        }
+        if (tabImageViewList == null) {
+            tabImageViewList = new ArrayList<>();
+        }
         initListener();
         addOnTabSelectedListener(mOnTabSelectedListener);
     }
-
 
 
     private void initListener() {
         mOnTabSelectedListener = new OnTabSelectedListener() {
             @Override
             public void onTabSelected(Tab tab) {
-                if(tab != null && tab.getCustomView()!=null) {
+                if (tab != null && tab.getCustomView() != null) {
                     View imageView = tab.getCustomView().findViewById(R.id.iv);
                     View textView = tab.getCustomView().findViewById(R.id.tv);
                     imageView.animate()
@@ -105,7 +124,7 @@ public class VariationTabLayout extends TabLayout {
 
             @Override
             public void onTabUnselected(Tab tab) {
-                if(tab != null && tab.getCustomView()!=null) {
+                if (tab != null && tab.getCustomView() != null) {
                     View imageView = tab.getCustomView().findViewById(R.id.iv);
                     View textView = tab.getCustomView().findViewById(R.id.tv);
                     textView.animate()
