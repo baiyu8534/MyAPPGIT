@@ -41,6 +41,7 @@
         <activity android:name=".activity.TitanicTextViewActivity"/>
         <activity android:name=".activity.ParallaxActivity"/>
         <activity android:name=".activity.VariationTabLayoutActivity"/>
+        <activity android:name=".activity.BublesSwitchViewActivity"/>
 
         <service android:name=".service.BaseService"/>
     </application>
