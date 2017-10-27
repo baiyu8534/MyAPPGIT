@@ -11,13 +11,12 @@ import android.graphics.Path;
 import android.graphics.RectF;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.DecelerateInterpolator;
 import android.view.animation.Interpolator;
 
-import com.example.administrator.myappgit.BuildConfig;
+import com.example.administrator.myappgit.utils.UIUtil;
 
 /**
  * 文件名：BublesSwitchView
@@ -198,6 +197,26 @@ public class BublesSwitchView extends View {
      */
     public void setInterpolator(Interpolator interpolator) {
         this.mInterpolator = interpolator;
+    }
+
+    /**
+     * 设置小球的选中和未选中的颜色
+     * @param unSelectColorRes
+     * @param selectColorRes
+     */
+    public void setCircleColors(int unSelectColorRes, int selectColorRes) {
+        cUnSelectColer = UIUtil.colorResId2ColorInt(mContext, unSelectColorRes);
+        cSelectColer = UIUtil.colorResId2ColorInt(mContext, selectColorRes);
+    }
+
+    /**
+     * 设置背景的选中和未选中的颜色
+     * @param unSelectColorRes
+     * @param selectColorRes
+     */
+    public void setBGColors(int unSelectColorRes, int selectColorRes) {
+        sUnSelectColer = UIUtil.colorResId2ColorInt(mContext, unSelectColorRes);
+        sSelectColer = UIUtil.colorResId2ColorInt(mContext, selectColorRes);
     }
 
     public BublesSwitchView(Context context) {
@@ -420,7 +439,6 @@ public class BublesSwitchView extends View {
 
                 mCurrentPlayTime = animation.getCurrentPlayTime();
                 mAnimatedFraction = animation.getAnimatedFraction();
-                if (BuildConfig.DEBUG) Log.d("BublesSwitchView", "mAnimatedFraction:" + mAnimatedFraction);
                 moveX = (float) animation.getAnimatedValue();
                 invalidate();
             }

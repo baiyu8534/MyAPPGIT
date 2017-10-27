@@ -65,9 +65,8 @@ public class BublesSwitchViewActivity extends BaseActivity implements View.OnCli
         mBsw250.setSelect(true);
         mBsw300.setSelect(false);
 
-//        mBsw40.setInterpolator();
-//        mBsw50.setInterpolator();
-//        mBsw60.setInterpolator();
+        mBsw40.setInterpolator(new BounceInterpolator());
+        mBsw60.setInterpolator(new BounceInterpolator());
         mBsw100.setInterpolator(new AccelerateDecelerateInterpolator());
         mBsw150.setInterpolator(new AnticipateInterpolator());
         mBsw200.setInterpolator(new AccelerateInterpolator());
