@@ -4,8 +4,6 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
 import android.view.animation.AccelerateDecelerateInterpolator;
-import android.view.animation.AccelerateInterpolator;
-import android.view.animation.AnticipateInterpolator;
 import android.view.animation.BounceInterpolator;
 import android.view.animation.DecelerateInterpolator;
 
@@ -43,6 +41,12 @@ public class BublesSwitchViewActivity extends BaseActivity implements View.OnCli
     BublesSwitchView mBsw250;
     @BindView(R.id.bsw_300)
     BublesSwitchView mBsw300;
+    @BindView(R.id.bsw_60_1)
+    BublesSwitchView mBsw601;
+    @BindView(R.id.bsw_100_1)
+    BublesSwitchView mBsw1001;
+    @BindView(R.id.bsw_150_1)
+    BublesSwitchView mBsw1501;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -59,7 +63,9 @@ public class BublesSwitchViewActivity extends BaseActivity implements View.OnCli
         mBsw40.setSelect(true);
         mBsw50.setSelect(false);
         mBsw60.setSelect(true);
+        mBsw601.setSelect(false);
         mBsw100.setSelect(false);
+        mBsw1001.setSelect(true);
         mBsw150.setSelect(true);
         mBsw200.setSelect(false);
         mBsw250.setSelect(true);
@@ -68,75 +74,53 @@ public class BublesSwitchViewActivity extends BaseActivity implements View.OnCli
         mBsw40.setInterpolator(new BounceInterpolator());
         mBsw60.setInterpolator(new BounceInterpolator());
         mBsw100.setInterpolator(new AccelerateDecelerateInterpolator());
-        mBsw150.setInterpolator(new AnticipateInterpolator());
-        mBsw200.setInterpolator(new AccelerateInterpolator());
+//        mBsw150.setInterpolator(new AnticipateInterpolator());
+        mBsw1501.setInterpolator(new BounceInterpolator());
+//        mBsw200.setInterpolator(new AccelerateInterpolator());
         mBsw250.setInterpolator(new BounceInterpolator());
         mBsw300.setInterpolator(new DecelerateInterpolator());
+
+        //设置小球和背景 选中和未选中的颜色
+        mBsw100.setBGColors(R.color.black, R.color.colorPrimary);
+        mBsw100.setCircleColors(R.color.mainRvItemBg1, R.color.mainRvItemBg2);
+
+        mBsw1001.setBGColors(R.color.colorPrimary, R.color.black);
+        mBsw1001.setCircleColors(R.color.mainRvItemBg1, R.color.mainRvItemBg2);
+
+        //设置背景为图片类型
+        mBsw150.setBgType(BublesSwitchView.BgType.BITMAP);
+        mBsw1501.setBgType(BublesSwitchView.BgType.BITMAP);
+        //设置选中和未选中的背景图片
+        mBsw150.setBGDrawableResIds(R.drawable.d_1,R.drawable.d_2);
+//        mBsw1501.setBGDrawableResIds(R.drawable.d_2,R.drawable.d_1);
+
+        //设置为默认图片类型
+        mBsw300.setBgType(BublesSwitchView.BgType.BITMAP);
+        mBsw60.setBgType(BublesSwitchView.BgType.BITMAP);
+        mBsw601.setBgType(BublesSwitchView.BgType.BITMAP);
     }
 
     private void initListener() {
         mBsw300.setOnClickListener(this);
-        mBsw300.setOnCheckedChangeListener(this);
+        mBsw250.setOnCheckedChangeListener(this);
     }
 
     int i = 0;
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
-            case R.id.bsw_40:
-                UIUtil.toastShort(mContext,"bsw_40 被点击了");
-                break;
-            case R.id.bsw_50:
-                UIUtil.toastShort(mContext,"bsw_50 被点击了");
-                break;
-            case R.id.bsw_60:
-                UIUtil.toastShort(mContext,"bsw_60 被点击了");
-                break;
-            case R.id.bsw_100:
-                UIUtil.toastShort(mContext,"bsw_100 被点击了");
-                break;
-            case R.id.bsw_150:
-                UIUtil.toastShort(mContext,"bsw_150 被点击了");
-                break;
-            case R.id.bsw_200:
-                UIUtil.toastShort(mContext,"bsw_200 被点击了");
-                break;
-            case R.id.bsw_250:
-                UIUtil.toastShort(mContext,"bsw_250 被点击了");
-                break;
+        switch (v.getId()) {
             case R.id.bsw_300:
-                UIUtil.toastShort(mContext,"bsw_300 被点击了"+ ++i +"次");
+                UIUtil.toastShort(mContext, "bsw_300 被点击了" + ++i + "次");
                 break;
         }
     }
 
     @Override
     public void onCheckedChange(BublesSwitchView bublesSwitchView, boolean isSelected) {
-        switch (bublesSwitchView.getId()){
-            case R.id.bsw_40:
-                UIUtil.toastShort(mContext,"bsw_40 的选中状态变为"+isSelected);
-                break;
-            case R.id.bsw_50:
-                UIUtil.toastShort(mContext,"bsw_50 的选中状态变为"+isSelected);
-                break;
-            case R.id.bsw_60:
-                UIUtil.toastShort(mContext,"bsw_60 的选中状态变为"+isSelected);
-                break;
-            case R.id.bsw_100:
-                UIUtil.toastShort(mContext,"bsw_100 的选中状态变为"+isSelected);
-                break;
-            case R.id.bsw_150:
-                UIUtil.toastShort(mContext,"bsw_150 的选中状态变为"+isSelected);
-                break;
-            case R.id.bsw_200:
-                UIUtil.toastShort(mContext,"bsw_200 的选中状态变为"+isSelected);
-                break;
+        switch (bublesSwitchView.getId()) {
             case R.id.bsw_250:
-                UIUtil.toastShort(mContext,"bsw_250 的选中状态变为"+isSelected);
-                break;
-            case R.id.bsw_300:
-                UIUtil.toastShort(mContext,"bsw_300 的选中状态变为"+isSelected);
+                UIUtil.toastShort(mContext, "bsw_250 的选中状态变为" + isSelected);
                 break;
         }
     }

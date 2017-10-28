@@ -5,10 +5,16 @@ import android.animation.ArgbEvaluator;
 import android.animation.FloatEvaluator;
 import android.animation.ValueAnimator;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.BitmapShader;
 import android.graphics.Canvas;
+import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Path;
+import android.graphics.Rect;
 import android.graphics.RectF;
+import android.graphics.Shader;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
@@ -16,6 +22,7 @@ import android.view.View;
 import android.view.animation.DecelerateInterpolator;
 import android.view.animation.Interpolator;
 
+import com.example.administrator.myappgit.R;
 import com.example.administrator.myappgit.utils.UIUtil;
 
 /**
@@ -28,12 +35,32 @@ import com.example.administrator.myappgit.utils.UIUtil;
 
 public class BublesSwitchView extends View {
     // TODO: 2017/10/25 0025 还可以优化下，比如自定义插值器，设置笔的渲染图片
-    // FIXME: 2017/10/26 0026 每种状态的 小球颜色 BG颜色的设置方法还没加
+
+    // FIXME: 2017/10/29 绘制效率问题。。。待解决。。感觉是慢。。很慢。。放到recycleView中测试下。。
 
     //c开头是小球相关属性  s开头是背景田径场属性  m开头是控件View的属性
 
+    /**
+     * 背景类型
+     * COLOR, 纯色渐变
+     * DRAWABLE; 选中和未选中的drawable之间的滑动切换
+     */
+    public static enum BgType {
+        COLOR,
+        BITMAP;
+
+        private BgType() {
+        }
+    }
+
+    /**
+     * 背景类型 默认BgType.COLOR
+     */
+    private BgType mBgType = BgType.COLOR;
+
     private Context mContext;
     private final Paint paint = new Paint();
+
     /**
      * 田径场的path
      */
@@ -74,7 +101,7 @@ public class BublesSwitchView extends View {
     private float oTLeft, oTTop, oTRight, oTBotton;
 
     /**
-     * 控件的开关状态
+     * 控件的开关状态（现在只是动画的类型标志（从未选中到选中 还是 选中到未选中））要用其他的来标识，select就还是开关的状态
      */
     private boolean select = false;
 
@@ -127,7 +154,7 @@ public class BublesSwitchView extends View {
     private Interpolator mInterpolator;
 
     /**
-     * 小球移动时颜色改变的插值器
+     * 小球移动时颜色改变的估值器
      */
     private ArgbEvaluator mArgbEvaluator;
 
@@ -135,25 +162,54 @@ public class BublesSwitchView extends View {
      * 选中状态小球的颜色 ARGB格式
      */
     private int cSelectColer;
+    private int cSelectColerTemp = 0;
 
     /**
      * 未选中状态小球的颜色
      */
     private int cUnSelectColer;
+    private int cUnSelectColerTemp = 0;
 
     /**
      * 选中状态 背景 的颜色 ARGB格式
      */
     private int sSelectColer;
+    private int sSelectColerTemp = 0;
 
     /**
      * 未选中状态 背景 的颜色
      */
     private int sUnSelectColer;
+    private int sUnSelectColerTemp = 0;
 
     /**
-     * ---------------------------
-     **/
+     * paint 的图片渲染
+     */
+    private BitmapShader mShader;
+
+    /**
+     * shader的matrix
+     */
+    private Matrix mShaderMatrix;
+
+
+    // TODO: 2017/10/29 看了一下textView的setTextColor 也是把set进去的color值保存在mTextColor中 而paint中设置的color是mCurTextColor ，不是同一个 ，在setTextColor（）中会先让mTextColor等于设置color，然后让mCurTextColor等于mTextColor。。貌似只用一个变量去存储textColor，直接改变后执行 invalidate();刷新显示后，颜色也不会变。反正我这个是这样，用一个存储，set过后 invalidate();颜色没变。。
+    /**
+     * 未选中时的背景drawable resId
+     */
+    private int sUnSelectBgDrawableResId;
+    private int sUnSelectBgDrawableResIdTemp = 0;
+
+    /**
+     * 选中时的背景drawable resId
+     */
+    private int sSelectBgDrawableResId;
+    private int sSelectBgDrawableResIdTemp = 0;
+
+    /**
+     * 小球移动时背景移动距离的估值器
+     */
+    private FloatEvaluator mFloatEvaluator;
 
     public interface OnCheckedChangeListener {
         void onCheckedChange(BublesSwitchView bublesSwitchView, boolean isSelected);
@@ -163,10 +219,25 @@ public class BublesSwitchView extends View {
 
     private OnCheckedChangeListener mOnCheckedChangeListener;
 
+    /**
+     * 设置属性方法
+     * ---------------------------
+     **/
+
+    /**
+     * 获取选中状态
+     *
+     * @return
+     */
     public boolean isSelect() {
         return select;
     }
 
+    /**
+     * 设置选中状态
+     *
+     * @param select
+     */
     public void setSelect(boolean select) {
         this.select = select;
     }
@@ -185,6 +256,11 @@ public class BublesSwitchView extends View {
         mOnCheckedChangeListener = onCheckedChangeListener;
     }
 
+    /**
+     * 设置是否可以点击
+     *
+     * @param enabled
+     */
     @Override
     public void setEnabled(boolean enabled) {
         super.setEnabled(enabled);
@@ -201,23 +277,50 @@ public class BublesSwitchView extends View {
 
     /**
      * 设置小球的选中和未选中的颜色
+     *
      * @param unSelectColorRes
      * @param selectColorRes
      */
     public void setCircleColors(int unSelectColorRes, int selectColorRes) {
-        cUnSelectColer = UIUtil.colorResId2ColorInt(mContext, unSelectColorRes);
-        cSelectColer = UIUtil.colorResId2ColorInt(mContext, selectColorRes);
+        cUnSelectColerTemp = UIUtil.colorResId2ColorInt(mContext, unSelectColorRes);
+        cSelectColerTemp = UIUtil.colorResId2ColorInt(mContext, selectColorRes);
     }
 
     /**
      * 设置背景的选中和未选中的颜色
+     *
      * @param unSelectColorRes
      * @param selectColorRes
      */
     public void setBGColors(int unSelectColorRes, int selectColorRes) {
-        sUnSelectColer = UIUtil.colorResId2ColorInt(mContext, unSelectColorRes);
-        sSelectColer = UIUtil.colorResId2ColorInt(mContext, selectColorRes);
+        sUnSelectColerTemp = UIUtil.colorResId2ColorInt(mContext, unSelectColorRes);
+        sSelectColerTemp = UIUtil.colorResId2ColorInt(mContext, selectColorRes);
     }
+
+    /**
+     * 设置背景的选中和未选中的图片resId
+     *
+     * @param sUnSelectBgDrawableResId
+     * @param sSelectBgDrawableResId
+     */
+    public void setBGDrawableResIds(int sUnSelectBgDrawableResId, int sSelectBgDrawableResId) {
+        this.sUnSelectBgDrawableResIdTemp = sUnSelectBgDrawableResId;
+        this.sSelectBgDrawableResIdTemp = sSelectBgDrawableResId;
+    }
+
+    /**
+     * 设置背景的类型
+     *
+     * @param bgType
+     */
+    public void setBgType(BgType bgType) {
+        mBgType = bgType;
+    }
+
+    /**
+     * ------------------------
+     * 设置属性方法结束
+     */
 
     public BublesSwitchView(Context context) {
         super(context);
@@ -251,18 +354,34 @@ public class BublesSwitchView extends View {
             //开始（点击后，动画启动）
             mValueAnimator.start();
             if (!select) {
-                drawStaticBG(canvas, sUnSelectColer);
+
+                if (mBgType == BgType.COLOR) {
+                    drawStaticColorBG(canvas, sUnSelectColer);
+                } else if (mBgType == BgType.BITMAP) {
+                    drawStaticBitmapBG(canvas, 0);
+                }
                 drowStaticCircle(canvas, cUnSelectColer, cFCenterX, cCenterY);
+
             } else {
-                drawStaticBG(canvas, sSelectColer);
+
+                if (mBgType == BgType.COLOR) {
+                    drawStaticColorBG(canvas, sSelectColer);
+                } else if (mBgType == BgType.BITMAP) {
+                    drawStaticBitmapBG(canvas, mWidth);
+                }
                 drowStaticCircle(canvas, cSelectColer, cTCenterX, cCenterY);
+
             }
         } else if (animIsStart) {
 
             //过程中（圆移动过程中）
             if (!select) {
 
-                drawStaticBG(canvas, (Integer) mArgbEvaluator.evaluate(mAnimatedFraction, sUnSelectColer, sSelectColer));
+                if (mBgType == BgType.COLOR) {
+                    drawStaticColorBG(canvas, (Integer) mArgbEvaluator.evaluate(mAnimatedFraction, sUnSelectColer, sSelectColer));
+                } else if (mBgType == BgType.BITMAP) {
+                    drawStaticBitmapBG(canvas, mFloatEvaluator.evaluate(mAnimatedFraction, 0, mWidth));
+                }
 
                 paint.setAntiAlias(true);
                 paint.setStyle(Paint.Style.FILL);
@@ -291,7 +410,11 @@ public class BublesSwitchView extends View {
                 paint.reset();
             } else {
 
-                drawStaticBG(canvas, (Integer) mArgbEvaluator.evaluate(mAnimatedFraction, sSelectColer, sUnSelectColer));
+                if (mBgType == BgType.COLOR) {
+                    drawStaticColorBG(canvas, (Integer) mArgbEvaluator.evaluate(mAnimatedFraction, sSelectColer, sUnSelectColer));
+                } else if (mBgType == BgType.BITMAP) {
+                    drawStaticBitmapBG(canvas, mFloatEvaluator.evaluate(mAnimatedFraction, mWidth, 0));
+                }
 
                 paint.setAntiAlias(true);
                 paint.setStyle(Paint.Style.FILL);
@@ -319,10 +442,18 @@ public class BublesSwitchView extends View {
         } else {
             //结束 （动画结束后）
             if (!select) {
-                drawStaticBG(canvas, sUnSelectColer);
+                if (mBgType == BgType.COLOR) {
+                    drawStaticColorBG(canvas, sUnSelectColer);
+                } else if (mBgType == BgType.BITMAP) {
+                    drawStaticBitmapBG(canvas, 0);
+                }
                 drowStaticCircle(canvas, cUnSelectColer, cFCenterX, cCenterY);
             } else {
-                drawStaticBG(canvas, sSelectColer);
+                if (mBgType == BgType.COLOR) {
+                    drawStaticColorBG(canvas, sSelectColer);
+                } else if (mBgType == BgType.BITMAP) {
+                    drawStaticBitmapBG(canvas, mWidth);
+                }
                 drowStaticCircle(canvas, cSelectColer, cTCenterX, cCenterY);
             }
         }
@@ -330,15 +461,34 @@ public class BublesSwitchView extends View {
     }
 
     /**
-     * 画背景田径场
+     * 画纯色背景田径场
      *
      * @param canvas
      * @param colorInt ARGB 0xAARRGGBB
      */
-    private void drawStaticBG(Canvas canvas, int colorInt) {
+    private void drawStaticColorBG(Canvas canvas, int colorInt) {
         paint.setAntiAlias(true);
         paint.setStyle(Paint.Style.FILL);
         paint.setColor(colorInt);
+        canvas.drawPath(sPath, paint); // 画出田径场
+        canvas.save();
+        paint.reset();
+    }
+
+    /**
+     * 画图片背景田径场
+     *
+     * @param canvas
+     * @param translateX 图片的横向偏移量
+     */
+    private void drawStaticBitmapBG(Canvas canvas, float translateX) {
+        paint.setAntiAlias(true);
+        paint.setStyle(Paint.Style.FILL);
+
+        mShaderMatrix.setTranslate(translateX, 0);
+        mShader.setLocalMatrix(mShaderMatrix);
+
+        paint.setShader(mShader);
         canvas.drawPath(sPath, paint); // 画出田径场
         canvas.save();
         paint.reset();
@@ -365,6 +515,8 @@ public class BublesSwitchView extends View {
 
         oval = new RectF();
         mArgbEvaluator = new ArgbEvaluator();
+        mShaderMatrix = new Matrix();
+        mFloatEvaluator = new FloatEvaluator();
 
         //初始化数值
         mWidth = w; // 视图自身宽度
@@ -383,14 +535,8 @@ public class BublesSwitchView extends View {
         cPercent = 0.64f;
         spacePercent = 1f - cPercent;
 
-        //color  0xff000000黑色
-        cSelectColer = 0xffE91E63;
-        cUnSelectColer = 0xff5D646E;
-
-        sSelectColer = 0xff00796B;
-        sUnSelectColer = 0xff000000;
-
-        //动画执行时间
+        // TODO: 2017/10/28 现在是写死的，但是也没什么。。还没想到好方法去根据控件大小动态设置的函数模型
+        //动画执行时间 根据控件宽度来设置
         if (mWidth <= 200) {
             time = 450;
         } else if (mWidth <= 300) {
@@ -452,6 +598,7 @@ public class BublesSwitchView extends View {
             public void onAnimationEnd(Animator animation) {
                 //确保点击后动画在执行过程中不可以重复的点击
                 //动画结束后才改变状态
+                // FIXME: 2017/10/29 动画结束后才改变状态有点晚 现在的select只是标识了 动画的类型（从未选中到选中 还是 选中到未选中），改个名字。然后在点击事件中判断动画没开始的状态，点击了就改变选中状态，动画执行中即animIsStart == true不去改变状态即可
                 animIsStart = false;
                 moveX = -1;
                 select = !select;
@@ -470,15 +617,53 @@ public class BublesSwitchView extends View {
 
             }
         });
-
+//        createShader();
     }
 
+    /**
+     * 在绘制之前 设置属性
+     *
+     * @param changed
+     * @param left
+     * @param top
+     * @param right
+     * @param bottom
+     */
     @Override
     protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
         super.onLayout(changed, left, top, right, bottom);
+        //在绘制之前onDraw之前去设置属性
         if (mValueAnimator != null && mInterpolator != null) {
             mValueAnimator.setInterpolator(mInterpolator);
         }
+
+        //小球默认选中和未选中的颜色
+        cSelectColer = 0xffE91E63;
+        cUnSelectColer = 0xff5D646E;
+
+        //背景默选中和未选中的颜色
+        sSelectColer = 0xff00796B;
+        sUnSelectColer = 0xff000000;
+
+        //背景默选中和未选中的的图片
+        sSelectBgDrawableResId = R.drawable.day;
+        sUnSelectBgDrawableResId = R.drawable.night;
+
+        if (cSelectColerTemp != 0) {
+            cSelectColer = cSelectColerTemp;
+            cUnSelectColer = cUnSelectColerTemp;
+        }
+
+        if (sSelectColerTemp != 0) {
+            sSelectColer = sSelectColerTemp;
+            sUnSelectColer = sUnSelectColerTemp;
+        }
+
+        if (sSelectBgDrawableResIdTemp != 0) {
+            sSelectBgDrawableResId = sSelectBgDrawableResIdTemp;
+            sUnSelectBgDrawableResId = sUnSelectBgDrawableResIdTemp;
+        }
+        createShader();
     }
 
     @Override
@@ -505,8 +690,11 @@ public class BublesSwitchView extends View {
     }
 
 
+    /**
+     * 默认的插值器
+     */
     private class MyDecelerateInterpolator implements Interpolator {
-
+        // FIXME: 2017/10/28 需要自定义下，效果做好点。。
         float mFactor = 0.1f;
 
         @Override
@@ -519,6 +707,38 @@ public class BublesSwitchView extends View {
             }
             return result;
         }
+    }
+
+    /**
+     * 初始化paint的shader
+     */
+    private void createShader() {
+
+        //重新设置图片的宽高
+        Bitmap unStlectBitmap = UIUtil.resetBitmapWidthAndHeight(
+                BitmapFactory.decodeResource(getResources(), sUnSelectBgDrawableResId),
+                mWidth, mHeight
+        );
+        Bitmap StlectBitmap = UIUtil.resetBitmapWidthAndHeight(
+                BitmapFactory.decodeResource(getResources(), sSelectBgDrawableResId),
+                mWidth, mHeight
+        );
+
+        //最终的bitmap
+        Bitmap bitmap = Bitmap.createBitmap(mWidth * 2, mHeight, Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(bitmap);
+
+        Rect rect = new Rect();
+        rect.left = 0;
+        rect.top = 0;
+        rect.right = mWidth;
+        rect.bottom = mHeight;
+
+        //拼接两个bitmap
+        canvas.drawBitmap(unStlectBitmap, rect, rect, paint);
+        canvas.drawBitmap(StlectBitmap, mWidth, 0, paint);
+
+        mShader = new BitmapShader(bitmap, Shader.TileMode.REPEAT, Shader.TileMode.CLAMP);
     }
 
     //=====================================================================================================

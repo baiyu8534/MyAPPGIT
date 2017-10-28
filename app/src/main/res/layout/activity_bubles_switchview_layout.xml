@@ -34,6 +34,7 @@
             android:layout_margin="10dp"/>
 
         <com.example.administrator.myappgit.ui.BublesSwitchView
+            android:id="@+id/bsw_60_1"
             android:layout_width="60dp"
             android:layout_height="60dp"
             android:layout_margin="10dp"/>
@@ -50,12 +51,29 @@
             android:layout_width="100dp"
             android:layout_height="100dp"
             android:layout_margin="10dp"/>
-
         <com.example.administrator.myappgit.ui.BublesSwitchView
-            android:id="@+id/bsw_150"
-            android:layout_width="150dp"
-            android:layout_height="150dp"
+            android:id="@+id/bsw_100_1"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
             android:layout_margin="10dp"/>
+
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+    <com.example.administrator.myappgit.ui.BublesSwitchView
+        android:id="@+id/bsw_150"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_margin="10dp"/>
+        <com.example.administrator.myappgit.ui.BublesSwitchView
+        android:id="@+id/bsw_150_1"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_margin="10dp"/>
     </LinearLayout>
 
     <com.example.administrator.myappgit.ui.BublesSwitchView

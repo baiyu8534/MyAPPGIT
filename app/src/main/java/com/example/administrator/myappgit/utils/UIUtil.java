@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.PixelFormat;
 import android.graphics.Rect;
@@ -148,6 +149,31 @@ public class UIUtil {
         drawable.setBounds(0, 0, drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight());
         drawable.draw(canvas);
         return bitmap;
+    }
+
+    /**
+     * 重新设置bitmap的宽高
+     *
+     * @param bitmap
+     * @param newWidth
+     * @param newHeight
+     * @return
+     */
+    public static Bitmap resetBitmapWidthAndHeight(Bitmap bitmap, int newWidth, int newHeight) {
+        // TODO: 2017/10/28  bitmap.setWidth(newWidth);会崩，有时间看下
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+//            bitmap.setWidth(newWidth);
+//            bitmap.setHeight(newHeight);
+//            return bitmap;
+//        } else {
+            int oldWidth = bitmap.getWidth();
+            int oldHight = bitmap.getHeight();
+            float scaleWidth = ((float) newWidth) / oldWidth;
+            float scaleHeight = ((float) newHeight) / oldHight;
+            Matrix matrix = new Matrix();
+            matrix.postScale(scaleWidth, scaleHeight);
+            return Bitmap.createBitmap(bitmap, 0, 0, oldWidth, oldHight, matrix, true);
+//        }
     }
 
     /**
@@ -378,10 +404,13 @@ public class UIUtil {
 
     /**
      * 设置状态栏透明
+     *
      * @param activity
      */
     public static void setTranslucentStatusBar(Activity activity) {
-        //用了这个。。toolBar的动画效果就迟钝了，会发生不会自动
+        //用了这个。。toolBar的动画效果就迟钝了，会发生不会自动弹回
+        //状态栏不管透明或半透明，都要在xml适当的地方加入 android:fitsSystemWindows="true" android:clipToPadding="true"
+        //否则一部分布局就会顶到最上面，或者在适当的地方加边距内边距好些，不过还是加属性靠谱
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {//5.0及以上
 //            View decorView = activity.getWindow().getDecorView();
 //            int option = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LAYOUT_STABLE;
