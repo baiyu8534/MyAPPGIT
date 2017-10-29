@@ -114,7 +114,8 @@ public class ShowAllDemosActivity extends BaseActivity implements IShowAllDemosA
                 getResources().getString(R.string.demo_name_5),
                 getResources().getString(R.string.demo_name_6),
                 getString(R.string.demo_name_7),
-                getString(R.string.demo_name_8)
+                getString(R.string.demo_name_8),
+                "DrowInterpolatorView"
         };
         mClasses = new Class[]{
                 MainActivity.class,
@@ -124,7 +125,8 @@ public class ShowAllDemosActivity extends BaseActivity implements IShowAllDemosA
                 TitanicTextViewActivity.class,
                 ParallaxActivity.class,
                 VariationTabLayoutActivity.class,
-                BublesSwitchViewActivity.class
+                BublesSwitchViewActivity.class,
+                DrowInterpolatorViewActivity.class
         };
         adapterItemBeans = new ArrayList<>();
 

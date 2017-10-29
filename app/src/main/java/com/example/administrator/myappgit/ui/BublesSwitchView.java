@@ -346,13 +346,16 @@ public class BublesSwitchView extends View {
 
     @Override
     protected void onDraw(final Canvas canvas) {
+        //onDraw会重复执行，最好只放绘制操作
+        // TODO: 2017/10/29 现在小球是实时绘制，如果改成移动动画会不会好些？ （让canvas移动，有对应api）
         super.onDraw(canvas);
 
         //因为是实时绘制，用数值动画，开始时刷新绘制要先画一个圆，要不会闪一下
         if (animIsStart && moveX == -1) {
 
+            //移到了点击事件中去开启动画
             //开始（点击后，动画启动）
-            mValueAnimator.start();
+            //mValueAnimator.start();
             if (!select) {
 
                 if (mBgType == BgType.COLOR) {
@@ -676,13 +679,17 @@ public class BublesSwitchView extends View {
 
                 break;
             case MotionEvent.ACTION_UP:
-                //确保点击后动画在执行过程中不可以重复的点击
+                //animIsStart 标识动画是否开始 确保点击后动画在执行过程中不可以重复的点击
                 if (!animIsStart) {
                     animIsStart = true;
                     invalidate();
-                    if (mOnClickListener != null) {
-                        mOnClickListener.onClick(this);
-                    }
+
+                    //开始（点击后，动画启动）
+                    mValueAnimator.start();
+                }
+                //动画虽然开始 但是还可以接收点击事件 只不过不去重复的开启动画
+                if (mOnClickListener != null) {
+                    mOnClickListener.onClick(this);
                 }
                 break;
         }
