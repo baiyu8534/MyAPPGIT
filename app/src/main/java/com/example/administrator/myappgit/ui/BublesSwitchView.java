@@ -102,8 +102,18 @@ public class BublesSwitchView extends View {
 
     /**
      * 控件的开关状态（现在只是动画的类型标志（从未选中到选中 还是 选中到未选中））要用其他的来标识，select就还是开关的状态
+     * false 标识从未选中到选中
+     * true 标识选中到未选中
+     * 代表小球移动的方向
+     * 要在动画结束后改变
      */
     private boolean select = false;
+
+    /**
+     * 按钮的开关状态
+     * 动画开始时改变
+     */
+    private boolean checked = false;
 
     /**
      * 标识动画是否正在播放
@@ -212,7 +222,7 @@ public class BublesSwitchView extends View {
     private FloatEvaluator mFloatEvaluator;
 
     public interface OnCheckedChangeListener {
-        void onCheckedChange(BublesSwitchView bublesSwitchView, boolean isSelected);
+        void onCheckedChange(BublesSwitchView bublesSwitchView, boolean checked);
     }
 
     private OnClickListener mOnClickListener;
@@ -229,17 +239,18 @@ public class BublesSwitchView extends View {
      *
      * @return
      */
-    public boolean isSelect() {
-        return select;
+    public boolean isChecked() {
+        return checked;
     }
 
     /**
      * 设置选中状态
      *
-     * @param select
+     * @param checked
      */
-    public void setSelect(boolean select) {
-        this.select = select;
+    public void setChecked(boolean checked) {
+        this.checked = checked;
+        select = checked;
     }
 
     @Override
@@ -595,19 +606,22 @@ public class BublesSwitchView extends View {
         mValueAnimator.addListener(new Animator.AnimatorListener() {
             @Override
             public void onAnimationStart(Animator animation) {
+
+                // 动画刚开始就改变选中的状态
+                checked = !checked;
+                if (mOnCheckedChangeListener != null) {
+                    mOnCheckedChangeListener.onCheckedChange(BublesSwitchView.this, checked);
+                }
             }
 
             @Override
             public void onAnimationEnd(Animator animation) {
                 //确保点击后动画在执行过程中不可以重复的点击
                 //动画结束后才改变状态
-                // FIXME: 2017/10/29 动画结束后才改变状态有点晚 现在的select只是标识了 动画的类型（从未选中到选中 还是 选中到未选中），改个名字。然后在点击事件中判断动画没开始的状态，点击了就改变选中状态，动画执行中即animIsStart == true不去改变状态即可
+                // TODO: 2017/10/29(已改) 动画结束后才改变状态有点晚 现在的select只是标识了 动画的类型（从未选中到选中 还是 选中到未选中），改个名字。然后在点击事件中判断动画没开始的状态，点击了就改变选中状态，动画执行中即animIsStart == true不去改变状态即可
                 animIsStart = false;
                 moveX = -1;
                 select = !select;
-                if (mOnCheckedChangeListener != null) {
-                    mOnCheckedChangeListener.onCheckedChange(BublesSwitchView.this, select);
-                }
             }
 
             @Override

@@ -9,6 +9,7 @@ import android.view.animation.DecelerateInterpolator;
 
 import com.example.administrator.myappgit.R;
 import com.example.administrator.myappgit.ui.BublesSwitchView;
+import com.example.administrator.myappgit.ui.DrowInterpolatorView;
 import com.example.administrator.myappgit.utils.UIUtil;
 
 import butterknife.BindView;
@@ -60,20 +61,21 @@ public class BublesSwitchViewActivity extends BaseActivity implements View.OnCli
     }
 
     private void initView() {
-        mBsw40.setSelect(true);
-        mBsw50.setSelect(false);
-        mBsw60.setSelect(true);
-        mBsw601.setSelect(false);
-        mBsw100.setSelect(false);
-        mBsw1001.setSelect(true);
-        mBsw150.setSelect(true);
-        mBsw200.setSelect(false);
-        mBsw250.setSelect(true);
-        mBsw300.setSelect(false);
+        mBsw40.setChecked(true);
+        mBsw50.setChecked(false);
+        mBsw60.setChecked(true);
+        mBsw601.setChecked(false);
+        mBsw100.setChecked(false);
+        mBsw1001.setChecked(true);
+        mBsw150.setChecked(true);
+        mBsw200.setChecked(false);
+        mBsw250.setChecked(true);
+        mBsw300.setChecked(false);
 
         mBsw40.setInterpolator(new BounceInterpolator());
         mBsw60.setInterpolator(new BounceInterpolator());
         mBsw100.setInterpolator(new AccelerateDecelerateInterpolator());
+        mBsw1001.setInterpolator(new DrowInterpolatorView.MyDecelerateInterpolator());
 //        mBsw150.setInterpolator(new AnticipateInterpolator());
         mBsw1501.setInterpolator(new BounceInterpolator());
 //        mBsw200.setInterpolator(new AccelerateInterpolator());
@@ -84,8 +86,8 @@ public class BublesSwitchViewActivity extends BaseActivity implements View.OnCli
         mBsw100.setBGColors(R.color.black, R.color.colorPrimary);
         mBsw100.setCircleColors(R.color.mainRvItemBg1, R.color.mainRvItemBg2);
 
-        mBsw1001.setBGColors(R.color.colorPrimary, R.color.black);
-        mBsw1001.setCircleColors(R.color.mainRvItemBg1, R.color.mainRvItemBg2);
+        mBsw1001.setBGColors(R.color.black, R.color.black);
+        mBsw1001.setCircleColors(R.color.colorWhite, R.color.colorWhite);
 
         //设置背景为图片类型
         mBsw150.setBgType(BublesSwitchView.BgType.BITMAP);
@@ -116,11 +118,12 @@ public class BublesSwitchViewActivity extends BaseActivity implements View.OnCli
         }
     }
 
+
     @Override
-    public void onCheckedChange(BublesSwitchView bublesSwitchView, boolean isSelected) {
+    public void onCheckedChange(BublesSwitchView bublesSwitchView, boolean checked) {
         switch (bublesSwitchView.getId()) {
             case R.id.bsw_250:
-                UIUtil.toastShort(mContext, "bsw_250 的选中状态变为" + isSelected);
+                UIUtil.toastShort(mContext, "bsw_250 的选中状态变为" + checked);
                 break;
         }
     }
