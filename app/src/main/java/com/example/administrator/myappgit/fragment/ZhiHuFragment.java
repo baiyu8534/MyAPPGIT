@@ -103,7 +103,7 @@ public class ZhiHuFragment extends BaseFragment implements IZhiHuFragment {
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
-                if (dy > 0) {
+                if (dy >= 0) {
                     //向下滚动
                     int totalItemCount = mLinearLayoutManager.getItemCount();
                     int visibleItemCount = mLinearLayoutManager.getChildCount();
