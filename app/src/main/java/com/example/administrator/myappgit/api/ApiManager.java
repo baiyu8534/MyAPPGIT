@@ -54,7 +54,7 @@ public class ApiManager {
             Response response = chain.proceed(chain.request());
             if (BuildConfig.DEBUG) Log.d("ApiManager", response.toString());
             if (NetWorkUtil.isNetWorkAvailable(MyApplication.getContext())) {
-                // FIXME: 2017/10/12 0012 现在只有在线缓存，离线缓存读不到或没有，需要看下
+                // FIXME: 2017/10/12 0012 现在只有在线缓存，离线缓存读不到或没有，需要看下,不是读不到而是要缓存返回的json数据，这样才有图片地址去调用缓存
                 //在线缓存2分钟内可读取
                 int maxAge = 120;
                 return response.newBuilder()

@@ -364,6 +364,7 @@ public class ShowListActivity extends BaseActivity {
             TabLayout.Tab tab = mTabShowList.getTabAt(i);
             Field view = null;
             try {
+                // compileSdkVersion 28  targetSdkVersion 28 不行 名字改了
                 view = TabLayout.Tab.class.getDeclaredField("mView");
             } catch (NoSuchFieldException e) {
                 e.printStackTrace();

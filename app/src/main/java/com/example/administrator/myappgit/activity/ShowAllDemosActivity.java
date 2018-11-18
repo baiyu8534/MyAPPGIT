@@ -115,7 +115,8 @@ public class ShowAllDemosActivity extends BaseActivity implements IShowAllDemosA
                 getResources().getString(R.string.demo_name_6),
                 getString(R.string.demo_name_7),
                 getString(R.string.demo_name_8),
-                "DrowInterpolatorView"
+                "DrowInterpolatorView",
+                "复杂Rv-Glid"
         };
         mClasses = new Class[]{
                 MainActivity.class,
@@ -126,7 +127,8 @@ public class ShowAllDemosActivity extends BaseActivity implements IShowAllDemosA
                 ParallaxActivity.class,
                 VariationTabLayoutActivity.class,
                 BublesSwitchViewActivity.class,
-                DrowInterpolatorViewActivity.class
+                DrowInterpolatorViewActivity.class,
+                ComplexGlidLayoutRv.class
         };
         adapterItemBeans = new ArrayList<>();
 

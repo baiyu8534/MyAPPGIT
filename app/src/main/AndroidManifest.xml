@@ -43,6 +43,7 @@
         <activity android:name=".activity.VariationTabLayoutActivity"/>
         <activity android:name=".activity.BublesSwitchViewActivity"/>
         <activity android:name=".activity.DrowInterpolatorViewActivity"/>
+        <activity android:name=".activity.ComplexGlidLayoutRv" />
 
         <service android:name=".service.BaseService"/>
     </application>
