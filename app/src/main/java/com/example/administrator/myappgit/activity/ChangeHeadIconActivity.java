@@ -40,6 +40,8 @@ public class ChangeHeadIconActivity extends BaseActivity {
     protected static final int CHOOSE_PICTURE = 0;
     protected static final int TAKE_PICTURE = 1;
     private static final int CROP_SMALL_PICTURE = 2;
+    @BindView(R.id.iv_back)
+    ImageView mIvBack;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -68,9 +70,12 @@ public class ChangeHeadIconActivity extends BaseActivity {
                 .into(mIv);
     }
 
-    @OnClick(R.id.bt)
+    @OnClick({R.id.bt, R.id.iv_back})
     public void onViewClicked(View view) {
         switch (view.getId()) {
+            case R.id.iv_back:
+                finish();
+                break;
             case R.id.bt:
                 AlertDialog.Builder builder = new AlertDialog.Builder(this);
                 String[] items = {"选择本地照片", "拍照"};

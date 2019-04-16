@@ -74,7 +74,7 @@ public class ApiManager {
     };
 
     private static ApiManager apiManager;
-    private static File httpCacheDirectory = new File(MyApplication.getContext().getCacheDir(), "MyAppCacheDir");
+    private static File httpCacheDirectory = new File(MyApplication.getContext().getExternalCacheDir(), "MyAppCacheDir");
     //缓存50M
     private static long cacheSize = 50 * 1024 * 1024;
     private static Cache cache = new Cache(httpCacheDirectory, cacheSize);

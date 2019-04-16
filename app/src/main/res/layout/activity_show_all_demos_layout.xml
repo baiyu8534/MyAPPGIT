@@ -30,6 +30,7 @@
         android:layout_height="match_parent">
 
         <android.support.design.widget.AppBarLayout
+            app:layout_behavior="com.example.administrator.myappgit.ui.FixAppBarLayoutBehavior"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 

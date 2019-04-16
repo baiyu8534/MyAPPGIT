@@ -5,12 +5,12 @@
     android:background="@color/black">
 
 
-    <TextView
+    <ImageView
+        android:id="@+id/iv_back"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="完成"
         android:textSize="18sp"
-        android:layout_alignParentRight="true"
+        android:src="@mipmap/qmui_icon_notify_error"
         android:layout_margin="10dp"
         android:textColor="@color/colorWhite"/>
 

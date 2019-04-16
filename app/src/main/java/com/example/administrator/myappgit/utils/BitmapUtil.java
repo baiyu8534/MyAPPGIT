@@ -6,6 +6,8 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Matrix;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.util.Log;
 
@@ -25,6 +27,7 @@ import java.io.InputStream;
 public class BitmapUtil {
     // TODO: 2017/9/18 0018 copy的没细看，以后有时间整理
     private static final String TAG = "BitmapUtil";
+
     /**
      * 通过资源id转化成Bitmap
      *
@@ -32,8 +35,7 @@ public class BitmapUtil {
      * @param resId
      * @return
      */
-    public static Bitmap ReadBitmapById(Context context, int resId)
-    {
+    public static Bitmap ReadBitmapById(Context context, int resId) {
         BitmapFactory.Options opt = new BitmapFactory.Options();
         opt.inPreferredConfig = Bitmap.Config.RGB_565;
         opt.inPurgeable = true;
@@ -41,6 +43,7 @@ public class BitmapUtil {
         InputStream is = context.getResources().openRawResource(resId);
         return BitmapFactory.decodeStream(is, null, opt);
     }
+
     /**
      * 缩放Bitmap满屏
      *
@@ -50,8 +53,7 @@ public class BitmapUtil {
      * @return
      */
     public static Bitmap getBitmap(Bitmap bitmap, int screenWidth,
-                                   int screenHight)
-    {
+                                   int screenHight) {
         int w = bitmap.getWidth();
         int h = bitmap.getHeight();
         Matrix matrix = new Matrix();
@@ -60,8 +62,7 @@ public class BitmapUtil {
         // scale = scale < scale2 ? scale : scale2;
         matrix.postScale(scale, scale);
         Bitmap bmp = Bitmap.createBitmap(bitmap, 0, 0, w, h, matrix, true);
-        if (bitmap != null && !bitmap.equals(bmp) && !bitmap.isRecycled())
-        {
+        if (bitmap != null && !bitmap.equals(bmp) && !bitmap.isRecycled()) {
             bitmap.recycle();
             bitmap = null;
         }
@@ -70,9 +71,8 @@ public class BitmapUtil {
 
     /**
      * 按最大边按一定大小缩放图片
-     * */
-    public static Bitmap scaleImage(byte[] buffer, float size)
-    {
+     */
+    public static Bitmap scaleImage(byte[] buffer, float size) {
         // 获取原图宽度
         BitmapFactory.Options options = new BitmapFactory.Options();
         options.inJustDecodeBounds = true;
@@ -82,28 +82,23 @@ public class BitmapUtil {
                 options);
         // 计算缩放比例
         float reSize = options.outWidth / size;
-        if (options.outWidth < options.outHeight)
-        {
+        if (options.outWidth < options.outHeight) {
             reSize = options.outHeight / size;
         }
         // 如果是小图则放大
-        if (reSize <= 1)
-        {
+        if (reSize <= 1) {
             int newWidth = 0;
             int newHeight = 0;
-            if (options.outWidth > options.outHeight)
-            {
+            if (options.outWidth > options.outHeight) {
                 newWidth = (int) size;
                 newHeight = options.outHeight * (int) size / options.outWidth;
-            } else
-            {
+            } else {
                 newHeight = (int) size;
                 newWidth = options.outWidth * (int) size / options.outHeight;
             }
             bm = BitmapFactory.decodeByteArray(buffer, 0, buffer.length);
             bm = scaleImage(bm, newWidth, newHeight);
-            if (bm == null)
-            {
+            if (bm == null) {
                 Log.e(TAG, "convertToThumb, decode fail:" + null);
                 return null;
             }
@@ -113,19 +108,17 @@ public class BitmapUtil {
         options.inJustDecodeBounds = false;
         options.inSampleSize = (int) reSize;
         bm = BitmapFactory.decodeByteArray(buffer, 0, buffer.length, options);
-        if (bm == null)
-        {
+        if (bm == null) {
             Log.e(TAG, "convertToThumb, decode fail:" + null);
             return null;
         }
         return bm;
     }
+
     /**
      * 检查图片是否超过一定值，是则缩小
-     *
      */
-    public static Bitmap convertToThumb(byte[] buffer, float size)
-    {
+    public static Bitmap convertToThumb(byte[] buffer, float size) {
         // 获取原图宽度
         BitmapFactory.Options options = new BitmapFactory.Options();
         options.inJustDecodeBounds = true;
@@ -135,71 +128,64 @@ public class BitmapUtil {
                 options);
         // 计算缩放比例
         float reSize = options.outWidth / size;
-        if (options.outWidth > options.outHeight)
-        {
+        if (options.outWidth > options.outHeight) {
             reSize = options.outHeight / size;
         }
-        if (reSize <= 0)
-        {
+        if (reSize <= 0) {
             reSize = 1;
         }
         Log.d(TAG, "convertToThumb, reSize:" + reSize);
         // 缩放
         options.inJustDecodeBounds = false;
         options.inSampleSize = (int) reSize;
-        if (bm != null && !bm.isRecycled())
-        {
+        if (bm != null && !bm.isRecycled()) {
             bm.recycle();
             bm = null;
             Log.e(TAG, "convertToThumb, recyle");
         }
         bm = BitmapFactory.decodeByteArray(buffer, 0, buffer.length, options);
-        if (bm == null)
-        {
+        if (bm == null) {
             Log.e(TAG, "convertToThumb, decode fail:" + null);
             return null;
         }
         return bm;
     }
+
     /**
      * Bitmap --> byte[]
      *
      * @param bmp
      * @return
      */
-    private static byte[] readBitmap(Bitmap bmp)
-    {
+    private static byte[] readBitmap(Bitmap bmp) {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         bmp.compress(Bitmap.CompressFormat.JPEG, 60, baos);
-        try
-        {
+        try {
             baos.flush();
             baos.close();
-        } catch (IOException e)
-        {
+        } catch (IOException e) {
             e.printStackTrace();
         }
         return baos.toByteArray();
     }
+
     /**
      * Bitmap --> byte[]
      *
      * @return
      */
-    public static byte[] readBitmapFromBuffer(byte[] buffer, float size)
-    {
+    public static byte[] readBitmapFromBuffer(byte[] buffer, float size) {
         return readBitmap(convertToThumb(buffer, size));
     }
+
     /**
      * 以屏幕宽度为基准，显示图片
      *
      * @return
      */
-    public static Bitmap decodeStream(Context context, Intent data, float size)
-    {
+    public static Bitmap decodeStream(Context context, Intent data, float size) {
         Bitmap image = null;
-        try
-        {
+        try {
             Uri dataUri = data.getData();
             // 获取原图宽度
             BitmapFactory.Options options = new BitmapFactory.Options();
@@ -210,8 +196,7 @@ public class BitmapUtil {
                     .openInputStream(dataUri), null, options);
             // 计算缩放比例
             float reSize = (int) (options.outWidth / size);
-            if (reSize <= 0)
-            {
+            if (reSize <= 0) {
                 reSize = 1;
             }
             Log.d(TAG, "old-w:" + options.outWidth + ", llyt-w:" + size
@@ -221,8 +206,7 @@ public class BitmapUtil {
             options.inSampleSize = (int) reSize;
             image = BitmapFactory.decodeStream(context.getContentResolver()
                     .openInputStream(dataUri), null, options);
-        } catch (Exception e)
-        {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return image;
@@ -236,10 +220,8 @@ public class BitmapUtil {
      * @param newHeight
      * @return
      */
-    public static Bitmap scaleImage(Bitmap bm, int newWidth, int newHeight)
-    {
-        if (bm == null)
-        {
+    public static Bitmap scaleImage(Bitmap bm, int newWidth, int newHeight) {
+        if (bm == null) {
             return null;
         }
         int width = bm.getWidth();
@@ -250,24 +232,21 @@ public class BitmapUtil {
         matrix.postScale(scaleWidth, scaleHeight);
         Bitmap newbm = Bitmap.createBitmap(bm, 0, 0, width, height, matrix,
                 true);
-        if (bm != null & !bm.isRecycled())
-        {
+        if (bm != null & !bm.isRecycled()) {
             bm.recycle();
             bm = null;
         }
         return newbm;
     }
+
     /**
      * fuction: 设置固定的宽度，高度随之变化，使图片不会变形
      *
-     * @param target
-     * 需要转化bitmap参数
-     * @param newWidth
-     * 设置新的宽度
+     * @param target   需要转化bitmap参数
+     * @param newWidth 设置新的宽度
      * @return
      */
-    public static Bitmap fitBitmap(Bitmap target, int newWidth)
-    {
+    public static Bitmap fitBitmap(Bitmap target, int newWidth) {
         int width = target.getWidth();
         int height = target.getHeight();
         Matrix matrix = new Matrix();
@@ -279,8 +258,7 @@ public class BitmapUtil {
         // matrix,true);
         Bitmap bmp = Bitmap.createBitmap(target, 0, 0, width, height, matrix,
                 true);
-        if (target != null && !target.equals(bmp) && !target.isRecycled())
-        {
+        if (target != null && !target.equals(bmp) && !target.isRecycled()) {
             target.recycle();
             target = null;
         }
@@ -295,14 +273,12 @@ public class BitmapUtil {
      * @param src
      * @return
      */
-    public static Bitmap createRepeater(int width, Bitmap src)
-    {
+    public static Bitmap createRepeater(int width, Bitmap src) {
         int count = (width + src.getWidth() - 1) / src.getWidth();
         Bitmap bitmap = Bitmap.createBitmap(width, src.getHeight(),
                 Bitmap.Config.ARGB_8888);
         Canvas canvas = new Canvas(bitmap);
-        for (int idx = 0; idx < count; ++idx)
-        {
+        for (int idx = 0; idx < count; ++idx) {
             canvas.drawBitmap(src, idx * src.getWidth(), 0, null);
         }
         return bitmap;
@@ -314,41 +290,32 @@ public class BitmapUtil {
      * @param image
      * @return
      */
-    public static Bitmap compressImage(Bitmap image)
-    {
+    public static Bitmap compressImage(Bitmap image) {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         image.compress(Bitmap.CompressFormat.JPEG, 100, baos);// 质量压缩方法，这里100表示不压缩，把压缩后的数据存放到baos中
         int options = 100;
-        while (baos.toByteArray().length / 1024 > 100)
-        { // 循环判断如果压缩后图片是否大于100kb,大于继续压缩
+        while (baos.toByteArray().length / 1024 > 100) { // 循环判断如果压缩后图片是否大于100kb,大于继续压缩
             baos.reset();// 重置baos即清空baos
             image.compress(Bitmap.CompressFormat.JPEG, options, baos);// 这里压缩options%，把压缩后的数据存放到baos中
             options -= 10;// 每次都减少10
         }
         ByteArrayInputStream isBm = new ByteArrayInputStream(baos.toByteArray());// 把压缩后的数据baos存放到ByteArrayInputStream中
         Bitmap bitmap = BitmapFactory.decodeStream(isBm, null, null);// 把ByteArrayInputStream数据生成图片
-        if (baos != null)
-        {
-            try
-            {
+        if (baos != null) {
+            try {
                 baos.close();
-            } catch (IOException e)
-            {
+            } catch (IOException e) {
                 e.printStackTrace();
             }
         }
-        if (isBm != null)
-        {
-            try
-            {
+        if (isBm != null) {
+            try {
                 isBm.close();
-            } catch (IOException e)
-            {
+            } catch (IOException e) {
                 e.printStackTrace();
             }
         }
-        if (image != null && !image.isRecycled())
-        {
+        if (image != null && !image.isRecycled()) {
             image.recycle();
             image = null;
         }
@@ -361,12 +328,10 @@ public class BitmapUtil {
      * @param image
      * @return
      */
-    public static Bitmap getImage(Bitmap image)
-    {
+    public static Bitmap getImage(Bitmap image) {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         image.compress(Bitmap.CompressFormat.JPEG, 100, baos);
-        if (baos.toByteArray().length / 1024 > 1024)
-        {// 判断如果图片大于1M,进行压缩避免在生成图片（BitmapFactory.decodeStream）时溢出
+        if (baos.toByteArray().length / 1024 > 1024) {// 判断如果图片大于1M,进行压缩避免在生成图片（BitmapFactory.decodeStream）时溢出
             baos.reset();// 重置baos即清空baos
             image.compress(Bitmap.CompressFormat.JPEG, 50, baos);// 这里压缩50%，把压缩后的数据存放到baos中
         }
@@ -383,11 +348,9 @@ public class BitmapUtil {
         float ww = 480f;// 这里设置宽度为480f
         // 缩放比。由于是固定比例缩放，只用高或者宽其中一个数据进行计算即可
         int be = 1;// be=1表示不缩放
-        if (w > h && w > ww)
-        {// 如果宽度大的话根据宽度固定大小缩放
+        if (w > h && w > ww) {// 如果宽度大的话根据宽度固定大小缩放
             be = (int) (newOpts.outWidth / ww);
-        } else if (w < h && h > hh)
-        {// 如果高度高的话根据宽度固定大小缩放
+        } else if (w < h && h > hh) {// 如果高度高的话根据宽度固定大小缩放
             be = (int) (newOpts.outHeight / hh);
         }
         if (be <= 0)
@@ -396,23 +359,20 @@ public class BitmapUtil {
         // 重新读入图片，注意此时已经把options.inJustDecodeBounds 设回false了
         isBm = new ByteArrayInputStream(baos.toByteArray());
         bitmap = BitmapFactory.decodeStream(isBm, null, newOpts);
-        if (isBm != null)
-        {
-            try
-            {
+        if (isBm != null) {
+            try {
                 isBm.close();
-            } catch (IOException e)
-            {
+            } catch (IOException e) {
                 e.printStackTrace();
             }
         }
-        if (image != null && !image.isRecycled())
-        {
+        if (image != null && !image.isRecycled()) {
             image.recycle();
             image = null;
         }
         return compressImage(bitmap);// 压缩好比例大小后再进行质量压缩
     }
+
     /**
      * 通过资源id转化成Bitmap 全屏显示
      *
@@ -423,8 +383,7 @@ public class BitmapUtil {
      * @return
      */
     public static Bitmap ReadBitmapById(Context context, int drawableId,
-                                        int screenWidth, int screenHight)
-    {
+                                        int screenWidth, int screenHight) {
         BitmapFactory.Options options = new BitmapFactory.Options();
         options.inPreferredConfig = Bitmap.Config.ARGB_8888;
         options.inInputShareable = true;
@@ -432,5 +391,36 @@ public class BitmapUtil {
         InputStream stream = context.getResources().openRawResource(drawableId);
         Bitmap bitmap = BitmapFactory.decodeStream(stream, null, options);
         return getBitmap(bitmap, screenWidth, screenHight);
+    }
+
+    /**
+     * drawable -->bitmip
+     *
+     * @param drawable
+     * @return
+     */
+    public static Bitmap getBitmapFromDrawable(Drawable drawable) {
+        if (drawable == null) {
+            return null;
+        }
+
+        if (drawable instanceof BitmapDrawable) {
+            return ((BitmapDrawable) drawable).getBitmap();
+        }
+
+        try {
+            Bitmap bitmap;
+
+            bitmap = Bitmap.createBitmap(drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight(), Bitmap.Config.RGB_565);
+
+            Canvas canvas = new Canvas(bitmap);
+            drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
+            //将 drawable 的内容绘制到 bitmap的canvas 上面去.
+            drawable.draw(canvas);
+            return bitmap;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 }
