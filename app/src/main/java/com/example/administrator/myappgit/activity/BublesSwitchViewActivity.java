@@ -48,6 +48,10 @@ public class BublesSwitchViewActivity extends BaseActivity implements View.OnCli
     BublesSwitchView mBsw1001;
     @BindView(R.id.bsw_150_1)
     BublesSwitchView mBsw1501;
+    @BindView(R.id.bsw_s_1)
+    BublesSwitchView mBswS1;
+    @BindView(R.id.bsw_s_2)
+    BublesSwitchView mBswS2;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -76,6 +80,8 @@ public class BublesSwitchViewActivity extends BaseActivity implements View.OnCli
         mBsw60.setInterpolator(new BounceInterpolator());
         mBsw100.setInterpolator(new AccelerateDecelerateInterpolator());
         mBsw1001.setInterpolator(new DrowInterpolatorView.MyDecelerateInterpolator());
+        mBswS1.setInterpolator(new DrowInterpolatorView.MyDecelerateInterpolator());
+        mBswS2.setInterpolator(new DrowInterpolatorView.MyDecelerateInterpolator());
 //        mBsw150.setInterpolator(new AnticipateInterpolator());
         mBsw1501.setInterpolator(new BounceInterpolator());
 //        mBsw200.setInterpolator(new AccelerateInterpolator());
@@ -88,18 +94,23 @@ public class BublesSwitchViewActivity extends BaseActivity implements View.OnCli
 
         mBsw1001.setBGColors(R.color.black, R.color.black);
         mBsw1001.setCircleColors(R.color.colorWhite, R.color.colorWhite);
+        mBswS1.setBGColors(R.color.black, R.color.black);
+        mBswS1.setCircleColors(R.color.colorWhite, R.color.colorWhite);
+        mBswS2.setBGColors(R.color.black, R.color.black);
+        mBswS2.setCircleColors(R.color.colorWhite, R.color.colorWhite);
 
         //设置背景为图片类型
         mBsw150.setBgType(BublesSwitchView.BgType.BITMAP);
         mBsw1501.setBgType(BublesSwitchView.BgType.BITMAP);
         //设置选中和未选中的背景图片
-        mBsw150.setBGDrawableResIds(R.drawable.d_1,R.drawable.d_2);
+        mBsw150.setBGDrawableResIds(R.drawable.d_1, R.drawable.d_2);
 //        mBsw1501.setBGDrawableResIds(R.drawable.d_2,R.drawable.d_1);
 
         //设置为默认图片类型
         mBsw300.setBgType(BublesSwitchView.BgType.BITMAP);
         mBsw60.setBgType(BublesSwitchView.BgType.BITMAP);
         mBsw601.setBgType(BublesSwitchView.BgType.BITMAP);
+        mBswS2.setBgType(BublesSwitchView.BgType.BITMAP);
     }
 
     private void initListener() {

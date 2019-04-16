@@ -102,10 +102,35 @@ public class DrowInterpolatorView extends View {
             // TODO: 2017/10/31 0031 这个比较符合要求了。。但是应为尾巴的长度是根据速度来的，所以到后面尾巴就看不见了。。前面速度快尾巴显示的时间短，不明显，和预定效果还有出入
             //下面这个就是这个插值器的曲线
             //http://zuotu.91maths.com/#W3sidHlwZSI6MCwiZXEiOiIxKnNpbigzLjE0MTU5MjYqMSp4KSIsImNvbG9yIjoiIzAwMDAwMCJ9LHsidHlwZSI6MCwiZXEiOiJzaW4oMy4xNDE1OTI2KjEvMyooeCsxLzYqMy4xNDE1OTI2KSkiLCJjb2xvciI6IiMwMDAwMDAifSx7InR5cGUiOjEwMDAsIndpbmRvdyI6WyItMC44Nzk3ODUxMjg4MzU2NDExIiwiMi4yOTQwNDI5OTYxNjQzNDY3IiwiLTAuMTk2NTI5MzI3NTcyODQyMDMiLCIxLjc1NjU5NTY3MjQyNzE2MjciXX1d
-            if (input < 0.2618f) {
-                result = (float) Math.sin(Math.PI * 0.9f * input);
+//            if (input < 0.74976f) {
+//                result = (float) Math.sin(Math.PI * 0.566f * input);
+//            } else {
+//                result = (float) Math.sin(Math.PI * 1f / 3 * (input + 1f / 6 * Math.PI));
+//            }
+
+            // TODO: 2019/4/10 0010 小球符合运动预期了，速当前度决定了当前尾巴的长短，所以导致前面0.25的时间速度快但是尾巴显示的时间太短，后面0.75的时间速度虽然慢，但是尾巴不明显 要改尾巴的绘图方式
+//            if (input < 0.294117f) {
+//                result = (float) Math.sin(Math.PI * 0.9 * input);
+//                // 或x**3*10
+//            } else {
+////                result = (float) Math.sin(Math.PI * 1f / 7 * 2 * input + 1f / 14 * 3 * Math.PI);
+//                result = (float) Math.sin(Math.PI * 1f / 3 * input + 1f / 6 * Math.PI);
+//            }
+
+//            if (input < 0.436292f) {
+//                result = (float) (Math.pow(input, 3) * 10);
+//                // 或x**3*10
+//            } else {
+////                result = (float) Math.sin(Math.PI * 1f / 7 * 2 * input + 1f / 14 * 3 * Math.PI);
+//                result = (float) Math.sin(Math.PI * 1f / 3 * input + 1f / 6 * Math.PI);
+//            }
+
+            if (input < 0.586406f) {
+                result = (float) (Math.pow(input, 3) * 4.5);
+                // 或x**3*10
             } else {
-                result = (float) Math.sin(Math.PI * 1f / 3 * (input + 1f / 6 * Math.PI));
+//                result = (float) Math.sin(Math.PI * 1f / 7 * 2 * input + 1f / 14 * 3 * Math.PI);
+                result = (float) Math.sin(Math.PI * 1f / 3 * input + 1f / 6 * Math.PI);
             }
 
             return result;

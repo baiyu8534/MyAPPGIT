@@ -58,6 +58,19 @@
             android:layout_margin="10dp"/>
 
 
+        <com.example.administrator.myappgit.ui.BublesSwitchView
+            android:id="@+id/bsw_s_1"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_margin="10dp"/>
+
+        <com.example.administrator.myappgit.ui.BublesSwitchView
+            android:id="@+id/bsw_s_2"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_margin="10dp"/>
+
+
     </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"

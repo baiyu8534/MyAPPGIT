@@ -130,7 +130,7 @@ public class BublesSwitchView extends View {
     private ValueAnimator mValueAnimator;
 
     /**
-     * 数值动画变化的百分比 0 --> 1 （没加插值器，就是平稳变化）
+     * 数值动画变化的百分比 0 --> 1 （没加插值器，就是平稳变化） 就是0到1的变化。。
      */
     private float mAnimatedFraction;
 
@@ -154,7 +154,8 @@ public class BublesSwitchView extends View {
     private float xPercent = 80;
 
     /**
-     * 圆心偏移距离
+     * 圆心偏移距离  halfHeight * 0.16f 即 圆心坐标 从 （halfHeight，halfHeight） 偏离到（halfHeight-（halfHeight * 0.16f），halfHeight）
+     * 即像左偏离了halfHeight * 0.16f
      */
     private float cCenterOffset;
 
@@ -402,6 +403,7 @@ public class BublesSwitchView extends View {
                 paint.setColor((Integer) mArgbEvaluator.evaluate(mAnimatedFraction, cUnSelectColer, cSelectColer));
                 canvas.drawCircle(cFCenterX + moveX, cCenterY, cRadius, paint);
                 canvas.save();
+                // FIXME: 2019/4/10 0010 不应该是移动距离决定尾巴长短，应该是小球速度决定尾巴长短 要改下面的if。else的绘图方式
                 //实际移动距离过一半后尾巴要缩小
                 //因为不管控件多大（即小球走过的距离不定），但是动画执行时间一样，导致控件越大，小球看起来走的越快
                 //mAnimatedFraction * mWidth / (time / 100) 需要和小球移动的速度有关，即速度越大，尾巴越长 速度：mWidth / (time / 100)

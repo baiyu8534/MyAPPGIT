@@ -16,6 +16,10 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.RequestOptions;
+import com.bumptech.glide.signature.ObjectKey;
 import com.example.administrator.myappgit.IView.IShowAllDemosActivity;
 import com.example.administrator.myappgit.MainActivity;
 import com.example.administrator.myappgit.MyApplication;
@@ -25,9 +29,11 @@ import com.example.administrator.myappgit.app.AppConstant;
 import com.example.administrator.myappgit.bean.adapterBean.RvShowAllDemosAdapterItemBean;
 import com.example.administrator.myappgit.presenter.implPresenter.ShowAllDemosActivityPresenterImpl;
 import com.example.administrator.myappgit.service.BaseService;
+import com.example.administrator.myappgit.ui.GlideCircleTransform;
 import com.example.administrator.myappgit.ui.ShowAllDemosRvItemRecoration;
 import com.example.administrator.myappgit.utils.UIUtil;
 
+import java.io.File;
 import java.util.ArrayList;
 
 import butterknife.BindView;
@@ -93,11 +99,30 @@ public class ShowAllDemosActivity extends BaseActivity implements IShowAllDemosA
         mShowAllDemosActivityPresenter.getImages(adapterItemBeans.size() + "", page + "");
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // 加载选择的头像
+        File file = new File(ShowAllDemosActivity.this.getExternalCacheDir(), "headship_icon.jpg");
+        if (file.exists()) {
+            Glide.with(this).load(file)
+                    .apply(new RequestOptions().error(R.drawable.information)
+                            .signature(new ObjectKey(System.currentTimeMillis()))
+                            .placeholder(R.drawable.information)
+                            .centerCrop()
+                            .diskCacheStrategy(DiskCacheStrategy.ALL)
+                            .transform(new GlideCircleTransform(this)))
+                    .into(mIconImage);
+//            headShipFile = file;
+        }
+    }
+
     private void initViewListener() {
         mIconImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(mContext, "头像", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(mContext, "头像", Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(ShowAllDemosActivity.this, ChangeHeadIconActivity.class));
             }
         });
         mSwipeRefresh.setOnRefreshListener(this);
@@ -115,8 +140,10 @@ public class ShowAllDemosActivity extends BaseActivity implements IShowAllDemosA
                 getResources().getString(R.string.demo_name_6),
                 getString(R.string.demo_name_7),
                 getString(R.string.demo_name_8),
-                "DrowInterpolatorView",
-                "复杂Rv-Glid"
+                getString(R.string.demo_name_9),
+                getString(R.string.demo_name_10),
+                getString(R.string.demo_name_11),
+
         };
         mClasses = new Class[]{
                 MainActivity.class,
@@ -128,7 +155,8 @@ public class ShowAllDemosActivity extends BaseActivity implements IShowAllDemosA
                 VariationTabLayoutActivity.class,
                 BublesSwitchViewActivity.class,
                 DrowInterpolatorViewActivity.class,
-                ComplexGlidLayoutRv.class
+                ComplexGlidLayoutRv.class,
+                ChangeHeadIconActivity.class
         };
         adapterItemBeans = new ArrayList<>();
 

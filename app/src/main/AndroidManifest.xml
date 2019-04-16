@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           package="com.example.administrator.myappgit">
 
-
+    <!--网络权限-->
     <uses-permission android:name="android.permission.INTERNET"/>
     <!--读写权限-->
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
@@ -13,6 +13,8 @@
     <!--设置壁纸-->
     <uses-permission android:name="android.permission.SET_WALLPAPER"/>
 
+    <!-- 调用照相机相关权限 -->
+    <uses-permission android:name="android.permission.CAMERA" />
 
 
     <application
@@ -22,6 +24,18 @@
         android:label="一个无聊的App"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
+        <!-- 拍照选择头像需要的自定义权限 -->
+        <provider
+            android:name="android.support.v4.content.FileProvider"
+            android:authorities="com.example.administrator.myappgit.provider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/provider_paths" />
+        </provider>
+
         <activity android:name=".activity.ShowAllDemosActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
@@ -44,6 +58,7 @@
         <activity android:name=".activity.BublesSwitchViewActivity"/>
         <activity android:name=".activity.DrowInterpolatorViewActivity"/>
         <activity android:name=".activity.ComplexGlidLayoutRv" />
+        <activity android:name=".activity.ChangeHeadIconActivity"/>
 
         <service android:name=".service.BaseService"/>
     </application>
