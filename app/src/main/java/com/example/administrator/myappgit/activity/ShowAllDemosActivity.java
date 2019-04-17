@@ -143,7 +143,7 @@ public class ShowAllDemosActivity extends BaseActivity implements IShowAllDemosA
                 getString(R.string.demo_name_9),
                 getString(R.string.demo_name_10),
                 getString(R.string.demo_name_11),
-
+                "GradualAppBar"
         };
         mClasses = new Class[]{
                 MainActivity.class,
@@ -156,7 +156,8 @@ public class ShowAllDemosActivity extends BaseActivity implements IShowAllDemosA
                 BublesSwitchViewActivity.class,
                 DrowInterpolatorViewActivity.class,
                 ComplexGlidLayoutRv.class,
-                ChangeHeadIconActivity.class
+                ChangeHeadIconActivity.class,
+                GradualAppBarActivity.class
         };
         adapterItemBeans = new ArrayList<>();
 

@@ -59,6 +59,7 @@
         <activity android:name=".activity.DrowInterpolatorViewActivity"/>
         <activity android:name=".activity.ComplexGlidLayoutRv" />
         <activity android:name=".activity.ChangeHeadIconActivity"/>
+        <activity android:name=".activity.GradualAppBarActivity"/>
 
         <service android:name=".service.BaseService"/>
     </application>
