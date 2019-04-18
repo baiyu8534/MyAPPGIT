@@ -11,6 +11,7 @@ import com.example.administrator.myappgit.R;
 
 /**
  * Created by Administrator on 2017/7/24 0024.
+ * 横线分割
  */
 
 public class ShowRvItemDecoration extends RecyclerView.ItemDecoration {

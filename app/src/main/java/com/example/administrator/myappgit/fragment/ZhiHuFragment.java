@@ -18,7 +18,7 @@ import com.example.administrator.myappgit.adapter.RvZhiHuFragmentAdapter;
 import com.example.administrator.myappgit.app.AppConstant;
 import com.example.administrator.myappgit.bean.ZhiHuBean.NewsListBean;
 import com.example.administrator.myappgit.presenter.implPresenter.ZhiHuFragmentPresenterImpl;
-import com.example.administrator.myappgit.ui.ShowRvItemDecoration;
+import com.example.administrator.myappgit.ui.MainRvItemDecoration;
 import com.example.administrator.myappgit.ui.WhorlView;
 import com.example.administrator.myappgit.utils.UIUtil;
 
@@ -133,7 +133,7 @@ public class ZhiHuFragment extends BaseFragment implements IZhiHuFragment {
         mLinearLayoutManager = new LinearLayoutManager(getContext());
         mRvShowList.setLayoutManager(mLinearLayoutManager);
         mRvShowList.setHasFixedSize(true);
-        mRvShowList.addItemDecoration(new ShowRvItemDecoration(mContext));
+        mRvShowList.addItemDecoration(new MainRvItemDecoration(mContext));
         mRvShowList.addOnScrollListener(mOnScrollListener);
     }
 

@@ -59,6 +59,7 @@ public class RvZhiHuFragmentAdapter extends RecyclerView.Adapter<RvZhiHuFragment
         final NewsListBean.StoriesBean storiesBean = mStoriesBeanList.get(position);
 
         holder.tv_title.setText(mStoriesBeanList.get(position).getTitle());
+        holder.tv_date.setText(mStoriesBeanList.get(position).getDate());
         // FIXME: 2017/9/6 加阅读后字体变灰，要用的数据库
         Glide.with(mContext)
                 .load(mStoriesBeanList.get(position).getImages().get(0))
@@ -144,12 +145,14 @@ public class RvZhiHuFragmentAdapter extends RecyclerView.Adapter<RvZhiHuFragment
     public static class MyViewHolder extends RecyclerView.ViewHolder {
 
         public TextView tv_title;
+        public TextView tv_date;
 
         public ImageView iv;
 
         public MyViewHolder(View itemView) {
             super(itemView);
             tv_title = (TextView) itemView.findViewById(R.id.tv_zhihu_item_title);
+            tv_date = (TextView) itemView.findViewById(R.id.tv_zhihu_item_date);
             iv = (ImageView) itemView.findViewById(R.id.iv_zhihu_item);
         }
     }

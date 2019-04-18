@@ -1,27 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="match_parent"
-              android:layout_height="?attr/actionBarSize"
-              android:gravity="center_vertical"
-              android:orientation="horizontal">
+    android:layout_width="match_parent"
+    android:layout_height="?attr/actionBarSize"
+    android:background="@android:color/transparent"
+    android:gravity="center_vertical"
+    android:orientation="horizontal">
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/icon_image"
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:layout_marginLeft="16dp"
-        android:src="@drawable/hander"/>
+        android:src="@drawable/hander" />
 
 
     <TextView
         android:id="@+id/tv_title"
         android:layout_width="0dp"
-        android:layout_weight="1"
         android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:paddingLeft="16dp"
         android:text="这是一个App"
         android:textColor="@color/colorPrimaryText"
-        android:paddingLeft="16dp"
-        android:textSize="16sp"/>
+        android:textSize="16sp" />
 
     <ImageView
         android:id="@+id/iv_nv_menu_icon"

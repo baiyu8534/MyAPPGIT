@@ -3,15 +3,16 @@ package com.example.administrator.myappgit.activity;
 import android.animation.AnimatorSet;
 import android.animation.ArgbEvaluator;
 import android.animation.ObjectAnimator;
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
+import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.KeyEvent;
@@ -37,7 +38,6 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 import static com.example.administrator.myappgit.utils.UIUtil.colorResId2ColorInt;
 import static com.example.administrator.myappgit.utils.UIUtil.getTextWidth;
-import static com.example.administrator.myappgit.utils.UIUtil.setWindowStatusBarColor;
 
 /**
  * Created by Administrator on 2017/7/13 0013.
@@ -59,7 +59,7 @@ public class ShowListActivity extends BaseActivity {
     @BindView(R.id.iv_nv_menu_icon)
     ImageView mIvNvMenuIcon;
     @BindView(R.id.tb)
-    Toolbar mTb;
+    CollapsingToolbarLayout mTb;
     @BindView(R.id.abl)
     AppBarLayout mAbl;
 
@@ -87,10 +87,16 @@ public class ShowListActivity extends BaseActivity {
 
     private ArgbEvaluator mArgbEvaluator;
     private ZhiHuFragment mZhiHuFragment;
+    private int status_bar_height;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (Build.VERSION.SDK_INT >= 21) {
+            View decorView = getWindow().getDecorView();
+            decorView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
+            getWindow().setStatusBarColor(Color.TRANSPARENT);
+        }
         setContentView(R.layout.activity_show_list_layout);
         ButterKnife.bind(this);
         mPosition = getIntent().getIntExtra("position", 0);
@@ -126,19 +132,19 @@ public class ShowListActivity extends BaseActivity {
                     mTabTextView2.setScaleX(1f + 0.2f * positionOffset);
                     mTabTextView2.setScaleY(1f + 0.2f * positionOffset);
 
-                    //mTabShowList.setBackgroundColor(colorResId2ColorInt(ShowListActivity.this, itemBG[position % 3]))
-                    mAbl.setBackgroundColor(colorResId2ColorInt(ShowListActivity.this, itemBG[position % 3]))
-                    ; //先设置第0页时还没有滑动时tablayout的颜色
-                    mTb.setBackgroundColor(colorResId2ColorInt(ShowListActivity.this, itemBG[position % 3]));
+//                    //mTabShowList.setBackgroundColor(colorResId2ColorInt(ShowListActivity.this, itemBG[position % 3]))
+//                    mAbl.setBackgroundColor(colorResId2ColorInt(ShowListActivity.this, itemBG[position % 3]))
+//                    ; //先设置第0页时还没有滑动时tablayout的颜色
+//                    mTb.setBackgroundColor(colorResId2ColorInt(ShowListActivity.this, itemBG[position % 3]));
                     //先设置第0页时还没有滑动时toolbar的颜色
                     int evaluate = (Integer) mArgbEvaluator.evaluate(positionOffset, colorResId2ColorInt
                             (ShowListActivity.this, itemBG[position % 3]), colorResId2ColorInt(ShowListActivity.this,
                             itemBG[(position + 1) % 3]));
                     //mTabShowList.setBackgroundColor(evaluate);//设置背景颜色为算出的两种颜色之间的过渡色
                     mAbl.setBackgroundColor(evaluate);//设置背景颜色为算出的两种颜色之间的过渡色
-                    mTb.setBackgroundColor(evaluate);
+//                    mTb.setBackgroundColor(evaluate);
 
-                    setWindowStatusBarColor(ShowListActivity.this, evaluate);
+//                    setWindowStatusBarColor(ShowListActivity.this, evaluate);
 
                 } else if (position + positionOffset > 1 && position + positionOffset < 2 && position +
                         positionOffset - prePosition > 0) {
@@ -148,18 +154,18 @@ public class ShowListActivity extends BaseActivity {
                     mTabTextView3.setScaleX(1f + 0.2f * positionOffset);
                     mTabTextView3.setScaleY(1f + 0.2f * positionOffset);
 
-                    //mTabShowList.setBackgroundColor(colorResId2ColorInt(ShowListActivity.this, itemBG[position % 3]));
-                    mAbl.setBackgroundColor(colorResId2ColorInt(ShowListActivity.this, itemBG[position % 3]));
-                    mTb.setBackgroundColor(colorResId2ColorInt(ShowListActivity.this, itemBG[position % 3]));
+//                    //mTabShowList.setBackgroundColor(colorResId2ColorInt(ShowListActivity.this, itemBG[position % 3]));
+//                    mAbl.setBackgroundColor(colorResId2ColorInt(ShowListActivity.this, itemBG[position % 3]));
+//                    mTb.setBackgroundColor(colorResId2ColorInt(ShowListActivity.this, itemBG[position % 3]));
                     int evaluate = (Integer) mArgbEvaluator.evaluate(positionOffset, colorResId2ColorInt
                             (ShowListActivity.this, itemBG[position % 3]), colorResId2ColorInt(ShowListActivity.this,
                             itemBG[(position + 1) % 3]));
 
                     //mTabShowList.setBackgroundColor(evaluate);//设置背景颜色为算出的两种颜色之间的过渡色
                     mAbl.setBackgroundColor(evaluate);//设置背景颜色为算出的两种颜色之间的过渡色
-                    mTb.setBackgroundColor(evaluate);
+//                    mTb.setBackgroundColor(evaluate);
 
-                    setWindowStatusBarColor(ShowListActivity.this, evaluate);
+//                    setWindowStatusBarColor(ShowListActivity.this, evaluate);
 
                 } else if (position + positionOffset > 2 && position + positionOffset < 3 && position +
                         positionOffset - prePosition > 0) {
@@ -169,40 +175,41 @@ public class ShowListActivity extends BaseActivity {
                     mTabTextView4.setScaleX(1f + 0.2f * positionOffset);
                     mTabTextView4.setScaleY(1f + 0.2f * positionOffset);
 
-                    //mTabShowList.setBackgroundColor(colorResId2ColorInt(ShowListActivity.this, itemBG[position % 3]));
-                    mAbl.setBackgroundColor(colorResId2ColorInt(ShowListActivity.this, itemBG[position % 3]));
-                    mTb.setBackgroundColor(colorResId2ColorInt(ShowListActivity.this, itemBG[position % 3]));
+//                    //mTabShowList.setBackgroundColor(colorResId2ColorInt(ShowListActivity.this, itemBG[position % 3]));
+//                    mAbl.setBackgroundColor(colorResId2ColorInt(ShowListActivity.this, itemBG[position % 3]));
+//                    mTb.setBackgroundColor(colorResId2ColorInt(ShowListActivity.this, itemBG[position % 3]));
                     int evaluate = (Integer) mArgbEvaluator.evaluate(positionOffset, colorResId2ColorInt
                             (ShowListActivity.this, itemBG[position % 3]), colorResId2ColorInt(ShowListActivity.this,
                             itemBG[(position + 1) % 3]));
                     //mTabShowList.setBackgroundColor(evaluate);//设置背景颜色为算出的两种颜色之间的过渡色
                     mAbl.setBackgroundColor(evaluate);//设置背景颜色为算出的两种颜色之间的过渡色
-                    mTb.setBackgroundColor(evaluate);
+//                    mTb.setBackgroundColor(evaluate);
 
-                    setWindowStatusBarColor(ShowListActivity.this, evaluate);
+//                    setWindowStatusBarColor(ShowListActivity.this, evaluate);
 
-                } else if (position + positionOffset > 2 && position + positionOffset < 3 && position +
-                        positionOffset - prePosition < 0) {
-                    mTabTextView4.setScaleX(1.2f - 0.2f * positionOffset);
-                    mTabTextView4.setScaleY(1.2f - 0.2f * positionOffset);
-
-                    mTabTextView3.setScaleX(1f + 0.2f * positionOffset);
-                    mTabTextView3.setScaleY(1f + 0.2f * positionOffset);
-                } else if (position + positionOffset > 1 && position + positionOffset < 2 && position +
-                        positionOffset - prePosition < 0) {
-                    mTabTextView3.setScaleX(1.2f - 0.2f * positionOffset);
-                    mTabTextView3.setScaleY(1.2f - 0.2f * positionOffset);
-
-                    mTabTextView2.setScaleX(1f + 0.2f * positionOffset);
-                    mTabTextView2.setScaleY(1f + 0.2f * positionOffset);
-                } else if (position + positionOffset > 0 && position + positionOffset < 1 && position +
-                        positionOffset - prePosition < 0) {
-                    mTabTextView2.setScaleX(1.2f - 0.2f * positionOffset);
-                    mTabTextView2.setScaleY(1.2f - 0.2f * positionOffset);
-
-                    mTabTextView1.setScaleX(1f + 0.2f * positionOffset);
-                    mTabTextView1.setScaleY(1f + 0.2f * positionOffset);
                 }
+//                else if (position + positionOffset > 2 && position + positionOffset < 3 && position +
+//                        positionOffset - prePosition < 0) {
+//                    mTabTextView4.setScaleX(1.2f - 0.2f * positionOffset);
+//                    mTabTextView4.setScaleY(1.2f - 0.2f * positionOffset);
+//
+//                    mTabTextView3.setScaleX(1f + 0.2f * positionOffset);
+//                    mTabTextView3.setScaleY(1f + 0.2f * positionOffset);
+//                } else if (position + positionOffset > 1 && position + positionOffset < 2 && position +
+//                        positionOffset - prePosition < 0) {
+//                    mTabTextView3.setScaleX(1.2f - 0.2f * positionOffset);
+//                    mTabTextView3.setScaleY(1.2f - 0.2f * positionOffset);
+//
+//                    mTabTextView2.setScaleX(1f + 0.2f * positionOffset);
+//                    mTabTextView2.setScaleY(1f + 0.2f * positionOffset);
+//                } else if (position + positionOffset > 0 && position + positionOffset < 1 && position +
+//                        positionOffset - prePosition < 0) {
+//                    mTabTextView2.setScaleX(1.2f - 0.2f * positionOffset);
+//                    mTabTextView2.setScaleY(1.2f - 0.2f * positionOffset);
+//
+//                    mTabTextView1.setScaleX(1f + 0.2f * positionOffset);
+//                    mTabTextView1.setScaleY(1f + 0.2f * positionOffset);
+//                }
 
             }
 
@@ -267,6 +274,13 @@ public class ShowListActivity extends BaseActivity {
     }
 
     private void initView() {
+
+        int resourceId = getResources().getIdentifier("status_bar_height", "dimen", "android");
+        if (resourceId > 0) {
+            status_bar_height = getResources().getDimensionPixelSize(resourceId);
+        }
+        mAbl.setPadding(0, status_bar_height, 0, 0);
+
         mZhiHuFragment = new ZhiHuFragment();
         mFragments.add(mZhiHuFragment);
         mFragments.add(new WeatherFragment());
@@ -295,7 +309,7 @@ public class ShowListActivity extends BaseActivity {
 //                colorResId2ColorInt(R.color.colorPrimary));
         mTabShowList.setTabTextColors(colorResId2ColorInt(ShowListActivity.this, R.color.colorWhite),
                 colorResId2ColorInt(ShowListActivity.this, R.color.colorWhite));
-        mTabShowList.setSelectedTabIndicatorColor(colorResId2ColorInt(ShowListActivity.this, R.color.colorPrimaryDark));
+        mTabShowList.setSelectedTabIndicatorColor(colorResId2ColorInt(ShowListActivity.this, R.color.colorWhite));
 //        mTabShowList.setBackgroundColor(colorResId2ColorInt(ShowListActivity.this, itemBG[mPosition % 3]));
         mTabShowList.setupWithViewPager(mViewPager);
 
@@ -305,8 +319,8 @@ public class ShowListActivity extends BaseActivity {
         setOtherTransitionName();
 
         //设置toolbar和状态栏的颜色
-        mTb.setBackgroundColor(colorResId2ColorInt(ShowListActivity.this, itemBG[mPosition % 3]));
-        setWindowStatusBarColor(this, colorResId2ColorInt(this, itemBG[mPosition % 3]));
+//        mTb.setBackgroundColor(colorResId2ColorInt(ShowListActivity.this, itemBG[mPosition % 3]));
+//        setWindowStatusBarColor(this, colorResId2ColorInt(this, itemBG[mPosition % 3]));
 
 
         //初始化tabview的textview动画
