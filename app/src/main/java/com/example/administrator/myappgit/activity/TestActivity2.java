@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -23,8 +24,8 @@ public class TestActivity2 extends BaseActivity {
     @BindView(R.id.tl)
     TabLayout mTl;
 
-    @BindView(R.id.fl)
-    LinearLayout mFl;
+    @BindView(R.id.ll)
+    LinearLayout mLl;
     @BindView(R.id.hsv)
     HorizontalScrollView mHsv;
     @BindView(R.id.rl1)
@@ -40,6 +41,7 @@ public class TestActivity2 extends BaseActivity {
     private List<ImageView> mImageViews = new ArrayList<>();
     private GuidePagerAdapter mGuidePagerAdapter;
     private int mPosition;
+    private int mScreenWidth;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -54,46 +56,91 @@ public class TestActivity2 extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
+//        mHsv.postDelayed(new Runnable() {
+//            @Override
+//            public void run() {
+//                switch (mPosition) {
+//                    case 0:
+//                        mHsv.scrollTo(0, 0);
+//                        break;
+//                    case 1:
+////                        mHsv.scrollTo(mRl1.getRight(), 0);
+//                        mHsv.scrollBy(mRl1.getRight(), 0);
+//                        break;
+//                    case 2:
+////                        mHsv.scrollTo(mRl2.getRight(), 0);
+//                        mHsv.scrollBy(mRl2.getRight(), 0);
+//                        break;
+//                    case 3:
+////                        mHsv.scrollTo(mRl3.getRight(), 0);
+//                        mHsv.scrollBy(mRl3.getRight(), 0);
+//                        break;
+//                }
+//            }
+//        },10);
+        final FrameLayout.LayoutParams layoutParams = (FrameLayout.LayoutParams) mLl.getLayoutParams();
+
+        switch (mPosition) {
+            case 0:
+
+                break;
+            case 1:
+                layoutParams.setMargins(-mScreenWidth, layoutParams.topMargin, layoutParams.rightMargin, layoutParams.bottomMargin);
+                break;
+            case 2:
+                layoutParams.setMargins(-mScreenWidth * 2, layoutParams.topMargin, layoutParams.rightMargin, layoutParams.bottomMargin);
+                break;
+            case 3:
+                layoutParams.setMargins(-mScreenWidth * 3, layoutParams.topMargin, layoutParams.rightMargin, layoutParams.bottomMargin);
+                break;
+        }
+
+        mLl.setLayoutParams(layoutParams);
+
         mHsv.postDelayed(new Runnable() {
             @Override
             public void run() {
+
+                layoutParams.setMargins(0, 0, 0, 0);
+                mLl.setLayoutParams(layoutParams);
                 switch (mPosition) {
                     case 0:
                         mHsv.scrollTo(0, 0);
                         break;
                     case 1:
 //                        mHsv.scrollTo(mRl1.getRight(), 0);
-                        mHsv.scrollBy(mRl1.getRight(), 0);
+                        mHsv.scrollBy(mScreenWidth, 0);
                         break;
                     case 2:
 //                        mHsv.scrollTo(mRl2.getRight(), 0);
-                        mHsv.scrollBy(mRl2.getRight(), 0);
+                        mHsv.scrollBy(mScreenWidth * 2, 0);
                         break;
                     case 3:
 //                        mHsv.scrollTo(mRl3.getRight(), 0);
-                        mHsv.scrollBy(mRl3.getRight(), 0);
+                        mHsv.scrollBy(mScreenWidth * 3, 0);
                         break;
                 }
             }
-        },10);
+        }, 10);
+
     }
 
     private void initData() {
-        int screenWidth = ScreenUtil.getScreenWidth(this);
+        mScreenWidth = ScreenUtil.getScreenWidth(this);
         ViewGroup.LayoutParams rl1 = mRl1.getLayoutParams();
         ViewGroup.LayoutParams rl2 = mRl2.getLayoutParams();
         ViewGroup.LayoutParams rl3 = mRl3.getLayoutParams();
         ViewGroup.LayoutParams rl4 = mRl4.getLayoutParams();
-        rl1.width = screenWidth;
+        rl1.width = mScreenWidth;
         mRl1.setLayoutParams(rl1);
 
-        rl2.width = screenWidth;
+        rl2.width = mScreenWidth;
         mRl2.setLayoutParams(rl2);
 
-        rl3.width = screenWidth;
+        rl3.width = mScreenWidth;
         mRl3.setLayoutParams(rl3);
 
-        rl4.width = screenWidth;
+        rl4.width = mScreenWidth;
         mRl4.setLayoutParams(rl4);
 
 
