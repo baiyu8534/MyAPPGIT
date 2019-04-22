@@ -33,6 +33,7 @@
     <string name="demo_name_10">复杂Rv-Glid</string>
     <string name="demo_name_11">头像选择</string>
     <string name="demo_name_12">GradualAppBar</string>
+    <string name="demo_name_13">HorizontalTransformIndicator</string>
     <string name="demo_name_100">zxing优化</string>
 
     <string name="demo_name_1_message">MVP的架构，用RxJava+retrofit2.0来实现网络请求，监听网络状态，有完整的网络错误时的通知前台策略。有统一的消息策略，在不同组件中都可以把消息传到当前显示的activity中。还有一个转场动画，rv中textView和tabView中的TextView联动。切换ViewPage时动态改变appBarLayout和状态栏的背景，不过滑快了就有点不同步了（想解决可以研究一下网上的标签页的框架）。给appBarLayout设置addOnOffsetChangedListener，可以拿到appBarLayout的移动的offset（百分比），就可以控制上面控件的移动了，但是用offset不好控制，效果不好</string>

@@ -108,7 +108,8 @@ public class TestActivity extends BaseActivity implements RvTestAdapter.RvItemCl
      */
     @Override
     public void onRvItemClickListener(int position) {
-        Intent intent = new Intent(this, TestActivity2.class);
+//        Intent intent = new Intent(this, TestActivity2.class);
+        Intent intent = new Intent(this, HorizontalTransformIndicatorActivity.class);
         intent.putExtra("position", position);
         List<Pair<View, String>> pairs = new ArrayList<>();
         int firstVisibleItemPosition = mLinearLayoutManager.findFirstVisibleItemPosition();

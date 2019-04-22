@@ -144,7 +144,7 @@ public class ShowAllDemosActivity extends BaseActivity implements IShowAllDemosA
                 getString(R.string.demo_name_10),
                 getString(R.string.demo_name_11),
                 getString(R.string.demo_name_12),
-                "test"
+                getString(R.string.demo_name_13),
         };
         mClasses = new Class[]{
                 MainActivity.class,
