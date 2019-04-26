@@ -1,5 +1,6 @@
 package com.example.administrator.myappgit.activity;
 
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -51,6 +52,16 @@ public class HorizontalTransformIndicatorActivity extends BaseActivity {
         mVp.setCurrentItem(selectPosition);
         mVp.setOffscreenPageLimit(3);
 
-        mHtiTab.initialization(mVp, "tab_cv_",R.layout.item_transform_indicator, selectPosition);
+        mHtiTab.initialization(mVp, "tab_cv_", R.layout.item_transform_indicator, selectPosition);
+        mHtiTab.setOnHItemClickListener(new HorizontalTransformIndicator.onItemClickListener() {
+            @Override
+            public void onItemClick(int position) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    finishAfterTransition();
+                } else {
+                    finish();
+                }
+            }
+        });
     }
 }

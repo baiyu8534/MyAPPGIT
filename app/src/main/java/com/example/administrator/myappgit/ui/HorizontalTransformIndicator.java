@@ -34,6 +34,15 @@ public class HorizontalTransformIndicator extends HorizontalScrollView implement
 
     private boolean initializable = false;
 
+    private onItemClickListener onHItemClickListener;
+    public interface onItemClickListener{
+        void onItemClick(int position);
+    }
+
+    public void setOnHItemClickListener(HorizontalTransformIndicator.onItemClickListener onHItemClickListener) {
+        this.onHItemClickListener = onHItemClickListener;
+    }
+
     public HorizontalTransformIndicator(Context context) {
         super(context);
     }
@@ -111,6 +120,15 @@ public class HorizontalTransformIndicator extends HorizontalScrollView implement
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 cv_item.setTransitionName(preTransitionId + i);
             }
+            final int position = i;
+            item.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if(onHItemClickListener != null){
+                        onHItemClickListener.onItemClick(position);
+                    }
+                }
+            });
             mLinearLayout.addView(item);
         }
         addView(mLinearLayout);
