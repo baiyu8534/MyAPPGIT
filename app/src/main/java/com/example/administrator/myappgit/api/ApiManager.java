@@ -185,9 +185,9 @@ public class ApiManager {
                 synchronized (lock) {
                     if (pixabayApi == null) {
                         pixabayApi = new Retrofit.Builder()
-                                .baseUrl("http://pixabay.com/api/")
+                                .baseUrl("https://pixabay.com/api/")
                                 .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
-                                .client(getOkHttpClinet())
+                                .client(client)
                                 .addConverterFactory(GsonConverterFactory.create())
                                 .build().create(PixabayApi.class);
                     }

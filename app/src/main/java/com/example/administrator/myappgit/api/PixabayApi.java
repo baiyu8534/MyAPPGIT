@@ -16,6 +16,7 @@ import rx.Observable;
  * &orientation=horizontal  图片方向
  * &order=latest  获取最新的
  * &per_page=4  获取数量
+ * page 页数
  */
 
 public interface PixabayApi {

@@ -194,7 +194,9 @@ public class MainActivity extends BaseActivity implements RvMainAdapter.RvItemCl
     @Override
     public void setPic(List<PixabayListBean.HitsBean> hitsBeen) {
         if (hitsBeen != null) {
-            Glide.with(mContext).load(hitsBeen.get(0).getWebformatURL())
+            String webformatURL = hitsBeen.get(0).getWebformatURL();
+            webformatURL.replace("640","180");
+            Glide.with(mContext).load(webformatURL)
                     .apply(new RequestOptions()
                             .error(R.drawable.show_image_default)
                             .placeholder(R.drawable.show_image_default)
