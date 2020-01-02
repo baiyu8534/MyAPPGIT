@@ -21,7 +21,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.administrator.myappgit.R;
-import com.example.administrator.myappgit.adapter.RvTestAdapter;
+import com.example.administrator.myappgit.adapter.RvTransformIndicatorAdapter;
 import com.example.administrator.myappgit.presenter.implPresenter.MainActivityPresenterImpl;
 import com.example.administrator.myappgit.ui.MainRvItemDecoration;
 
@@ -32,7 +32,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class TestActivity extends BaseActivity implements RvTestAdapter.RvItemClickListener, View.OnClickListener,
+public class TransformIndicatorActivity extends BaseActivity implements RvTransformIndicatorAdapter.RvItemClickListener, View.OnClickListener,
          NavigationView.OnNavigationItemSelectedListener {
 
     @BindView(R.id.toolbar)
@@ -55,7 +55,7 @@ public class TestActivity extends BaseActivity implements RvTestAdapter.RvItemCl
     private LinearLayoutManager mLinearLayoutManager;
     private ImageView mImagerNvHeader;
     private MainActivityPresenterImpl mMainActivityPresenter;
-    private RvTestAdapter mRvTestAdapter;
+    private RvTransformIndicatorAdapter mRvTestAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,7 +93,7 @@ public class TestActivity extends BaseActivity implements RvTestAdapter.RvItemCl
         mLinearLayoutManager = new LinearLayoutManager(this);
         mRvMain.setLayoutManager(mLinearLayoutManager);
         mRvMain.addItemDecoration(new MainRvItemDecoration(this));
-        mRvTestAdapter = new RvTestAdapter(this);
+        mRvTestAdapter = new RvTransformIndicatorAdapter(this);
         mRvMain.setAdapter(mRvTestAdapter);
 
         mIvNvMenuIcon.setOnClickListener(this);
@@ -118,7 +118,7 @@ public class TestActivity extends BaseActivity implements RvTestAdapter.RvItemCl
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
 
             for (int i = firstVisibleItemPosition; i <= lastVisibleItemPosition; i++) {
-                RvTestAdapter.MyViewHolder holder = (RvTestAdapter.MyViewHolder) mRvMain.findViewHolderForAdapterPosition(i);
+                RvTransformIndicatorAdapter.MyViewHolder holder = (RvTransformIndicatorAdapter.MyViewHolder) mRvMain.findViewHolderForAdapterPosition(i);
 //                pairs.add(Pair.create((View) holder.tv_title, "tab_" + i));
                 pairs.add(Pair.create((View) holder.cv, "tab_cv_" + i));
 //                if (BuildConfig.DEBUG) Log.d("MainActivity", "tab_" + i);

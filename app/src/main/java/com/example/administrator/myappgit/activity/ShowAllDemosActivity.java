@@ -159,7 +159,7 @@ public class ShowAllDemosActivity extends BaseActivity implements IShowAllDemosA
                 ComplexGlidLayoutRv.class,
                 ChangeHeadIconActivity.class,
                 GradualAppBarActivity.class,
-                TestActivity.class
+                TransformIndicatorActivity.class
         };
         adapterItemBeans = new ArrayList<>();
 

@@ -60,9 +60,7 @@
         <activity android:name=".activity.ComplexGlidLayoutRv" />
         <activity android:name=".activity.ChangeHeadIconActivity"/>
         <activity android:name=".activity.GradualAppBarActivity"/>
-        <activity android:name=".activity.TestActivity2"/>
-        <activity android:name=".activity.TestActivity"/>
-        <activity android:name=".activity.TestActivity3"/>
+        <activity android:name=".activity.TransformIndicatorActivity"/>
         <activity android:name=".activity.HorizontalTransformIndicatorActivity"/>
 
 
